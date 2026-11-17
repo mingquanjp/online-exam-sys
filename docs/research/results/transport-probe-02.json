@@ -1,0 +1,51 @@
+{
+  "purpose": "C poll framing/echo on loopback only; no SQLite/auth/Electron/domain logic",
+  "platform": "macOS-26.7.1-arm64-arm-64bit",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "cases": [
+    {
+      "clients": 50,
+      "rounds_per_client": 30,
+      "payload_bytes": 512,
+      "exchanges": 1500,
+      "elapsed_seconds": 0.0505,
+      "roundtrip_ms": {
+        "p50": 0.666,
+        "p95": 0.97,
+        "p99": 1.284,
+        "max": 2.447
+      },
+      "payload_one_direction_mib_per_s": 14.507,
+      "all_echo_payloads_matched": true,
+      "server": {
+        "accepted": 50,
+        "peak_connections": 50,
+        "echoed_bytes_including_headers": 774000,
+        "cpu_user_s": 0.001608,
+        "cpu_system_s": 0.019534
+      }
+    },
+    {
+      "clients": 50,
+      "rounds_per_client": 30,
+      "payload_bytes": 32768,
+      "exchanges": 1500,
+      "elapsed_seconds": 0.0629,
+      "roundtrip_ms": {
+        "p50": 0.923,
+        "p95": 1.31,
+        "p99": 1.859,
+        "max": 3.212
+      },
+      "payload_one_direction_mib_per_s": 745.552,
+      "all_echo_payloads_matched": true,
+      "server": {
+        "accepted": 50,
+        "peak_connections": 50,
+        "echoed_bytes_including_headers": 49158000,
+        "cpu_user_s": 0.002311,
+        "cpu_system_s": 0.023559
+      }
+    }
+  ]
+}

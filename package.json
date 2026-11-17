@@ -1,0 +1,28 @@
+{
+  "name": "online-exam-sys",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Group 4 LAN exam system: C TCP transport and TypeScript business process",
+  "workspaces": [
+    "apps/desktop",
+    "apps/business"
+  ],
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=11 <12"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace @exam/desktop",
+    "build:desktop": "npm run build --workspace @exam/desktop",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "start:desktop": "npm run start --workspace @exam/desktop",
+    "configure:native": "cmake --preset dev",
+    "build:native": "cmake --build --preset dev",
+    "check:native": "ctest --preset dev",
+    "check": "npm run typecheck && npm run build:desktop && npm run build:business",
+    "setup:desktop": "npm run setup:runtime --workspace @exam/desktop",
+    "typecheck:business": "npm run typecheck --workspace @exam/business",
+    "build:business": "npm run build --workspace @exam/business",
+    "check:business": "npm run build:business && npm run check:runtime --workspace @exam/business"
+  }
+}

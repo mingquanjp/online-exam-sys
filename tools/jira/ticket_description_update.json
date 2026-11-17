@@ -1,0 +1,392 @@
+{
+  "EXAM-T01": {
+    "old_summary": "[Contracts] Chốt interface dùng chung và bảng cấu hình V03",
+    "new_summary": "[Contracts] Chốt interface dùng chung và bảng cấu hình V03",
+    "old_description_sha256": "8805b72afe33c589676248baff9252f8e5acefcdb05e1a118ba6e002a2094416",
+    "new_description_sha256": "25e5138a6aed5ab5fb19ad81c42fc311e48cddf0305b999743e21fbea21f4474"
+  },
+  "EXAM-T02": {
+    "old_summary": "[Database] Tạo migration và repository tài khoản, phòng, thành viên, activity",
+    "new_summary": "[Database] Tạo migration và repository tài khoản, phòng, thành viên, activity",
+    "old_description_sha256": "30598bc8d240dc6f0a012b9f9305247fb36bd7d59d012f9f2a480bcb81bb4238",
+    "new_description_sha256": "e85cc544670437e3b51ecf1aaf414c8ba527aef1d8b1b2de47a0325371ba27ed"
+  },
+  "EXAM-T03": {
+    "old_summary": "[C Transport] Tách frame nhận và giữ phần dữ liệu dư",
+    "new_summary": "[C Transport] Tách frame nhận và giữ phần dữ liệu dư",
+    "old_description_sha256": "c82dcc432ffabfadebc6144d16a407328ac01b9d7efb9fce345dffc6156fdf8a",
+    "new_description_sha256": "82ede6f07214bb7cb234be8c22c044454b83d87f25bb40a548a024f4ad249b7c"
+  },
+  "EXAM-T04": {
+    "old_summary": "[Validation] Kiểm tra DTO trong TypeScript và Electron main",
+    "new_summary": "[Validation] Kiểm tra DTO trong TypeScript và Electron main",
+    "old_description_sha256": "05b2bac17de822e7c9f4c3b6db6d9ae560c6a3fe0f0d5caa07690193121e8803",
+    "new_description_sha256": "3156ba4506d4dea95038c829a1df589071b2cc19bbc5ed7105c7febd2aa3060b"
+  },
+  "EXAM-T05": {
+    "old_summary": "[C Transport] Mã hóa frame và quản lý hàng đợi gửi có giới hạn",
+    "new_summary": "[C Transport] Mã hóa frame và quản lý hàng đợi gửi có giới hạn",
+    "old_description_sha256": "605011387823372e63f2283d3b1a6493941e050ecabf5b89832b2f70ef6a5e1c",
+    "new_description_sha256": "5727a6a54cca7ccbbde7ff5358b47baa8fb8c15ee8cfd439b01eb1119547c81c"
+  },
+  "EXAM-T06": {
+    "old_summary": "[Database] Tích hợp migration và bộ quản lý transaction SQLite",
+    "new_summary": "[Database] Tích hợp migration và bộ quản lý transaction SQLite",
+    "old_description_sha256": "ad6ff09d94be5d6007072814b81f71deabc53fafc867391f7810890d3da4e86e",
+    "new_description_sha256": "048b31904dec2142da4c7b03bff80aee2b368609216dd66272fa3e6a03514c82"
+  },
+  "EXAM-T07": {
+    "old_summary": "[Operations] Lưu receipt, tra cứu thao tác và kiểm soát admission",
+    "new_summary": "[Operations] Lưu receipt, tra cứu thao tác và kiểm soát admission",
+    "old_description_sha256": "f7d98a12a32e3d93677c7e19b92447f208756dd2c5f0be2bd815f97fb773e4b9",
+    "new_description_sha256": "498ae5d7bd2c16803514f40dd678d378cd5815db89810784d805d75264f3210d"
+  },
+  "EXAM-T08": {
+    "old_summary": "[C Server] Xử lý nhiều socket, hello, ping và timeout bằng reactor",
+    "new_summary": "[C Server] Xử lý nhiều socket, hello, ping và timeout bằng reactor",
+    "old_description_sha256": "2119ecdfd793e8ba2308e3a21eab2bf56e9fb7f70707e62a197ebc54d62bcc41",
+    "new_description_sha256": "46125443dab8799024b78aea84ca0674aa126240c9da0850df2a0b3e77641463"
+  },
+  "EXAM-T09": {
+    "old_summary": "[C Server] Khởi chạy Node, kế thừa khóa DB và dừng tiến trình",
+    "new_summary": "[C Server] Khởi chạy Node, kế thừa khóa DB và dừng tiến trình",
+    "old_description_sha256": "c45ce8d8d406fd2fadcce7ecaf6c30f644cc86438f971da4e205a67bbb8dd072",
+    "new_description_sha256": "a1a6d1fd675e2f43bf5f7588d8ee8ac398967d19e44a0b00bdc67475a6956935"
+  },
+  "EXAM-T10": {
+    "old_summary": "[Business Bridge] Gửi response, event và kiểm soát backpressure stdout",
+    "new_summary": "[Business Bridge] Gửi response, event và kiểm soát backpressure stdout",
+    "old_description_sha256": "2247664e6d6a901189a361bf81a54bbe296bf8d04bee27beac25dfa98a737ad3",
+    "new_description_sha256": "2a23f49fb50b28571737793ccd6b23a59a1efdf2af577f2700570802643595c6"
+  },
+  "EXAM-T11": {
+    "old_summary": "[C Client] Kết nối TCP, gửi heartbeat và ánh xạ IPC–NET",
+    "new_summary": "[C Client] Kết nối TCP, gửi heartbeat và ánh xạ IPC–NET",
+    "old_description_sha256": "8a3e447ce11f8087a6569e1e770a4662df3e0f0da391bf2f10353fa6534c4235",
+    "new_description_sha256": "0f9268a414c721fff799a4a852103fdc26c0c8509a194fbc3e9f293bfa0d3e91"
+  },
+  "EXAM-T12": {
+    "old_summary": "[Auth] Triển khai đăng ký, đăng nhập, đăng xuất và quản lý phiên",
+    "new_summary": "[Auth] Triển khai đăng ký, đăng nhập, đăng xuất và quản lý phiên",
+    "old_description_sha256": "f1a1db1952f22847391e80d94249ee177fc9dd8e61321400abf498c09b6011c0",
+    "new_description_sha256": "d17ce1335bf6b4efc8763d2efdcc39086bed2cecf6f405ffb0f6ba830120e908"
+  },
+  "EXAM-T13": {
+    "old_summary": "[Auth UI] Tích hợp đăng ký, đăng nhập và đăng xuất qua bridge",
+    "new_summary": "[Auth UI] Tích hợp đăng ký, đăng nhập và đăng xuất qua bridge",
+    "old_description_sha256": "e1e96216d9e17ceab1b0146bcb95b8e087671d3ee8a3d6d5786a0762edb45fb5",
+    "new_description_sha256": "b0ce4d8fed4563931702bb80a79bee674a04dd794aedb2760a3929269a0d36c8"
+  },
+  "EXAM-T14": {
+    "old_summary": "[Room] Tạo helper thời gian, deadline và activity dùng chung",
+    "new_summary": "[Room] Tạo helper thời gian, deadline và activity dùng chung",
+    "old_description_sha256": "2f9949c40f595ca4c431bfa02b30c6fae4d6d7e16dc6221c4109fe39ff5eb608",
+    "new_description_sha256": "638cfe3731f6491093f4caa5cc430d30064d2c8b30610c8a130dd04c19dbe04c"
+  },
+  "EXAM-T15": {
+    "old_summary": "[Question Bank] Cung cấp danh sách chủ đề và số câu hỏi khả dụng",
+    "new_summary": "[Question Bank] Cung cấp danh sách chủ đề và số câu hỏi khả dụng",
+    "old_description_sha256": "a1f7d60c726605d8a5886ca4ab7be6123d309d6affa6572918b5d356cb9f39e7",
+    "new_description_sha256": "086e30300577af9ea6b14ddfcfd13089da326a8c19506f1e06420813c9672c73"
+  },
+  "EXAM-T16": {
+    "old_summary": "[Admin CLI] Tạo công cụ quản trị offline dùng chung khóa DB và hash",
+    "new_summary": "[Admin CLI] Tạo công cụ quản trị offline dùng chung khóa DB và hash",
+    "old_description_sha256": "51368a330e1c32b051da3720ea6d63c42dce9250e1d33e12a0b007588a458857",
+    "new_description_sha256": "ca459ece1acf32326a217c36015f533df78843eff4ab238757c86a71ed251bf4"
+  },
+  "EXAM-T17": {
+    "old_summary": "[Exam] Sinh và lưu đề riêng cho từng thí sinh trong transaction",
+    "new_summary": "[Exam] Sinh và lưu đề riêng cho từng thí sinh trong transaction",
+    "old_description_sha256": "b5dc4ee1ecaf36edbdd7f2ecdeb9e46af2f564c3df9891c18d058cd1b603bc92",
+    "new_description_sha256": "20db6908ffdd1c522af6cbb14e732ffa2da77ce236c5f0db0e901ab8d27a504c"
+  },
+  "EXAM-T18": {
+    "old_summary": "[Room] Triển khai cấu hình, danh sách, tham gia, rời phòng và roster",
+    "new_summary": "[Room] Triển khai cấu hình, danh sách, tham gia, rời phòng và roster",
+    "old_description_sha256": "e45b17c6294c7654fb77130d8bde28323140bebdf9bca2fa889d700452b53cab",
+    "new_description_sha256": "1399da074c40252851fd7701af80b64c0b2a2c3c6408eca5de5736405043abc9"
+  },
+  "EXAM-T19": {
+    "old_summary": "[Exam] Lưu đáp án theo revision và xác nhận sau commit",
+    "new_summary": "[Exam] Lưu đáp án theo revision và xác nhận sau commit",
+    "old_description_sha256": "4a417bdf9be4b5a7b0cc5559ff47f354500192152d18ee2a4862132ecb00812d",
+    "new_description_sha256": "970d8e50dd70f3fee2da9a8b56944920e7273dc078baa0eedd823ee719d9121a"
+  },
+  "EXAM-T20": {
+    "old_summary": "[Exam] Nộp bài và chấm điểm với một kết quả cuối cùng",
+    "new_summary": "[Exam] Nộp bài và chấm điểm với một kết quả cuối cùng",
+    "old_description_sha256": "5c44acbc670813c55e584a45c1e37023ab0de0b00fac04ddec6803ae1bf16907",
+    "new_description_sha256": "d18937a6732501ad66e7cbfb1d7ecbcfc89089b6c2b78847e1e69b099d442f33"
+  },
+  "EXAM-T21": {
+    "old_summary": "[Room] Bắt đầu thi với roster cố định và tạo đề nguyên tử",
+    "new_summary": "[Room] Bắt đầu thi với roster cố định và tạo đề nguyên tử",
+    "old_description_sha256": "b61f6744e5278b17dae3991b887892b6313ebee773108803b1c4d16fc578e30e",
+    "new_description_sha256": "4499f5d1bb3e23f2b96c7b50934de3028cb23e7dc3424c87e2f5a856e0f2ce1e"
+  },
+  "EXAM-T22": {
+    "old_summary": "[Results] Cung cấp kết quả cá nhân và bảng điểm chủ phòng theo quyền",
+    "new_summary": "[Results] Cung cấp kết quả cá nhân và bảng điểm chủ phòng theo quyền",
+    "old_description_sha256": "c0f5109d698fc764d97bd22bda6ab9340745427b700b852d19c42cebec01f065",
+    "new_description_sha256": "9a38b87ef7751ceb16e7b52336039ec4525e2bb857a8c2dcbd4ba20c2845e981"
+  },
+  "EXAM-T23": {
+    "old_summary": "[Load Test] Tạo driver tải nhỏ và khung báo cáo Sprint 1",
+    "new_summary": "[Load Test] Tạo driver tải nhỏ và khung báo cáo Sprint 1",
+    "old_description_sha256": "45ce8112c3a3f136630f258bb4af66e8a0216afe17bc907a40d17b678658d857",
+    "new_description_sha256": "acb0eddf84ec193d4accbc21d31ff8c42e7d863d81fc2e811105ebc935acf22e"
+  },
+  "EXAM-T24": {
+    "old_summary": "[Load Test] Mô phỏng đăng nhập, vào phòng, làm và nộp bài qua TCP",
+    "new_summary": "[Load Test] Mô phỏng đăng nhập, vào phòng, làm và nộp bài qua TCP",
+    "old_description_sha256": "b14acc992a0e82af11b01caf28c5fb71141c0ec1eb8f851a890adbe300df1bd4",
+    "new_description_sha256": "e96a9262f7c8f765386da30403e33263f0d418307434c4c7d1baab6e33fdfeb1"
+  },
+  "EXAM-T25": {
+    "old_summary": "[Sprint Review] Demo LAN, báo cáo bằng chứng và dự báo phần A — Sprint 1",
+    "new_summary": "[Sprint Review] Demo LAN, báo cáo bằng chứng và dự báo phần Minh Quân — Sprint 1",
+    "old_description_sha256": "07ea30a388ed91b67ef99436155d6292c7a043535626ba3ff08a533209911d2b",
+    "new_description_sha256": "53d058a1e36c8df10338da95e153585f5567fa9d2b586d37dd0f1f0f646e62a4"
+  },
+  "EXAM-T26": {
+    "old_summary": "[Sprint Review] Demo bài thi, đối soát kết quả và dự báo phần B — Sprint 1",
+    "new_summary": "[Sprint Review] Demo bài thi, đối soát kết quả và dự báo phần Hoàng Quân — Sprint 1",
+    "old_description_sha256": "36083ab9b779a4858787eaa9cbcbe488d94bbee7f4443fe58f89f765d60749c9",
+    "new_description_sha256": "ff724ad703b3e6864dbc37f61321d27ec5787845509264018deb89d15c4da241"
+  },
+  "EXAM-T44": {
+    "old_summary": "[Validation] Kiểm tra UTF-8, JSON và envelope theo kênh trong C",
+    "new_summary": "[Validation] Kiểm tra UTF-8, JSON và envelope theo kênh trong C",
+    "old_description_sha256": "3eebb697536286ab5c0b3b1552efaf407a704fa08aa61d20600b3610728f5fee",
+    "new_description_sha256": "9aa9e87460a37334a8d78418b862aa4b8ca5dd4a18b376742395268c692bdb21"
+  },
+  "EXAM-T45": {
+    "old_summary": "[Operations] Chuẩn hóa DTO và tạo SHA-256 fingerprint theo vector chuẩn",
+    "new_summary": "[Operations] Chuẩn hóa DTO và tạo SHA-256 fingerprint theo vector chuẩn",
+    "old_description_sha256": "370821e8fdb53ba6c3933cebff0fc16ccd58de422df458aac36498f6e224f5e0",
+    "new_description_sha256": "6d842576e5dc70e82826d9c0ae7d781dce813eb946b5a6d4e4874253ab9a9646"
+  },
+  "EXAM-T46": {
+    "old_summary": "[Logging] Giới hạn log và đọc stderr không chặn vòng I/O",
+    "new_summary": "[Logging] Giới hạn log và đọc stderr không chặn vòng I/O",
+    "old_description_sha256": "3f0dbb75b08bf4c735370190c924435c606216081f107f9b435d34d949a3d793",
+    "new_description_sha256": "14b9c126b6559fa1d7aa4ab32d4437064943aa62de37d4041b6e9b39712126b0"
+  },
+  "EXAM-T47": {
+    "old_summary": "[Config] Nạp và kiểm tra cấu hình, giá trị mặc định và đường dẫn trong C/TS",
+    "new_summary": "[Config] Nạp và kiểm tra cấu hình, giá trị mặc định và đường dẫn trong C/TS",
+    "old_description_sha256": "faa9520318eb57fa6ed99a8f9ff11fd2c9e2903186c2612936d16204502c14c1",
+    "new_description_sha256": "34aa85876e7c28fa08b26e7dc2a3ea8b05b6bdfb8d4f9c7ec2630af0f2ec5901"
+  },
+  "EXAM-T48": {
+    "old_summary": "[Business Bridge] Nhận BP, điều phối tuần tự và phát tín hiệu sẵn sàng",
+    "new_summary": "[Business Bridge] Nhận BP, điều phối tuần tự và phát tín hiệu sẵn sàng",
+    "old_description_sha256": "6e83e6ef5721d46ef7cb5bb1abe073add061ce7d3ae1f62e3eabc9cde1a009c5",
+    "new_description_sha256": "49b21dc4b42a05cfabd10c614518cbe1a74bf1f150d8f00ccee093ca0c3627a0"
+  },
+  "EXAM-T49": {
+    "old_summary": "[C Server] Định tuyến BP đến đúng TCP và hoàn trả credit một lần",
+    "new_summary": "[C Server] Định tuyến BP đến đúng TCP và hoàn trả credit một lần",
+    "old_description_sha256": "edaee607ca5520f0752780f9ecb4f18559106cae99ce9353b1d64c583fdf525a",
+    "new_description_sha256": "1e6879acbcdbe34cbeb73636630095779b4522e4f8068f34f64a44c5d57491f8"
+  },
+  "EXAM-T50": {
+    "old_summary": "[Electron Bridge] Khởi chạy client C, giới hạn API và quản lý pending",
+    "new_summary": "[Electron Bridge] Khởi chạy client C, giới hạn API và quản lý pending",
+    "old_description_sha256": "cdb0079981038eb5fcd07e2ba7b6163d27cc836808c50769ccd85e7c20fa876d",
+    "new_description_sha256": "742fa283eb97e7b3ef53bd8d6c2b255f7387d8d35d2733e757008c13d2c51127"
+  },
+  "EXAM-T51": {
+    "old_summary": "[Auth] Băm mật khẩu scrypt bất đồng bộ và giới hạn hàng đợi",
+    "new_summary": "[Auth] Băm mật khẩu scrypt bất đồng bộ và giới hạn hàng đợi",
+    "old_description_sha256": "7e65b781bd0a983d392d562e4d993f6619c820d300bb9cff59486a8bc82fdef5",
+    "new_description_sha256": "67b701fc23a09451c52ec3784b8322b190c07087e0c4ad6a9112d41a999b1de7"
+  },
+  "EXAM-T52": {
+    "old_summary": "[Room UI] Hiển thị cấu hình, phòng chờ, roster và điều khiển thi",
+    "new_summary": "[Room UI] Hiển thị cấu hình, phòng chờ, roster và điều khiển thi",
+    "old_description_sha256": "5f067b0a1be569400faa5ca23c226b5b12393097b70de5f39340810674f80b04",
+    "new_description_sha256": "e69c008f315a6d7a88da798d5502b5158fa6a7a38bbe8521bcdffe565fe2c14c"
+  },
+  "EXAM-T53": {
+    "old_summary": "[Room] Hủy và giải phóng phòng chờ hết hạn sau 30 phút",
+    "new_summary": "[Room] Hủy và giải phóng phòng chờ hết hạn sau 30 phút",
+    "old_description_sha256": "bb37710179d28edd90f53f0d19b6f050649147781c83983e8e2950d632182f60",
+    "new_description_sha256": "dceca30b8bcd92c61d7b926f46f6d8f0711a03e2fec694ebdc11a483caf0c05e"
+  },
+  "EXAM-T54": {
+    "old_summary": "[Question Bank] Triển khai danh sách, thêm, sửa và ngừng dùng câu hỏi theo version",
+    "new_summary": "[Question Bank] Triển khai danh sách, thêm, sửa và ngừng dùng câu hỏi theo version",
+    "old_description_sha256": "f5b33036f9c222a347995b6d33ae6e3a90105705023c101d05f08e314c224042",
+    "new_description_sha256": "f29e7998ebae0f2a493872bfb3b660d1cdecbcf4d2494044ca5ac19ae0822cbc"
+  },
+  "EXAM-T55": {
+    "old_summary": "[Test Data] Tạo seed F/S/E có thể tái lập bằng công cụ offline",
+    "new_summary": "[Test Data] Tạo seed F/S/E có thể tái lập bằng công cụ offline",
+    "old_description_sha256": "33a85f5abf4b745a098e6df51338eef6f2f4c19cebfa9c50f172890e2e409251",
+    "new_description_sha256": "8f8b8edebd161661135c235b692cc7dbc0811ece2d4eda7f8dcaf37bcef90214"
+  },
+  "EXAM-T56": {
+    "old_summary": "[Exam] Cung cấp trạng thái bài, đáp án đã lưu và phân trang đề riêng",
+    "new_summary": "[Exam] Cung cấp trạng thái bài, đáp án đã lưu và phân trang đề riêng",
+    "old_description_sha256": "f895eb4867db40de7a102ebf622a7fca363b99a67f1dfeb36b88727f9dddbcef",
+    "new_description_sha256": "8a099dc48e8c0c31b4af2a89ced4f2565381e2eda0bfafac7917b52193a1065e"
+  },
+  "EXAM-T57": {
+    "old_summary": "[Exam UI] Hiển thị câu hỏi, thay đổi đáp án và trạng thái lưu",
+    "new_summary": "[Exam UI] Hiển thị câu hỏi, thay đổi đáp án và trạng thái lưu",
+    "old_description_sha256": "9bd68f265df18418cc60eff4b1b30c245c9465fa08fdad445a96f77190c0f142",
+    "new_description_sha256": "854c2ee7b8b42307f7dd66e773d4e49ad348087c23b5025ad9f73092a35e830f"
+  },
+  "EXAM-T58": {
+    "old_summary": "[Exam UI] Xác nhận nộp bài, đợi lưu và xử lý kết quả chưa rõ",
+    "new_summary": "[Exam UI] Xác nhận nộp bài, đợi lưu và xử lý kết quả chưa rõ",
+    "old_description_sha256": "5abc9bef3848018b037f3c9b3a17f39b641123766fee18d50377cb68ec58ba9b",
+    "new_description_sha256": "d7c092497aaa320af7cf65fdbbd2b6fbdf857c3a2711bab79bd087449cb07a2a"
+  },
+  "EXAM-T59": {
+    "old_summary": "[Room] Kết thúc thi theo lệnh hoặc deadline và công bố sau commit",
+    "new_summary": "[Room] Kết thúc thi theo lệnh hoặc deadline và công bố sau commit",
+    "old_description_sha256": "f6eafaa3031f4ccb67e0b3d4951097064ca2dbd5ac8c360aade7c93e1d97cf1e",
+    "new_description_sha256": "5d003c456bb7e735b08168283ae349f9bd255a76f9d8a1368b4025ea837e0f95"
+  },
+  "EXAM-T60": {
+    "old_summary": "[Results UI] Hiển thị kết quả cá nhân và bảng điểm chủ phòng sau công bố",
+    "new_summary": "[Results UI] Hiển thị kết quả cá nhân và bảng điểm chủ phòng sau công bố",
+    "old_description_sha256": "a518468366450413a9b9c1eb0ce3dacae3c948fddfb4f30c3bd218478c87f238",
+    "new_description_sha256": "61919499962219d19a64cd2a3863be72a8e22a567efb4d0fa689ceca2c5d0fb1"
+  },
+  "EXAM-T61": {
+    "old_summary": "[Data Verification] Đối soát độc lập snapshot, ACK, revision và điểm Sprint 1",
+    "new_summary": "[Data Verification] Đối soát độc lập snapshot, ACK, revision và điểm Sprint 1",
+    "old_description_sha256": "ad7a17da454b2bfeee87abfdc7bde5757e39099289fbc1e4a1bbbb0e4a504aa8",
+    "new_description_sha256": "c7455fe9889c11a9fbb9698d7a4be5b82c2f9f248c4a67546086aa6046944d9c"
+  },
+  "EXAM-T27": {
+    "old_summary": "[C Client] Kết nối lại, khôi phục phiên và thay binding",
+    "new_summary": "[C Client] Kết nối lại, khôi phục phiên và thay binding",
+    "old_description_sha256": "79280d7a3f300e97618747bc5126c8d0bc3c9cc10f73dac07567db6e70e0c1cf",
+    "new_description_sha256": "9a3a2071b7d7aff2a435fb8f25b6142eae73d31f8bc39c4b749b08ec4ba74de5"
+  },
+  "EXAM-T28": {
+    "old_summary": "[Exam Recovery] Đồng bộ bài và xử lý thao tác chưa rõ kết quả sau reconnect",
+    "new_summary": "[Exam Recovery] Đồng bộ bài và xử lý thao tác chưa rõ kết quả sau reconnect",
+    "old_description_sha256": "64a5d2f466d94f74dba85052ad9cbfe0009ab853f18bc56328abe468cb9501fa",
+    "new_description_sha256": "7ee484397cbd2ed4df297c547b9531803150e4e13ba730a85e39aa179e23b9ba"
+  },
+  "EXAM-T29": {
+    "old_summary": "[Admin UI] Quản lý chủ đề, câu hỏi và cập nhật ngân hàng",
+    "new_summary": "[Admin UI] Quản lý chủ đề, câu hỏi và cập nhật ngân hàng",
+    "old_description_sha256": "728c0dd5c7b678aed9f92cd207300fbdd555a3037ccd2f50f34c82d1de1c6952",
+    "new_description_sha256": "4ada73d69b17fd76ea8d23db797f67b0ebdaa0e9a1a13e0b8c33493cb42031b1"
+  },
+  "EXAM-T30": {
+    "old_summary": "[Practice] Triển khai luyện tập dùng chung luồng tạo đề, lưu và nộp bài",
+    "new_summary": "[Practice] Triển khai luyện tập dùng chung luồng tạo đề, lưu và nộp bài",
+    "old_description_sha256": "5ced7027d96b73d66a4d2be0527a0cc8461cd2610479c162b33c85b1f1d310f9",
+    "new_description_sha256": "49f794245a453eb677774c951e9c7d8fa5319d28283e5a3aa82703f9a46c2e33"
+  },
+  "EXAM-T31": {
+    "old_summary": "[Results UI] Hiển thị chi tiết kết quả, lịch sử và biểu đồ",
+    "new_summary": "[Results UI] Hiển thị chi tiết kết quả, lịch sử và biểu đồ",
+    "old_description_sha256": "caace47284a816e78e3c8d2ca6c39382d427f9ea1359330ccb34ed71fe0f008a",
+    "new_description_sha256": "0521451b06426a2a3dbbd4a52c88271f09a41ccdfd136bdcff0bcc589597bb8b"
+  },
+  "EXAM-T32": {
+    "old_summary": "[Load Test] Bổ sung lịch tải, barrier, metrics và báo cáo theo profile",
+    "new_summary": "[Load Test] Bổ sung lịch tải, barrier, metrics và báo cáo theo profile",
+    "old_description_sha256": "023acf7f0eb04481cfcd33d97f6ac444db9b58d3523f0ef64747dc7bef589d4f",
+    "new_description_sha256": "4016ad5e027ae3efacc474a2bee220566d038881e54311d80aa482056bb56a78"
+  },
+  "EXAM-T33": {
+    "old_summary": "[Load Test] Hoàn thiện bot, seed F/S/M/E và bộ đối soát cho 50 người",
+    "new_summary": "[Load Test] Hoàn thiện bot, seed F/S/M/E và bộ đối soát cho 50 người",
+    "old_description_sha256": "5db9006852c684dd5b913922f83184d86be82487dc5607a06bb749b75ba6ec61",
+    "new_description_sha256": "48559c7a9b5bc0c3faa89f48f640f38f4d279172e8b63e1e3cab9b673bda1ea3"
+  },
+  "EXAM-T34": {
+    "old_summary": "[Database Test] Kiểm thử ledger, admission, rollback và lỗi commit/crash",
+    "new_summary": "[Database Test] Kiểm thử ledger, admission, rollback và lỗi commit/crash",
+    "old_description_sha256": "16937eda2b607135f379b4250106ad2a6b7af84dbc1873562d595b5e1fa5a1f8",
+    "new_description_sha256": "7c4d04df5a1ef30af806969fc385186e0996aa83000c4070c9d29798e5ccae94"
+  },
+  "EXAM-T35": {
+    "old_summary": "[Bridge Test] Kiểm thử BP quá tải, authority, lỗi tiến trình và khóa DB trên Linux",
+    "new_summary": "[Bridge Test] Kiểm thử BP quá tải, authority, lỗi tiến trình và khóa DB trên Linux",
+    "old_description_sha256": "e87b116070186b8cb117a58725fdecc1e3748a2541753217b3e12c3b08a2af17",
+    "new_description_sha256": "6ea465b3a8ac3585bffcf97e60e8a77382ebe017180d01d8eedf9bfb1b2da727"
+  },
+  "EXAM-T36": {
+    "old_summary": "[Load Test] Đo tải ổn định, đăng nhập và tài nguyên với 50 người trên LAN",
+    "new_summary": "[Load Test] Đo tải ổn định, đăng nhập và tài nguyên với 50 người trên LAN",
+    "old_description_sha256": "93b04d47e4083117a8f80c8a7cf0803cbcaea75be30df680941ba43800fe2f93",
+    "new_description_sha256": "d6efe99a6329298f90a256dde9bbf01c99ee9e56feb9614739f87f20b49d6412"
+  },
+  "EXAM-T37": {
+    "old_summary": "[Data Verification] Đối soát các run 50 người và sửa lỗi nghiệp vụ",
+    "new_summary": "[Data Verification] Đối soát các run 50 người và sửa lỗi nghiệp vụ",
+    "old_description_sha256": "e5fe2b22a375abf6350349f39c9a3b85105313659bf0fc7f566ff00774c18064",
+    "new_description_sha256": "0f95bdbd01163001e06e43734e3860093172602785ef7481ef30643f77b2659a"
+  },
+  "EXAM-T38": {
+    "old_summary": "[Load Test] Chạy tải hỗn hợp 30/10/10 và kịch bản một client chậm",
+    "new_summary": "[Load Test] Chạy tải hỗn hợp 30/10/10 và kịch bản một client chậm",
+    "old_description_sha256": "52c122eb85ccde05c3107021ac88730b49d1a4c120cf00cdd9889466b7b22ed4",
+    "new_description_sha256": "b2e361863e949f1176ff93a4944c7bc7f86b9909fe1c70897f32b2315bd223d2"
+  },
+  "EXAM-T39": {
+    "old_summary": "[Data Verification] Đối soát tải hỗn hợp, lỗi, công bố kết quả và phân quyền",
+    "new_summary": "[Data Verification] Đối soát tải hỗn hợp, lỗi, công bố kết quả và phân quyền",
+    "old_description_sha256": "dc7a4e204020587074568deaa292f3d2b1db1a39c818c3b3a1afdd83e59f0d44",
+    "new_description_sha256": "af7f78e409067e851eeee708fa3424705c8dff0a987db709df2e89ad4521a5ce"
+  },
+  "EXAM-T40": {
+    "old_summary": "[Documentation] Viết hướng dẫn Linux/LAN, cài mới và bảo vệ phần A",
+    "new_summary": "[Documentation] Viết hướng dẫn Linux/LAN, cài mới và bảo vệ phần Minh Quân",
+    "old_description_sha256": "fac021c007d14eb99e4da687229db1d21b98e7f0c7d7541c931f6f2ed44a0869",
+    "new_description_sha256": "45a367dd2376761458ea7a5e9beeed3f5d4cbfff24147a7aad78a2a248ce21a4"
+  },
+  "EXAM-T41": {
+    "old_summary": "[Documentation] Chuẩn bị seed demo, hướng dẫn đối soát và bảo vệ phần B",
+    "new_summary": "[Documentation] Chuẩn bị seed demo, hướng dẫn đối soát và bảo vệ phần Hoàng Quân",
+    "old_description_sha256": "0a535ee18c1d795e2ea8c705dd9087eea83d83436bcbb3d1ff8cd9e8fe2a37c6",
+    "new_description_sha256": "caebd1dc7c35ce1dadf095d9d0fc0f7d4e0b376680431e325fdc0b6dd28f47e2"
+  },
+  "EXAM-T42": {
+    "old_summary": "[Sprint Review] Demo tích hợp, báo cáo tải và đánh giá bàn giao phần A — Sprint 2",
+    "new_summary": "[Sprint Review] Demo tích hợp, báo cáo tải và đánh giá bàn giao phần Minh Quân — Sprint 2",
+    "old_description_sha256": "a039f45c7858c25eaf1ae975cf4bf38bca253c8d48a50fc8be000ed7bad08235",
+    "new_description_sha256": "9e986b6eb167c1496038df4cce9bd0d236d4e6c906451ed6e56860059288ebaf"
+  },
+  "EXAM-T43": {
+    "old_summary": "[Sprint Review] Demo nghiệp vụ, đối soát và chuẩn bị bảo vệ phần B — Sprint 2",
+    "new_summary": "[Sprint Review] Demo nghiệp vụ, đối soát và chuẩn bị bảo vệ phần Hoàng Quân — Sprint 2",
+    "old_description_sha256": "d34b925be035f6bd565cefeb18542e31043e0f3f21ef57d39a23f9853fc65764",
+    "new_description_sha256": "a38ee3be5499f06efa7985e6eecea698dce44c088c1cc489e5b5ed679c6728cb"
+  },
+  "EXAM-T62": {
+    "old_summary": "[Electron Bridge] Khôi phục pending khi reload, xử lý logout và chặn callback cũ",
+    "new_summary": "[Electron Bridge] Khôi phục pending khi reload, xử lý logout và chặn callback cũ",
+    "old_description_sha256": "f827972aac79bde899db34d601c68e88f4e8821a79c0b5fe292408cf0bdaad32",
+    "new_description_sha256": "8ede1feddb5dccdaaa6d4a5f887ea563023f28400fe518a732f451a467ea5f31"
+  },
+  "EXAM-T63": {
+    "old_summary": "[Database] Sao lưu nguội, khôi phục và kiểm tra toàn vẹn DB thử nghiệm",
+    "new_summary": "[Database] Sao lưu nguội, khôi phục và kiểm tra toàn vẹn DB thử nghiệm",
+    "old_description_sha256": "a9c2270661b573cd1257cb13b01adb5391bde04f8713d527a30f3b764ae584f0",
+    "new_description_sha256": "5055f7658006231bda8f00adde22a8dabca029886840cfb43a1287408f7f5612"
+  },
+  "EXAM-T64": {
+    "old_summary": "[Load Test] Đo burst 50 người, thời gian nhận đủ đề và xử lý deadline",
+    "new_summary": "[Load Test] Đo burst 50 người, thời gian nhận đủ đề và xử lý deadline",
+    "old_description_sha256": "cfbf0f70cec351b5a3706281ae829e22bcd7a6063a1575526c6a92872f3a773e",
+    "new_description_sha256": "9d5f5cd26f46d1d0cf79631089895d1e7bebc9715c72c768a9bee8779e72d1f7"
+  },
+  "EXAM-T65": {
+    "old_summary": "[Load Test] Kiểm thử reconnect, đề M tối đa và phòng chờ hết hạn 30 phút",
+    "new_summary": "[Load Test] Kiểm thử reconnect, đề M tối đa và phòng chờ hết hạn 30 phút",
+    "old_description_sha256": "b66136d712ee2c51d1a522360bd1120f97c53a1b6e3e06be2ae7791319e9dfad",
+    "new_description_sha256": "938fcbcca8329b7d673dd70edb62e81b9e01c427cbeadcdde2834a0bf796823e"
+  }
+}
