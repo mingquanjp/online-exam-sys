@@ -1,0 +1,262 @@
+{
+  "EXAM-T01": {
+    "old": "Khóa interface nền và bảng cấu hình V03 để hai người code cùng hợp đồng",
+    "new": "[Contracts] Chốt interface dùng chung và bảng cấu hình V03"
+  },
+  "EXAM-T02": {
+    "old": "Bàn giao migration và repository users/rooms/members/activity của A",
+    "new": "[Database] Tạo migration và repository tài khoản, phòng, thành viên, activity"
+  },
+  "EXAM-T03": {
+    "old": "RX framing C: tách frame từ luồng byte và giữ phần dư",
+    "new": "[C Transport] Tách frame nhận và giữ phần dữ liệu dư"
+  },
+  "EXAM-T04": {
+    "old": "Dựng validation TS/main và DTO boundary thống nhất với C",
+    "new": "[Validation] Kiểm tra DTO trong TypeScript và Electron main"
+  },
+  "EXAM-T05": {
+    "old": "TX C: encoder, offset và queue gửi có giới hạn",
+    "new": "[C Transport] Mã hóa frame và quản lý hàng đợi gửi có giới hạn"
+  },
+  "EXAM-T06": {
+    "old": "Mở SQLite, ghép migration A/B và transaction wrapper",
+    "new": "[Database] Tích hợp migration và bộ quản lý transaction SQLite"
+  },
+  "EXAM-T07": {
+    "old": "Ledger/operation.get và policy admission dùng chung từ W đầu tiên",
+    "new": "[Operations] Lưu receipt, tra cứu thao tác và kiểm soát admission"
+  },
+  "EXAM-T08": {
+    "old": "Server C reactor: nhiều socket, hello/ping và timer transport",
+    "new": "[C Server] Xử lý nhiều socket, hello, ping và timeout bằng reactor"
+  },
+  "EXAM-T09": {
+    "old": "C launcher: spawn Node, khóa DB kế thừa và shutdown",
+    "new": "[C Server] Khởi chạy Node, kế thừa khóa DB và dừng tiến trình"
+  },
+  "EXAM-T10": {
+    "old": "Node BP output: serialize response/event và backpressure stdout",
+    "new": "[Business Bridge] Gửi response, event và kiểm soát backpressure stdout"
+  },
+  "EXAM-T11": {
+    "old": "Client C: connect/TCP heartbeat và mapping IPC–NET",
+    "new": "[C Client] Kết nối TCP, gửi heartbeat và ánh xạ IPC–NET"
+  },
+  "EXAM-T12": {
+    "old": "Auth API/session: register/login/logout, authority và state.get",
+    "new": "[Auth] Triển khai đăng ký, đăng nhập, đăng xuất và quản lý phiên"
+  },
+  "EXAM-T13": {
+    "old": "Màn đăng ký/đăng nhập/đăng xuất qua bridge thật",
+    "new": "[Auth UI] Tích hợp đăng ký, đăng nhập và đăng xuất qua bridge"
+  },
+  "EXAM-T14": {
+    "old": "Clock/timer/activity helpers dùng chung trước handler thi",
+    "new": "[Room] Tạo helper thời gian, deadline và activity dùng chung"
+  },
+  "EXAM-T15": {
+    "old": "Topic/catalog APIs và availability theo chủ đề/độ khó",
+    "new": "[Question Bank] Cung cấp danh sách chủ đề và số câu hỏi khả dụng"
+  },
+  "EXAM-T16": {
+    "old": "CLI admin offline dùng khóa và hash chung",
+    "new": "[Admin CLI] Tạo công cụ quản trị offline dùng chung khóa DB và hash"
+  },
+  "EXAM-T17": {
+    "old": "Generator: tạo snapshot đề riêng trong transaction caller",
+    "new": "[Exam] Sinh và lưu đề riêng cho từng thí sinh trong transaction"
+  },
+  "EXAM-T18": {
+    "old": "Room backend: list/create/configure/get/join/leave và roster",
+    "new": "[Room] Triển khai cấu hình, danh sách, tham gia, rời phòng và roster"
+  },
+  "EXAM-T19": {
+    "old": "answer.save backend: CAS revision và receipt sau commit",
+    "new": "[Exam] Lưu đáp án theo revision và xác nhận sau commit"
+  },
+  "EXAM-T20": {
+    "old": "Finalizer và attempt.submit backend: một kết quả chấm",
+    "new": "[Exam] Nộp bài và chấm điểm với một kết quả cuối cùng"
+  },
+  "EXAM-T21": {
+    "old": "room.start backend: roster cố định và snapshot nguyên tử",
+    "new": "[Room] Bắt đầu thi với roster cố định và tạo đề nguyên tử"
+  },
+  "EXAM-T22": {
+    "old": "Result APIs: kết quả cá nhân và bảng chủ phòng đúng quyền",
+    "new": "[Results] Cung cấp kết quả cá nhân và bảng điểm chủ phòng theo quyền"
+  },
+  "EXAM-T23": {
+    "old": "Driver tải nhỏ và report skeleton để tích hợp từ S1",
+    "new": "[Load Test] Tạo driver tải nhỏ và khung báo cáo Sprint 1"
+  },
+  "EXAM-T24": {
+    "old": "Behavior bot nhỏ: login/join/nhận đề/lưu/nộp qua TCP thật",
+    "new": "[Load Test] Mô phỏng đăng nhập, vào phòng, làm và nộp bài qua TCP"
+  },
+  "EXAM-T25": {
+    "old": "Chuẩn bị bằng chứng và sprint 1 review: demo LAN, technical evidence và forecast phần A",
+    "new": "[Sprint Review] Demo LAN, báo cáo bằng chứng và dự báo phần Minh Quân — Sprint 1"
+  },
+  "EXAM-T26": {
+    "old": "Chuẩn bị bằng chứng và sprint 1 review: demo bài thi/oracle và forecast phần B",
+    "new": "[Sprint Review] Demo bài thi, đối soát kết quả và dự báo phần Hoàng Quân — Sprint 1"
+  },
+  "EXAM-T44": {
+    "old": "Validation C: UTF-8/JSON nghiêm ngặt và envelope theo kênh",
+    "new": "[Validation] Kiểm tra UTF-8, JSON và envelope theo kênh trong C"
+  },
+  "EXAM-T45": {
+    "old": "Canonical DTO và SHA-256 fingerprint với vector chuẩn",
+    "new": "[Operations] Chuẩn hóa DTO và tạo SHA-256 fingerprint theo vector chuẩn"
+  },
+  "EXAM-T46": {
+    "old": "Log có giới hạn và drain stderr không chặn vòng I/O",
+    "new": "[Logging] Giới hạn log và đọc stderr không chặn vòng I/O"
+  },
+  "EXAM-T47": {
+    "old": "Config loader C/TS: default, bound và đường dẫn nhất quán",
+    "new": "[Config] Nạp và kiểm tra cấu hình, giá trị mặc định và đường dẫn trong C/TS"
+  },
+  "EXAM-T48": {
+    "old": "Node BP input và dispatcher tuần tự với readiness thật",
+    "new": "[Business Bridge] Nhận BP, điều phối tuần tự và phát tín hiệu sẵn sàng"
+  },
+  "EXAM-T49": {
+    "old": "C BP routing/credit: chuyển output đúng TCP và giải phóng một lần",
+    "new": "[C Server] Định tuyến BP đến đúng TCP và hoàn trả credit một lần"
+  },
+  "EXAM-T50": {
+    "old": "Electron main/preload: spawn client C, API whitelist và pending registry",
+    "new": "[Electron Bridge] Khởi chạy client C, giới hạn API và quản lý pending"
+  },
+  "EXAM-T51": {
+    "old": "Password scrypt async: queue hữu hạn và benchmark một job",
+    "new": "[Auth] Băm mật khẩu scrypt bất đồng bộ và giới hạn hàng đợi"
+  },
+  "EXAM-T52": {
+    "old": "UI phòng chờ/host: catalog, cấu hình, roster và điều khiển thi",
+    "new": "[Room UI] Hiển thị cấu hình, phòng chờ, roster và điều khiển thi"
+  },
+  "EXAM-T53": {
+    "old": "WAITING cancel/expiry 30 phút và startup expiry",
+    "new": "[Room] Hủy và giải phóng phòng chờ hết hạn sau 30 phút"
+  },
+  "EXAM-T54": {
+    "old": "Question APIs: list/thêm/sửa/ngừng dùng và version conflict",
+    "new": "[Question Bank] Triển khai danh sách, thêm, sửa và ngừng dùng câu hỏi theo version"
+  },
+  "EXAM-T55": {
+    "old": "Seed test F/S/E tái lập qua công cụ offline dùng chung",
+    "new": "[Test Data] Tạo seed F/S/E có thể tái lập bằng công cụ offline"
+  },
+  "EXAM-T56": {
+    "old": "attempt.get/items: đồng bộ metadata/answers và phân trang đề riêng",
+    "new": "[Exam] Cung cấp trạng thái bài, đáp án đã lưu và phân trang đề riêng"
+  },
+  "EXAM-T57": {
+    "old": "UI làm bài: lấy trang đề, đổi lựa chọn và trạng thái lưu",
+    "new": "[Exam UI] Hiển thị câu hỏi, thay đổi đáp án và trạng thái lưu"
+  },
+  "EXAM-T58": {
+    "old": "UI nộp bài: xác nhận ý định, đợi save và xử lý kết quả chưa rõ",
+    "new": "[Exam UI] Xác nhận nộp bài, đợi lưu và xử lý kết quả chưa rõ"
+  },
+  "EXAM-T59": {
+    "old": "room.end/deadline: tự chốt phòng và công bố sau commit",
+    "new": "[Room] Kết thúc thi theo lệnh hoặc deadline và công bố sau commit"
+  },
+  "EXAM-T60": {
+    "old": "UI kết quả cá nhân/bảng chủ phòng và refresh sau công bố",
+    "new": "[Results UI] Hiển thị kết quả cá nhân và bảng điểm chủ phòng sau công bố"
+  },
+  "EXAM-T61": {
+    "old": "Oracle S1: kiểm snapshot/ACK/revision/score độc lập",
+    "new": "[Data Verification] Đối soát độc lập snapshot, ACK, revision và điểm Sprint 1"
+  },
+  "EXAM-T27": {
+    "old": "C reconnect/resume: thay binding và giữ token/instance đúng",
+    "new": "[C Client] Kết nối lại, khôi phục phiên và thay binding"
+  },
+  "EXAM-T28": {
+    "old": "Reconcile bài thi/pending và UI tiếp tục sau mất phản hồi",
+    "new": "[Exam Recovery] Đồng bộ bài và xử lý thao tác chưa rõ kết quả sau reconnect"
+  },
+  "EXAM-T29": {
+    "old": "Admin UI quản lý chủ đề/câu hỏi và cập nhật kho",
+    "new": "[Admin UI] Quản lý chủ đề, câu hỏi và cập nhật ngân hàng"
+  },
+  "EXAM-T30": {
+    "old": "Luyện tập cá nhân dùng chung engine đề/lưu/nộp",
+    "new": "[Practice] Triển khai luyện tập dùng chung luồng tạo đề, lưu và nộp bài"
+  },
+  "EXAM-T31": {
+    "old": "Chi tiết kết quả/lịch sử và biểu đồ từ dữ liệu đã công bố",
+    "new": "[Results UI] Hiển thị chi tiết kết quả, lịch sử và biểu đồ"
+  },
+  "EXAM-T32": {
+    "old": "Driver đầy đủ: lịch slot/barrier/metrics và report các profile",
+    "new": "[Load Test] Bổ sung lịch tải, barrier, metrics và báo cáo theo profile"
+  },
+  "EXAM-T33": {
+    "old": "Behavior/seed F-S-M-E và oracle đầy đủ dùng cho 50 người",
+    "new": "[Load Test] Hoàn thiện bot, seed F/S/M/E và bộ đối soát cho 50 người"
+  },
+  "EXAM-T34": {
+    "old": "Kiểm DB/ledger/admission: rollback/commit lỗi và crash outcome",
+    "new": "[Database Test] Kiểm thử ledger, admission, rollback và lỗi commit/crash"
+  },
+  "EXAM-T35": {
+    "old": "Kiểm BP saturation/authority, lỗi tiến trình con và lock cleanup trên Linux",
+    "new": "[Bridge Test] Kiểm thử BP quá tải, authority, lỗi tiến trình và khóa DB trên Linux"
+  },
+  "EXAM-T36": {
+    "old": "Chạy steady 50/login và đo tài nguyên trên Linux/LAN",
+    "new": "[Load Test] Đo tải ổn định, đăng nhập và tài nguyên với 50 người trên LAN"
+  },
+  "EXAM-T37": {
+    "old": "Đối soát dữ liệu các run 50 chuẩn và sửa lỗi domain được phát hiện",
+    "new": "[Data Verification] Đối soát các run 50 người và sửa lỗi nghiệp vụ"
+  },
+  "EXAM-T38": {
+    "old": "Run mixed 30/10/10 và 49 người khỏe+1 slow peer",
+    "new": "[Load Test] Chạy tải hỗn hợp 30/10/10 và kịch bản một client chậm"
+  },
+  "EXAM-T39": {
+    "old": "Oracle mixed/fault và publication/permission xuyên mọi đường",
+    "new": "[Data Verification] Đối soát tải hỗn hợp, lỗi, công bố kết quả và phân quyền"
+  },
+  "EXAM-T40": {
+    "old": "Runbook Linux/LAN, clean setup và ghi chú bảo vệ phần A",
+    "new": "[Documentation] Viết hướng dẫn Linux/LAN, cài mới và bảo vệ phần Minh Quân"
+  },
+  "EXAM-T41": {
+    "old": "Bộ seed/demo, hướng dẫn verifier và ghi chú bảo vệ phần B",
+    "new": "[Documentation] Chuẩn bị seed demo, hướng dẫn đối soát và bảo vệ phần Hoàng Quân"
+  },
+  "EXAM-T42": {
+    "old": "Chuẩn bị bằng chứng và sprint 2 review: demo tích hợp, báo cáo tải và quyết định bàn giao phần A",
+    "new": "[Sprint Review] Demo tích hợp, báo cáo tải và đánh giá bàn giao phần Minh Quân — Sprint 2"
+  },
+  "EXAM-T43": {
+    "old": "Chuẩn bị bằng chứng và sprint 2 review: demo nghiệp vụ/oracle và bảo vệ phần B",
+    "new": "[Sprint Review] Demo nghiệp vụ, đối soát và chuẩn bị bảo vệ phần Hoàng Quân — Sprint 2"
+  },
+  "EXAM-T62": {
+    "old": "Main pending/reload/logout: phục hồi context và chặn callback cũ",
+    "new": "[Electron Bridge] Khôi phục pending khi reload, xử lý logout và chặn callback cũ"
+  },
+  "EXAM-T63": {
+    "old": "Cold backup/restore và integrity check trên DB test",
+    "new": "[Database] Sao lưu nguội, khôi phục và kiểm tra toàn vẹn DB thử nghiệm"
+  },
+  "EXAM-T64": {
+    "old": "Run burst 50/start-to-last-page/deadline bằng workload đã chốt",
+    "new": "[Load Test] Đo burst 50 người, thời gian nhận đủ đề và xử lý deadline"
+  },
+  "EXAM-T65": {
+    "old": "Run reconnect/M maxtext/WAITING expiry 30 phút và biên",
+    "new": "[Load Test] Kiểm thử reconnect, đề M tối đa và phòng chờ hết hạn 30 phút"
+  }
+}
