@@ -1,0 +1,115 @@
+{
+  "purpose": "SQLite component feasibility only; no TCP/C/Electron/LAN benchmark",
+  "platform": "macOS-26.7.1-arm64-arm-64bit",
+  "python": "3.9.6",
+  "sqlite": "3.51.0",
+  "cpu_count_reported": 10,
+  "cases": [
+    {
+      "settings": {
+        "journal_mode": "wal",
+        "synchronous": 2,
+        "foreign_keys": 1,
+        "fullfsync": 0,
+        "wal_autocheckpoint": 1000,
+        "page_size": 4096
+      },
+      "snapshot_prepare_commit_ms": 2.852,
+      "students_synthetic": 50,
+      "questions_each": 30,
+      "question_prompt_bytes": 1024,
+      "save_rounds": 30,
+      "save_operations": 1500,
+      "max_observed_queue": 50,
+      "all_operation_latency": {
+        "queue_wait": {
+          "n": 1650,
+          "p50_ms": 1.76,
+          "p95_ms": 6.252,
+          "p99_ms": 9.746,
+          "max_ms": 10.778
+        },
+        "service": {
+          "n": 1650,
+          "p50_ms": 0.062,
+          "p95_ms": 0.096,
+          "p99_ms": 0.23,
+          "max_ms": 6.205
+        },
+        "total": {
+          "n": 1650,
+          "p50_ms": 1.83,
+          "p95_ms": 6.356,
+          "p99_ms": 9.803,
+          "max_ms": 10.842
+        }
+      },
+      "save_burst_ms": {
+        "median": 3.556,
+        "max": 10.936
+      },
+      "retry_last_save_burst_ms": 0.799,
+      "submit_burst_ms": 6.574,
+      "submit_retry_burst_ms": 0.859,
+      "elapsed_seconds": 0.139,
+      "db_bytes_after_clean_close": 2211840,
+      "checks": "integrity, foreign keys, revisions, dedup count, finalization and scores passed"
+    },
+    {
+      "settings": {
+        "journal_mode": "wal",
+        "synchronous": 2,
+        "foreign_keys": 1,
+        "fullfsync": 1,
+        "wal_autocheckpoint": 1000,
+        "page_size": 4096
+      },
+      "snapshot_prepare_commit_ms": 3.388,
+      "students_synthetic": 50,
+      "questions_each": 30,
+      "question_prompt_bytes": 1024,
+      "save_rounds": 30,
+      "save_operations": 1500,
+      "max_observed_queue": 50,
+      "all_operation_latency": {
+        "queue_wait": {
+          "n": 1650,
+          "p50_ms": 7.105,
+          "p95_ms": 30.71,
+          "p99_ms": 44.991,
+          "max_ms": 49.02
+        },
+        "service": {
+          "n": 1650,
+          "p50_ms": 0.246,
+          "p95_ms": 0.982,
+          "p99_ms": 1.229,
+          "max_ms": 4.589
+        },
+        "total": {
+          "n": 1650,
+          "p50_ms": 7.38,
+          "p95_ms": 31.689,
+          "p99_ms": 45.81,
+          "max_ms": 49.932
+        }
+      },
+      "save_burst_ms": {
+        "median": 13.075,
+        "max": 50.046
+      },
+      "retry_last_save_burst_ms": 0.977,
+      "submit_burst_ms": 14.414,
+      "submit_retry_burst_ms": 0.975,
+      "elapsed_seconds": 0.618,
+      "db_bytes_after_clean_close": 2211840,
+      "checks": "integrity, foreign keys, revisions, dedup count, finalization and scores passed"
+    }
+  ],
+  "head_of_line": {
+    "synthetic_auth_jobs": 10,
+    "delay_each_ms": 100,
+    "first_answer_wait_ms": 1042.962,
+    "note": "synthetic occupancy demonstration; not real password hashing"
+  }
+}
