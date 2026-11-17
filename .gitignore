@@ -1,0 +1,50 @@
+# JavaScript dependencies and generated desktop output
+node_modules/
+apps/desktop/out/
+apps/desktop/dist/
+apps/business/dist/
+*.tsbuildinfo
+
+# Native build trees, downloaded source dependencies and local CMake overrides
+/build/
+/CMakeUserPresets.json
+/compile_commands.json
+/.local/
+
+# Local configuration, credentials and runtime data
+.env
+.env.*
+!.env.example
+/config/*.local.json
+/var/
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite-wal
+*.sqlite-shm
+*.db-journal
+*.sqlite3-journal
+*.sqlite-journal
+*.log
+*.pem
+*.key
+
+# Local editor / OS files
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Test artifacts (selected reports under docs/verification remain reviewable)
+/coverage/
+/test-results/
+/playwright-report/
+
+# Python tooling caches
+__pycache__/
+*.py[cod]
