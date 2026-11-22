@@ -8,3 +8,6 @@ nhất là split/coalesced frame, partial I/O, retry và transaction lỗi.
 
 M01 có thêm npm run check:business cho compile và runtime --version của Node.
 PT-26..28 cần triển khai ở M1/M2 để kiểm chứng C–Node BP, authority và lỗi child.
+
+[Config fixtures SCRUM-9](fixtures/config/README.md) chuẩn bị input/expected dùng
+chung C/TS cho T47; V03 còn chờ nhóm xác nhận và loader runtime NOT_RUN.

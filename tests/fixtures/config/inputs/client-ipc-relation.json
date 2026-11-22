@@ -1,0 +1,5 @@
+{
+  "server_host": "127.0.0.1",
+  "server_port": 5550,
+  "ipc_tx_max_bytes": 65536
+}

@@ -198,7 +198,7 @@ không chỉ .db cuối ca. [Nguồn: SQLite WAL](https://www.sqlite.org/wal.htm
 | Phòng WAITING/RUNNING | Tối đa 50, nằm trong 50 reservations; phòng trống không tồn tại vì chủ là member. ENDED/CANCELLED chỉ lưu DB/truy vấn phân trang, không giữ reservation. |
 | Kết nối mở | 128, tối đa 64 chưa xác thực; auth users online không nhất thiết đang chiếm reservation. |
 | RX/TX | Một frame RX ≤65.540 B và TX ≤128 KiB/kết nối, lazy allocation. |
-| Command/completion | Mỗi queue 1.024 phần tử/8 MiB, giới hạn đầu tiên chạm có hiệu lực. |
+| Command/completion | Mỗi đầu/chiều 1.024 phần tử/8 MiB, gồm pool thường và control cục bộ; chi tiết §5.4. |
 | Auth | 64 job chờ + 1 scrypt async đang chạy trong Node. Không một thread/hash buffer cho mỗi user. |
 | Main IPC | Pending 32 request, NET 8 + 1 ping control; TX 256 KiB/chiều. |
 
@@ -213,12 +213,13 @@ transaction tạo/giải phóng activity thay counter, không tin biến đếm 
 | --- | --- | --- |
 | C RX TCP tối đa | Khoảng 3.125 MiB | Khoảng 8.001 MiB |
 | C TX TCP tối đa | 6.25 MiB | 16 MiB |
-| BP command/completion credit logic | 16 MiB tổng hai chiều | 16 MiB |
+| BP credit thường (command/completion) | 15 MiB tổng hai chiều | 15 MiB |
+| BP control TX/RX cục bộ | 2 MiB: 4 vùng × 512 KiB, cùng có thể đang giữ | 2 MiB |
 | Bản sao C/Node trên hai đầu pipe | Dự toán thêm tới 16 MiB, đo thực khi bridge đầy | 16 MiB |
 | BP RX staging hai chiều | Khoảng 0.133 MiB | Khoảng 0.133 MiB |
 | SQLite cache mục tiêu trong Node | 8 MiB | 8 MiB |
 | scrypt workspace một job | Khoảng 64 MiB tại N=65536,r=8,p=1, maxmem=96 MiB | Cùng tham số |
-| Subtotal các mục trên | Khoảng 113.5 MiB | Khoảng 128.1 MiB |
+| Subtotal các mục trên | Khoảng 114.5 MiB | Khoảng 129.1 MiB |
 
 V8 heap/runtime, cJSON/object metadata, native crypto/libuv threads, Node/C code,
 statement cache và log được đo thêm. Kernel socket/pipe buffers và filesystem
@@ -227,7 +228,7 @@ Cần cap số command/object cùng byte và nhường event loop giữa các ha
 Subtotal này chưa cộng các object ứng viên/snapshot trong lúc sinh đề. Với M,
 50 × 100 × 8.192 B đã là 39,0625 MiB nội dung thô nếu giữ cả bộ trong RAM; JSON,
 object và các bản sao có thể lớn hơn. Generator phải ghi/giải phóng có giới hạn,
-không cache toàn bộ lịch sử hoặc coi ngân sách 128,1 MiB là RSS tối đa của server.
+không cache toàn bộ lịch sử hoặc coi ngân sách 129,1 MiB là RSS tối đa của server.
 Ngưỡng RSS ở §7 tính **tổng C + Node child** và ghi riêng từng process, hash/DB
 nằm trong RSS Node. Electron chạy trên máy thí sinh có số đo riêng.
 
@@ -275,8 +276,12 @@ thô, lựa chọn/đáp án đúng, mật khẩu hoặc token; load-test trace 
 
 ### 5.4. Credit để queue không deadlock
 
-Trong tổng mỗi queue 1.024 slots/8 MiB, dành 64 slots/512 KiB cho control/auth
-completion; phần thường tối đa 960 slots/7,5 MiB. TX mỗi socket dành 8 KiB control
+Trong tổng mỗi đầu/chiều 1.024 slots/8 MiB, dành 64 slots/512 KiB cho control
+cục bộ; phần thường tối đa 960 slots/7,5 MiB. Control sender giữ tới write hết
+(C) hoặc write callback (Node); receiver giữ tới xử lý xong/hết giữ buffer.
+Không có ACK trả control credit; mỗi chiều TX+RX có thể cùng giữ 1 MiB, hai chiều
+là 2 MiB như §5.2, không coi 512 KiB là tổng end-to-end. Phần thường giữ credit
+end-to-end theo các mốc dưới đây. TX mỗi socket dành 8 KiB control
 trong cap 128 KiB. Reactor từ chối nhận thêm lệnh nếu không giữ được slot và byte
 credit completion theo worst-case response hợp lệ (tối đa một frame/command).
 Credit giữ từ admission tới khi reactor đưa output vào TCP TX hoặc loại đúng

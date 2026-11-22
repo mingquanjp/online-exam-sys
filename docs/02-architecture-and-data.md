@@ -139,9 +139,15 @@ Mỗi job có deadline, kết quả hoàn tất muộn phải được xét tick
 
 ### 5.2. Queue, timer và credit
 
-Command/completion logic mỗi chiều tối đa 1024 phần tử/8 MiB, tính các bản sao
-đang giữ trong bridge theo nơi sở hữu. Mỗi chiều có 64 slots/512 KiB dự phòng
-cho control/auth lifecycle. Mỗi connection tối đa 8 request thường đang chờ.
+SCRUM-9 cụ thể hóa interface/counter tại
+[hợp đồng nền](planning/shared-interface-contracts.md#4-bp--ticket-counter-và-thời-điểm-chuyển-ownership).
+Đây là bàn giao thiết kế chờ review, không phải BP runtime đã kiểm chứng.
+
+Command/completion mỗi chiều có trần hạch toán tại mỗi đầu 1024 phần tử/8 MiB:
+960 slots/7.5 MiB thường và 64 slots/512 KiB control cục bộ trong tổng.
+Credit thường end-to-end khác counter buffer control độc lập tại sender/receiver;
+hai đầu có thể cùng giữ control, dự toán riêng ở 04 §5.2. Không thêm ACK control.
+Mỗi connection tối đa 8 request thường đang chờ.
 BP framing/credit/ownership được chốt tại tài liệu 03 §18. C giữ credit cho phản
 hồi trước khi chuyển request vào pipe. Node encode một kết quả đã commit vào
 completion queue được giữ chỗ, chuyển ownership output cho C khi C đọc frame hoàn chỉnh.
@@ -646,6 +652,9 @@ Thông tin đăng nhập, token, đề/key và lựa chọn thí sinh được l
 và giới hạn theo tài liệu 04. Lỗi logging không cho phép ACK trước DB commit.
 
 ## 11. Khởi động, tắt và lỗi máy chủ
+
+Bảng bound/default V03 cho loader ở [config/README](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9),
+trạng thái **DRAFT/chờ nhóm xác nhận**; C10/M01 hiện hành không bị tự ghi đè.
 
 1. C đọc config, validate đường dẫn Node executable/entry, lấy khóa độc quyền bộ
    dữ liệu bằng flock(LOCK_EX | LOCK_NB) trên file cố định cạnh DB local. C giữ khóa xuyên

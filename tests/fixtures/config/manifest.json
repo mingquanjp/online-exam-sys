@@ -1,0 +1,519 @@
+{
+  "contract": "SCRUM-9/V03-DRAFT",
+  "runtime_status": "NOT_RUN",
+  "cases": [
+    {
+      "id": "server-full",
+      "kind": "server",
+      "input": "inputs/server-full.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-full.json"
+    },
+    {
+      "id": "server-minimal",
+      "kind": "server",
+      "input": "inputs/server-minimal.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-minimal.json"
+    },
+    {
+      "id": "client-full",
+      "kind": "client",
+      "input": "inputs/client-full.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/client-full.json"
+    },
+    {
+      "id": "client-minimal",
+      "kind": "client",
+      "input": "inputs/client-minimal.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/client-minimal.json"
+    },
+    {
+      "id": "server-timeout-bounds",
+      "kind": "server",
+      "input": "inputs/server-timeout-bounds.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-timeout-bounds.json"
+    },
+    {
+      "id": "client-port-min",
+      "kind": "client",
+      "input": "inputs/client-port-min.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/client-port-min.json"
+    },
+    {
+      "id": "server-port-max",
+      "kind": "server",
+      "input": "inputs/server-port-max.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-port-max.json"
+    },
+    {
+      "id": "server-integral-number",
+      "kind": "server",
+      "input": "inputs/server-integral-number.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-integral-number.json"
+    },
+    {
+      "id": "client-integral-number",
+      "kind": "client",
+      "input": "inputs/client-integral-number.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/client-integral-number.json"
+    },
+    {
+      "id": "server-path-spaces",
+      "kind": "server",
+      "input": "inputs/server-path-spaces.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": true
+      },
+      "effective_config": "expected/server-path-spaces.json"
+    },
+    {
+      "id": "server-missing-required",
+      "kind": "server",
+      "input": "inputs/server-missing-required.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "missing",
+        "field": "database_path"
+      }
+    },
+    {
+      "id": "server-unknown-key",
+      "kind": "server",
+      "input": "inputs/server-unknown-key.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "unknown",
+        "field": "extra"
+      }
+    },
+    {
+      "id": "server-null",
+      "kind": "server",
+      "input": "inputs/server-null.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "database_path"
+      }
+    },
+    {
+      "id": "client-missing-required",
+      "kind": "client",
+      "input": "inputs/client-missing-required.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "missing",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-unknown-key",
+      "kind": "client",
+      "input": "inputs/client-unknown-key.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "unknown",
+        "field": "extra"
+      }
+    },
+    {
+      "id": "client-null",
+      "kind": "client",
+      "input": "inputs/client-null.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-string-port",
+      "kind": "client",
+      "input": "inputs/client-string-port.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-boolean-port",
+      "kind": "client",
+      "input": "inputs/client-boolean-port.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-fractional-port",
+      "kind": "client",
+      "input": "inputs/client-fractional-port.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-port-zero",
+      "kind": "client",
+      "input": "inputs/client-port-zero.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "server-port-over",
+      "kind": "server",
+      "input": "inputs/server-port-over.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "port"
+      }
+    },
+    {
+      "id": "server-empty-host",
+      "kind": "server",
+      "input": "inputs/server-empty-host.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "bind_host"
+      }
+    },
+    {
+      "id": "client-url-host",
+      "kind": "client",
+      "input": "inputs/client-url-host.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "server_host"
+      }
+    },
+    {
+      "id": "client-unspecified-host",
+      "kind": "client",
+      "input": "inputs/client-unspecified-host.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "server_host"
+      }
+    },
+    {
+      "id": "server-empty-path",
+      "kind": "server",
+      "input": "inputs/server-empty-path.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "database_path"
+      }
+    },
+    {
+      "id": "server-null-default",
+      "kind": "server",
+      "input": "inputs/server-null-default.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "type",
+        "field": "max_connections"
+      }
+    },
+    {
+      "id": "server-profile-payload",
+      "kind": "server",
+      "input": "inputs/server-profile-payload.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "max_payload_bytes"
+      }
+    },
+    {
+      "id": "server-profile-activity",
+      "kind": "server",
+      "input": "inputs/server-profile-activity.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "max_active_users"
+      }
+    },
+    {
+      "id": "server-profile-waiting",
+      "kind": "server",
+      "input": "inputs/server-profile-waiting.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "waiting_room_timeout_seconds"
+      }
+    },
+    {
+      "id": "server-startup-below",
+      "kind": "server",
+      "input": "inputs/server-startup-below.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "business_startup_timeout_ms"
+      }
+    },
+    {
+      "id": "server-shutdown-over",
+      "kind": "server",
+      "input": "inputs/server-shutdown-over.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "bound",
+        "field": "business_shutdown_timeout_ms"
+      }
+    },
+    {
+      "id": "server-node-command",
+      "kind": "server",
+      "input": "inputs/server-node-command.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "node_executable"
+      }
+    },
+    {
+      "id": "server-unauth-relation",
+      "kind": "server",
+      "input": "inputs/server-unauth-relation.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "relation",
+        "field": "max_unauthenticated_connections",
+        "alternatives": [
+          {
+            "category": "bound",
+            "field": "max_unauthenticated_connections"
+          }
+        ]
+      }
+    },
+    {
+      "id": "server-idle-relation",
+      "kind": "server",
+      "input": "inputs/server-idle-relation.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "relation",
+        "field": "peer_idle_timeout_ms",
+        "alternatives": [
+          {
+            "category": "bound",
+            "field": "peer_idle_timeout_ms"
+          }
+        ]
+      }
+    },
+    {
+      "id": "server-tx-relation",
+      "kind": "server",
+      "input": "inputs/server-tx-relation.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "relation",
+        "field": "tx_queue_max_bytes",
+        "alternatives": [
+          {
+            "category": "bound",
+            "field": "tx_queue_max_bytes"
+          }
+        ]
+      }
+    },
+    {
+      "id": "server-bp-relation",
+      "kind": "server",
+      "input": "inputs/server-bp-relation.json",
+      "config_path": "/workspace/online-exam-sys/config/server.local.json",
+      "expected": {
+        "accept": false,
+        "category": "relation",
+        "field": "completion_queue_max_bytes",
+        "alternatives": [
+          {
+            "category": "bound",
+            "field": "completion_queue_max_bytes"
+          }
+        ]
+      }
+    },
+    {
+      "id": "client-ipc-relation",
+      "kind": "client",
+      "input": "inputs/client-ipc-relation.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "relation",
+        "field": "ipc_tx_max_bytes",
+        "alternatives": [
+          {
+            "category": "bound",
+            "field": "ipc_tx_max_bytes"
+          }
+        ]
+      }
+    },
+    {
+      "id": "client-duplicate-decoded-key",
+      "kind": "client",
+      "input": "inputs/client-duplicate-decoded-key.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "duplicate",
+        "field": "server_port"
+      }
+    },
+    {
+      "id": "client-invalid-json",
+      "kind": "client",
+      "input": "inputs/client-invalid-json.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "json"
+      }
+    },
+    {
+      "id": "client-root-array",
+      "kind": "client",
+      "input": "inputs/client-root-array.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "json"
+      }
+    },
+    {
+      "id": "client-nul-host",
+      "kind": "client",
+      "input": "inputs/client-nul-host.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "json",
+        "alternatives": [
+          {
+            "category": "string",
+            "field": "server_host"
+          }
+        ]
+      }
+    },
+    {
+      "id": "client-trailing-json",
+      "kind": "client",
+      "input": "inputs/client-trailing-json.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "json"
+      }
+    },
+    {
+      "id": "client-case-sensitive-key",
+      "kind": "client",
+      "input": "inputs/client-case-sensitive-key.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "unknown",
+        "field": "Server_host",
+        "alternatives": [
+          {
+            "category": "missing",
+            "field": "server_host"
+          }
+        ]
+      }
+    }
+  ],
+  "path_contexts": [
+    {
+      "case_id": "server-minimal",
+      "cwd": "/tmp/unrelated",
+      "expected_same_effective_config": true
+    },
+    {
+      "case_id": "server-minimal",
+      "cwd": "/workspace/online-exam-sys",
+      "expected_same_effective_config": true
+    }
+  ]
+}

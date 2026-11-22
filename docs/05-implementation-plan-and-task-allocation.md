@@ -149,6 +149,11 @@ Electron spawn. Entry scaffold báo usage nếu gọi serve trước bước tri
 
 ## 4. Hợp đồng giữa các module
 
+SCRUM-9 bổ sung [signature/error/ownership nền](planning/shared-interface-contracts.md)
+và [V03 config DRAFT](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
+Hai thành viên review contract và xác nhận V03 trước consumer phụ thuộc; chưa
+coi tài liệu đề xuất là API/header đã triển khai hoặc quyết định đã được duyệt.
+
 Tên hàm dưới đây mô tả trách nhiệm, chưa là ABI C buộc phải dùng y nguyên. Trước
 code, chốt header/types/error/ownership một lần và cả hai dùng chung.
 

@@ -1,0 +1,6 @@
+{
+  "bind_host": "0.0.0.0",
+  "port": 5550,
+  "database_path": null,
+  "log_directory": "../var/log/server"
+}

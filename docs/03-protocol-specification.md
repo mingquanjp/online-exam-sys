@@ -831,7 +831,7 @@ sync tìm thấy commit. UI nhận kết quả phục hồi qua truy vấn mới
 | R/W đang chờ mỗi kết nối | 8 command, tối đa 128 KiB payload command chưa xử lý; auth chỉ 1. |
 | RX mỗi kết nối | Một frame dở tối đa 65.540 byte; xử lý phần dư theo chunk, không append cả recv vô hạn. |
 | TX mỗi kết nối | 128 KiB tính cả frame header, trong đó dự phòng 8 KiB cho control/error; max 64 frame. |
-| Queue command / completion BP | Mỗi chiều 1024 phần tử/8 MiB logical credit, gồm metadata BP. Tính bản sao/object parsed thêm vào RSS theo tài liệu 04, quy tắc credit ở §18. |
+| Queue command / completion BP | Mỗi đầu/chiều 1024 phần tử/8 MiB gồm 960 slots/7.5 MiB credit thường và 64 slots/512 KiB control cục bộ; tính metadata BP. Tổng buffer hai đầu/RSS theo tài liệu 04 và §18.4. |
 | Queue băm Node | 64 job chờ + 1 scrypt async đang chạy, 1 job/kết nối; rate limit và timeout theo tài khoản/IP. |
 | IPC main/C | TX mỗi chiều 256 KiB, tối đa 32 frame; main pending tối đa 32 request, NET active tối đa 8. |
 | Mỗi lượt poll/kết nối | Tối đa 64 KiB đọc và 64 KiB ghi, tối đa 16 frame chuyển command rồi nhường lượt. |
@@ -842,10 +842,10 @@ thread stack, hash memory và kernel socket buffers tính riêng ở tài liệu
 cap actual allocation để payload nhỏ không tạo số node JSON/malloc vô hạn.
 
 C poll xử lý pipe nonblocking, Node transaction kết thúc trước chờ stdout drain. Admission
-phải giữ trước slot completion cho request nhận vào; riêng auth completion/control
-có dự phòng. Có thể dùng completion descriptor nhỏ tham chiếu dữ liệu theo credit
+phải giữ trước slot completion cho request nhận vào; auth response cũng dùng
+reservation thường, lifecycle control có vùng riêng. Có thể dùng completion descriptor nhỏ tham chiếu dữ liệu theo credit
 thay vì giữ cả bản serialize. Không cho request vừa nhận hết credit xong vẫn đòi
-enqueue response không giới hạn. Theo tài liệu 4, trong mỗi queue dành 64 slots/512 KiB control/auth completion;
+enqueue response không giới hạn. Theo tài liệu 4, mỗi đầu/chiều dành 64 slots/512 KiB control cục bộ;
 phần thường tối đa 960 slots/7,5 MiB. Giữ byte credit worst-case response và trả
 khi reactor tiêu thụ/dọn; triển khai phải kiểm chứng saturation, không chỉ set cap.
 
@@ -1202,10 +1202,16 @@ handle. Socket/POSIX I/O, partial send, heartbeat và timeout giữ ở C.
 
 ### 18.4. Backpressure và lỗi giữa hai tiến trình
 
-Command và completion mỗi chiều có logical cap 1024 frames/8 MiB, gồm bytes đang
-chờ enqueue/write và frame parse chưa xử lý tại đầu nhận. Headroom mỗi chiều 64
-frames/512 KiB cho opened/closed/binding/auth completion/shutdown. Kernel pipe và
-các bản sao cJSON/V8 được đo thêm trong RSS. C kiểm tra credit response trước
+Bảng counter/ownership đề xuất trong SCRUM-9 ở
+[hợp đồng nền §4](planning/shared-interface-contracts.md#4-bp--ticket-counter-và-thời-điểm-chuyển-ownership).
+Giữ nguyên wire/caps dưới đây; review và PT-27/28 runtime vẫn cần thực hiện.
+
+Command và completion mỗi chiều có trần hạch toán tại mỗi đầu 1024 frames/8 MiB:
+phần thường 960 frames/7.5 MiB dùng logical credit end-to-end; control có counter
+cục bộ 64 frames/512 KiB trong tổng ở từng đầu gửi/nhận. Control gồm
+opened/closed/binding/init/ready/event_credit/close/shutdown/stopped, không gồm
+auth response. Kernel pipe và các bản sao cJSON/V8 được đo thêm trong RSS.
+C kiểm tra credit response trước
 chuyển request. Credit worst-case BP frame là 69636 byte, chỉ cấp tối đa
 floor(7.5 MiB / 69636)=112 ordinary completions cùng lúc. C giữ request ticket tới
 khi output được đưa vào TCP TX hoặc hủy đúng generation. Mỗi request chuyển sang
@@ -1216,6 +1222,14 @@ enqueue event khi có đủ frames/bytes, trừ byte encoded thực tế. Sau kh
 output vào TX hoặc loại target cũ, C trả event_credit theo số frame/byte đã tiêu
 thụ. Event nhỏ có thể gộp theo target/type để client sync, tránh queue vô hạn.
 Control bytes thuộc vùng dự phòng và có hard cap số/byte tương ứng ở mỗi đầu.
+Sender charge trước enqueue và giữ tới write hết frame (C) hoặc write callback
+xong (Node), kể cả buffer nằm trong Writable; partial/EAGAIN/write(false)/drain
+không tự trả charge. Receiver charge frame hoàn chỉnh tới xử lý xong/hết giữ
+buffer, không trả ngay khi parse. Cleanup terminal trả các khoản còn giữ đúng
+một lần. Hai counter này độc lập, không cần ACK mới và không là credit end-to-end.
+TX+RX control có thể cùng chiếm tối đa 128 frames/1 MiB mỗi chiều; hai chiều
+tối đa 2 MiB, đã được tách trong dự toán 04 §5.2. Frame dở vẫn tính vào RX staging.
+Control hết capacity thì fail-stop, không bỏ cap để bảo đảm enqueue bằng mọi giá.
 Auth request chuyển Node cũng giữ response reservation thường 69636 byte như
 mọi request; binding/close và lifecycle control dùng vùng dự phòng. Auth response
 không giữ thêm một reservation 69636 byte thứ hai trong 512 KiB control. Cụm
@@ -1231,7 +1245,7 @@ request khi response credit đã cấp, transaction kết thúc trước chờ d
 Khi một client chậm, C giới hạn TX và đóng riêng theo timeout. Khi cả BP ngừng
 đọc/tiến triển 15s với bytes pending, C dừng instance để tránh treo mọi ca.
 
-EOF, Node exit, malformed BP hoặc control hết credit khiến C dừng accept/dispatch,
+EOF, Node exit, malformed BP hoặc control hết capacity khiến C dừng accept/dispatch,
 đóng TCP, giữ các W chưa có response là UNKNOWN ở phía client và dọn child/pipe.
 C chờ Node exit và thu hồi lock. Node stdin EOF phải dừng nhận, hoàn thành transaction
 đang chạy nếu có thể, đóng DB rồi thoát. Khởi động lại tạo server_instance_id mới,
