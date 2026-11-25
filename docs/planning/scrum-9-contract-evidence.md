@@ -28,8 +28,8 @@ estimate, phân công hoặc ticket description.
   Node DB/clock/activity/generator/finalizer/receipt; ownership/transaction.
 - [V03](../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9): đủ 20 server
   + 6 client fields, required/default/bound/quan hệ/owner. Giữ default mẫu.
-- [Config fixtures](../../tests/fixtures/config/README.md): 43 input nguyên văn,
-  10 expected effective configs, manifest và checker inventory/default/path.
+- [Config fixtures](../../tests/fixtures/config/README.md): 44 input nguyên văn,
+  11 expected effective configs, manifest và checker inventory/default/path.
 - Link từ các mục liên quan 02/03/05 và tests/README, không viết lại năm tài liệu.
 - Sau review: `tx_enqueue` nhận TX_NORMAL/TX_CONTROL từ caller đã validate;
   control BP dùng counter TX/RX độc lập, có mốc trả buffer cụ thể. Đồng bộ 02/03
@@ -50,7 +50,7 @@ git diff --check
 
 | Kiểm tra | Kết quả / giới hạn |
 | --- | --- |
-| Inventory/bảng config/default/path fixture | STATIC PASS: bảng đủ 26 trường khớp mẫu; 43 input có manifest, không orphan; 10 expected khớp defaults mẫu + override + lexical resolve path. Checker không chạy validator/rejection hay cwd runtime. |
+| Inventory/bảng config/default/path fixture | STATIC PASS: bảng đủ 26 trường khớp mẫu; 44 input có manifest, không orphan; 11 expected khớp defaults mẫu + override + lexical resolve path. Checker không chạy validator/rejection hay cwd runtime. |
 | Backlog offline | PASS_LOCAL_VALIDATION: 4 Epic, 65 ticket, 86 coverage refs, 101 dependency edges, không cycle; Jira mutations=0. |
 | Whitespace diff | PASS `git diff --check`; kiểm file mới bằng static/link checker riêng trước bàn giao. |
 | Canonical vector gốc | Kiểm Python hashlib: 107 byte, SHA-256 khớp 03 §13.5; không thay vector hoặc chạy production canonical codec. |
@@ -104,3 +104,22 @@ Checkpoint bảo vệ: byte cap ngăn một vài payload lớn chiếm hết b�
 ngăn nhiều message nhỏ tạo vô hạn object/ticket. Parse BP chỉ đổi nơi giữ output;
 TCP TX nhận ownership hoặc drop đúng target mới cho phép trả response/event
 credit. TCP send/ACK vẫn không thay SQLite commit hay application ACK.
+
+## Xử lý góp ý PR ngày 26/11/2026
+
+Nguồn: comment của Hoàng Quân trên PR #2 ngày 25/11; người dùng đồng ý sửa cả
+ba điểm. Chưa coi xử lý góp ý là human approval hoặc duyệt V03.
+
+- TCP close đánh target dead ngay; request đã ghi BP giữ ticket và reservation
+  tới response nhận về bị loại hoặc cleanup BP. Request chưa ghi byte đầu và gỡ
+  được khỏi queue thì hủy/trả ngay. Frame BP dở vẫn phải gửi trọn; thêm ví dụ
+  answer.save/close/response muộn, không thêm wire ACK/cancel.
+- Depth phân theo kênh: NET/IPC 16, BP 18; payload NET bên trong vẫn tối đa 16.
+- Path normalize lexical cho cả relative/absolute, gồm executable absolute;
+  không đồng nhất với realpath/alias lock. Thêm vector có `..` và expected đầy đủ.
+  Startup/shutdown dùng config đã validate, mặc định 10000 ms; V03 vẫn DRAFT.
+
+Tự kiểm 26/11: fixture inventory/default/path STATIC PASS (26 trường, 44 input,
+11 expected); backlog offline PASS (4 Epic/65 task/101 edges, không cycle,
+Jira mutations=0); diff whitespace và liên kết local PASS. Các ca TCP close/
+partial BP/late response và depth là đối chiếu contract, runtime vẫn NOT_RUN.

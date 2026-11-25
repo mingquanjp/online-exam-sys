@@ -72,7 +72,7 @@ tiếp từ offset 3, không encode/gửi lại toàn frame.
 
 | Interface đề xuất | Kết quả / lỗi | Chủ trì và ràng buộc |
 | --- | --- | --- |
-| `validate_envelope(channel, raw_utf8) -> Result<ValidatedEnvelope, BoundaryError>` | Strict UTF-8/JSON, duplicate decoded keys, depth<=16, whitelist envelope đúng kênh; trả lỗi cấu trúc hoặc envelope hợp lệ. | Minh Quân C/TS boundary; Hoàng Quân đối chiếu DTO. Tree C thuộc validator/caller theo output ownership, không chia mutable tree. |
+| `validate_envelope(channel, raw_utf8) -> Result<ValidatedEnvelope, BoundaryError>` | Strict UTF-8/JSON, duplicate decoded keys; NET/IPC depth<=16, BP depth<=18 (root=1), payload NET bên trong BP vẫn <=16 theo 03 §18.1; whitelist envelope đúng kênh; trả lỗi cấu trúc hoặc envelope hợp lệ. | Minh Quân C/TS boundary; Hoàng Quân đối chiếu DTO. Tree C thuộc validator/caller theo output ownership, không chia mutable tree. |
 | `validate_body(type, body) -> Result<NormalizedBody, DomainError>` | Default chỉ khi thiếu; null khác thiếu; integer theo giá trị; khóa lạ/sai kiểu → INVALID_ARGUMENT. | Chủ chức năng, helpers TS Minh Quân; Node validate lại nghiệp vụ sau BP. |
 | `canonical_operation(type, normalized_body) -> {utf8, sha256_hex}` | Input đã qua schema; key ASCII sort, array giữ thứ tự, đúng 03 §10.2/13.5. | Hoàng Quân; output immutable thuộc caller, không token/password/NET ID. |
 | `project_*(rows, authority, release_state) -> PublicDto` | Whitelist theo quyền; private attempt không thuộc user → NOT_FOUND; kết quả chưa công bố → RESULTS_NOT_RELEASED. | Chủ chức năng; không serialize row thô/key đề. |
@@ -148,14 +148,25 @@ Không giữ thêm 50 × 69636 byte ở control pool 512 KiB.
    một lần. TX tiếp tục sở hữu NET frame tới gửi hết/dọn; BP credit hết giữ.
 4. TX đầy: chưa release chỉ vì parse; giữ output có bound hoặc đóng peer theo
    policy để drop và cleanup. Không âm thầm bỏ response save đã commit.
-5. Peer close: đóng ticket/thu hồi reservation đúng một lần và đánh target dead;
-   output đến muộn bị drop, không release lần hai hoặc route sang fd tái dùng.
-   Node vẫn có thể commit request hợp lệ đã xử lý trước closed; client sync receipt.
+5. Peer close: đánh target dead ngay, chặn route sang socket cũ/fd tái dùng.
+   Request còn trong queue C, chưa ghi byte BP đầu tiên và gỡ được khỏi queue:
+   hủy request, trả command/response reservation đúng một lần. Nếu đã ghi dù
+   chỉ một byte BP thì giữ ticket/reservation tới khi nhận và loại response
+   tương ứng, hoặc cleanup toàn BP; TCP close không tự trả các khoản này.
+   Frame BP gửi dở phải gửi tiếp trọn frame để giữ framing/FIFO, rồi closed
+   theo thứ tự §18.3; không cắt frame hoặc thêm ACK/cancel protocol mới.
+   Node vẫn có thể commit request hợp lệ trước closed; client sync receipt.
 6. Terminal auth response: chỉ whitelist login/resume/logout và match ticket
    đang chờ; binding control đi trước output quyền mới. Không bỏ ACK logout chỉ
    vì epoch vừa revoke; không cho domain response dùng ngoại lệ terminal.
 7. BP terminal/Node chết: dừng accept/dispatch, đóng TCP, dọn toàn bộ counter và
    child có giới hạn; W chưa rõ kết quả là UNKNOWN, không ACK rollback giả.
+
+Ví dụ `answer.save` đã chuyển Node → TCP đóng → C đánh target dead, giữ ticket
+và command/response reservation → Node commit/trả response → C match ticket,
+loại response của target dead và trả reservation đúng một lần. Không route sang
+kết nối mới; reconnect tra receipt để biết W đã commit. Nếu BP lỗi trước response,
+cleanup toàn BP thu hồi khoản giữ; client vẫn coi kết quả chưa biết là UNKNOWN.
 
 Ví dụ control: C enqueue `opened` → tăng TX local; partial write còn giữ toàn
 khoản charge tới khi gửi hết frame. Node nhận đủ → tăng RX local; xử lý opened

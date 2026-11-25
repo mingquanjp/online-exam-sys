@@ -152,7 +152,10 @@ BP framing/credit/ownership được chốt tại tài liệu 03 §18. C giữ c
 hồi trước khi chuyển request vào pipe. Node encode một kết quả đã commit vào
 completion queue được giữ chỗ, chuyển ownership output cho C khi C đọc frame hoàn chỉnh.
 Request ticket/credit chỉ được giải phóng khi output đã chuyển vào TCP TX hoặc
-bị loại đúng generation theo 03 §18.4; đọc pipe xong chưa tự chứng minh credit đã được trả.
+response nhận về bị loại đúng generation theo 03 §18.4. TCP close đánh target
+dead nhưng giữ credit của request đã gửi BP tới response/drop hoặc cleanup toàn
+BP; chỉ request chưa ghi byte đầu và gỡ được khỏi queue mới hủy/trả ngay.
+Đọc pipe xong chưa tự chứng minh credit đã được trả.
 
 Node dùng process.hrtime.bigint() cho deadline monotonic và Date.now() cho UTC.
 Trước mỗi command, dispatcher chạy các timer đã tới hạn. Khi rảnh, setTimeout
@@ -665,11 +668,13 @@ trạng thái **DRAFT/chờ nhóm xác nhận**; C10/M01 hiện hành không b�
    thu/giới hạn. Node đọc cùng absolute config path và nhận bridge.init.
 3. Node validate config nghiệp vụ, mở DB/migrate/check K07, tạo instance ID và
    gửi bridge.ready. C kiểm tra version/giới hạn, rồi mới bind/listen. Startup
-   timeout 10s, lỗi thì dọn child/pipe và exit khác 0.
+   timeout dùng `business_startup_timeout_ms` đã validate (mặc định 10000 ms),
+   lỗi thì dọn child/pipe và exit khác 0.
 4. Shutdown lúc vận hành bình thường dùng khi room RUNNING/practice OPEN đã kết
    thúc. C dừng accept/request mới, chuyển shutdown sau command đã nhận. Node
    drain transaction, đóng DB rồi bridge.stopped. C flush bounded TX, wait child,
-   đóng descriptors và nhả lock. Graceful timeout 10s, sau đó terminate child và
+   đóng descriptors và nhả lock. Graceful timeout dùng
+   `business_shutdown_timeout_ms` đã validate (mặc định 10000 ms), sau đó terminate child và
    đánh dấu abnormal shutdown, giữ DB để kiểm tra.
 
 Khóa theo flock/open-file-description, không thay bằng fcntl record lock truyền

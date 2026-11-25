@@ -1129,7 +1129,9 @@ Phần metadata bao NET tối đa 4096 byte, có cap chuỗi và kiểm tra tổ
 C validate config và lấy lock dữ liệu trước spawn. C gửi init, Node validate
 cùng config, kiểm tra DB/migrate/K07 rồi ready. Trong foundation, --version chỉ
 in stderr. Chế độ serve được triển khai M1/M2 và chỉ dùng khi launcher đã cấp
-pipe/lock hợp lệ. C chỉ listen sau ready, timeout startup 10s.
+pipe/lock hợp lệ. C chỉ listen sau ready; timeout startup lấy `business_startup_timeout_ms` đã
+validate, mặc định 10000 ms. Graceful shutdown dùng `business_shutdown_timeout_ms`
+đã validate, mặc định 10000 ms; bound V03 theo config/README, còn chờ nhóm duyệt.
 
 ### 18.2. Envelope và bảng message
 
@@ -1214,7 +1216,8 @@ auth response. Kernel pipe và các bản sao cJSON/V8 được đo thêm trong 
 C kiểm tra credit response trước
 chuyển request. Credit worst-case BP frame là 69636 byte, chỉ cấp tối đa
 floor(7.5 MiB / 69636)=112 ordinary completions cùng lúc. C giữ request ticket tới
-khi output được đưa vào TCP TX hoặc hủy đúng generation. Mỗi request chuyển sang
+khi output được đưa vào TCP TX hoặc response nhận về bị loại đúng generation.
+TCP close chỉ đánh target dead, không tự trả credit của request đã ghi sang BP. Mỗi request chuyển sang
 Node mang một response reservation 69636 byte ngầm định, Node trả tối đa một
 response cuối tương ứng. C cấp tối đa 16 frame event_credit outstanding từ cùng pool, tổng response
 reservations + outstanding event credits nằm trong 960 slots/7.5 MiB. Node chỉ
@@ -1237,7 +1240,12 @@ không giữ thêm một reservation 69636 byte thứ hai trong 512 KiB control.
 trước khi output được đưa vào TCP TX/loại đúng target. Bảng counter/ownership
 trong implementation phải thể hiện các khoản này riêng, kiểm 50 login ở PT-27/28.
 Command slot được C giữ tới response cuối để giới hạn cả input chưa xử lý trong
-Node. FIFO và ticket đảm bảo giải phóng đúng một lần trên success/close/EOF.
+Node. Request chưa ghi byte BP đầu tiên và gỡ được khỏi queue C có thể hủy,
+trả command/response reservation ngay. Request đã ghi sang BP giữ ticket và cả
+hai khoản tới khi C nhận/loại response tương ứng hoặc cleanup toàn BP. Frame
+đã gửi dở phải hoàn tất, không cắt frame vì TCP close; giữ FIFO request→closed.
+FIFO và ticket đảm bảo giải phóng đúng một lần, không tái dùng credit trong khi
+request/response cũ còn tồn tại chỉ vì socket thí sinh đã đóng.
 
 Pipe write EAGAIN/partial ở C giữ offset và poll POLLOUT. Node stdout.write(false)
 dừng dequeue output tới drain, có hard cap riêng trước write. Node chỉ dispatch

@@ -96,7 +96,9 @@ chuỗi `"5550"`, boolean, null, số lẻ hoặc vô hạn không hợp lệ.
 | business_shutdown_timeout_ms | integer ms | D: 10000 | 1000..60000; graceful phase, không cho child sống vô hạn sau timeout | C launcher |
 | bridge_max_payload_bytes | integer byte payload | D: 69632 | =69632, BP frame tối đa 69636 gồm header | C/Node BP |
 
-Startup timeout không là cam kết migration luôn hoàn tất trong 10s; nếu timeout
+Launcher dùng startup/shutdown timeout đã validate; 10000 ms là mặc định,
+không phải hằng số ghi đè config. Bound V03 vẫn chờ nhóm duyệt.
+Startup timeout không là cam kết migration luôn hoàn tất trong khoảng chờ; nếu timeout
 thì cleanup/fail, không listen sớm. Shutdown graceful timeout không bỏ bước
 terminate/kill/reap có giới hạn tại 02 §11. Chi tiết cleanup thuộc T09.
 
@@ -126,8 +128,12 @@ Các quy tắc bổ sung dưới đây thuộc **đề xuất V03**, cần cùng
   kèm `:port` bị từ chối, port chỉ ở trường riêng. Đây không là cam kết mọi địa
   chỉ resolve được hay máy có interface tương ứng.
 - P (path): 1..4096 byte UTF-8, không NUL/control, không chỉ whitespace; cho phép
-  khoảng trắng bên trong. Không expand `~`, `$VAR`, glob hoặc shell. Chuỗi được
-  dùng nguyên nghĩa; tương đối resolve từ thư mục config, absolute giữ nguyên.
+  khoảng trắng bên trong. Không expand `~`, `$VAR`, glob hoặc shell. Chuỗi không được diễn giải như shell. Tương đối ghép với thư mục config; absolute
+  không ghép thêm config dir. Sau đó cả hai đều lexical normalize các thành phần
+  `.`/`..` theo POSIX trước kiểm bound và sử dụng. Quy tắc này áp dụng cho
+  database_path/log_directory/business_entry_path và node_executable absolute;
+  `node` là tên PATH nên không normalize. Không coi lexical normalize là realpath
+  hoặc bằng chứng hai đường dẫn cùng dataset; kiểm alias/lock thuộc startup T09.
   Sau resolve phải <=4096 byte, không tự truncate. Ngoài bound riêng, BP init
   vẫn phải vừa trần metadata encoded<=4096 của 03 §18.2, kể cả escaping/envelope.
   Path riêng lẻ đúng bound không tự chứng minh init encode sẽ vừa.

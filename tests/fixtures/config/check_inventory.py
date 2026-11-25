@@ -52,6 +52,8 @@ def main():
                 expected[field] = posixpath.normpath(
                     posixpath.join(posixpath.dirname(case["config_path"]), expected[field])
                 )
+            if posixpath.isabs(expected["node_executable"]):
+                expected["node_executable"] = posixpath.normpath(expected["node_executable"])
         path = case["effective_config"]
         assert path not in expectations
         expectations.add(path)
