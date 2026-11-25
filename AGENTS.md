@@ -21,6 +21,31 @@
 - Mục tiêu ứng dụng 50 người chờ test tích hợp thực. Build/probe/mock không thay
   nghiệm thu nghiệp vụ, LAN hoặc tải. Không thêm CRC/UDP/HTTP/Postgres ngoài quyết định đã chốt.
 
+## Thiết kế, code và giải thích khi bảo vệ
+
+- Theo note trên lớp do nhóm cung cấp: đúng đề, đúng chức năng đã chốt, thiết kế
+  vừa đủ cho quy mô thực tế. Mỗi cơ chế thêm phải nêu vấn đề cụ thể và cân nhắc
+  cách đơn giản hơn giữ cùng tính đúng đắn. Ưu tiên API/thư viện sẵn có trong
+  stack và tái sử dụng code; không tự thêm dependency, tối ưu sớm hoặc viết lại.
+- Đặt tên hàm/biến/hằng số có nghĩa, theo quy tắc hiện có. Viết các bước tường minh;
+  tách hàm theo nhiệm vụ hoặc nhu cầu dùng lại, tránh chuỗi wrapper quá nhỏ.
+  Gom hằng số ở nơi dễ tìm, không rải magic numbers hoặc tạo tầng config mới.
+- Dùng comment tiếng Việt theo Doxygen trước định nghĩa hàm: `@brief`, `@param`
+  với hướng in/out phù hợp, `@return` cho hàm có giá trị trả về, `@note` khi cần.
+  Với TypeScript dùng dạng JSDoc tương đương, không thêm công cụ sinh tài liệu.
+  Nêu ownership bộ nhớ/tài nguyên hoặc điều kiện khóa khi thực sự có; không tự
+  thêm khóa để khớp ví dụ. Không lặp nguyên mô tả dài ở cả khai báo và định nghĩa.
+- Trong hàm, comment ngắn tại bước quan trọng, giải thích lý do không hiển nhiên;
+  có thể đánh số khi giúp theo dõi. Không kể lại từng phép gán; sửa comment cùng
+  hành vi. Không tự thêm kiểm tra nguy cơ thấp hoặc abstraction chỉ để đủ checklist.
+- Khi bàn giao phần code, giải thích vừa đủ: ai gọi/khi nào, input/output/trạng
+  thái đổi, nơi kiểm tra/quyết định, lý do có buffer/state/khóa và khi lỗi hoặc
+  mất kết nối. Với phần tích hợp, nối được luồng UI→client→protocol→server→DB.
+  Giúp thành viên hiểu code, không chỉnh code để che giấu việc dùng AI.
+- Đơn giản không bỏ quyền, deadline, nộp/chấm đúng hoặc truy cập đồng thời.
+  Ví dụ MD5 của thầy chỉ minh họa tái sử dụng thư viện, không là yêu cầu thêm
+  MD5/checksum, đổi cách lưu mật khẩu hoặc triển khai thuật toán mới.
+
 ## Git và bàn giao
 
 - Feature/docs/test/refactor: `feature/SCRUM-<id>-<slug>`; Bug riêng:
@@ -55,11 +80,18 @@ trước khi review; không cần người dùng nhắc lại toàn bộ quy t�
 - Kết quả tách lỗi cần sửa trước merge, giới hạn kiểm chứng và gợi ý tùy chọn
   nếu có. Không bịa finding để đủ số lượng; không có lỗi có bằng chứng thì nói rõ.
   Ghi đúng test đã chạy/chưa chạy; không gọi AI review là human approval.
+- Đối chiếu cả quy tắc code/comment ở trên. Thiếu hoặc sai mô tả ownership/điều
+  kiện dùng gây hiểu sai contract cần nêu cụ thể; góp ý câu chữ, chia hàm hoặc
+  cách đánh số đơn thuần không tự thành lỗi chặn merge. Không bắt sửa hàng loạt
+  code ngoài diff để áp quy tắc mới, hoặc yêu cầu chạy Doxygen/sinh tài liệu.
 
 ## Kiểm tra và dữ liệu
 
 - Lệnh kiểm theo phạm vi ở workflow; scaffold hiện chỉ có C --version smoke,
   TS/build và test công cụ Jira. Khi triển khai thêm test cần cho AC của module.
+- Chọn ca theo nghiệp vụ/rủi ro trong task: quyền, hết giờ, nộp lặp, input sai,
+  mất mạng, thao tác đồng thời khi liên quan. Báo đúng kết quả/giới hạn; không
+  thêm cơ chế xử lý ngoài scope chỉ để bao phủ mọi tình huống giả định.
 - Không đọc/in `.env`, token, credentials hoặc key đáp án thật để chuẩn bị Git/PR.
   Không commit `.local/` (journal Jira), DB/runtime data hoặc build/dependencies.
 - Không tự chạy migration/seed/reset lên DB thật từ task tài liệu/UI; dùng dữ
