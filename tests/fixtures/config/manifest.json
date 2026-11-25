@@ -512,6 +512,28 @@
         "accept": true
       },
       "effective_config": "expected/server-path-dot-segments.json"
+    },
+    {
+      "id": "client-hostname",
+      "kind": "client",
+      "input": "inputs/client-hostname.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "server_host"
+      }
+    },
+    {
+      "id": "client-ipv6",
+      "kind": "client",
+      "input": "inputs/client-ipv6.json",
+      "config_path": "/workspace/online-exam-sys/config/client.local.json",
+      "expected": {
+        "accept": false,
+        "category": "string",
+        "field": "server_host"
+      }
     }
   ],
   "path_contexts": [

@@ -94,7 +94,8 @@ cho request chuyển Node sau validate/admission. Node không tự tạo ticket 
 `command_submit(ticket, validated_net_request) -> ACCEPTED/BUSY/CLOSED` do Minh
 Quân chủ trì: ACCEPTED nhận ownership request vào BP queue và giữ reservation;
 thất bại không chuyển request/không giữ dở credit. C vẫn giữ ticket sau khi đã
-write BP; response tối đa một lần. `route_output(bp_output) -> ENQUEUED/DROPPED/FATAL`
+write BP; mỗi request Node đã nhận có đúng một response cuối nếu BP còn
+hoạt động, kể cả nhánh auth hủy/hết hạn/target dead theo 03 §18.3. `route_output(bp_output) -> ENQUEUED/DROPPED/FATAL`
 do Hoàng Quân chủ trì, đối chiếu target/ticket/epoch trước đưa vào TCP TX.
 
 ### 4.1. Credit thường và counter control cục bộ
@@ -157,6 +158,9 @@ Không giữ thêm 50 × 69636 byte ở control pool 512 KiB.
    Frame BP gửi dở phải gửi tiếp trọn frame để giữ framing/FIFO, rồi closed
    theo thứ tự §18.3; không cắt frame hoặc thêm ACK/cancel protocol mới.
    Node vẫn có thể commit request hợp lệ trước closed; client sync receipt.
+   Auth bị hủy/hết hạn vẫn phát một response lỗi BP để C match/drop và trả
+   reservation, không cấp phiên. Hash callback muộn chỉ cleanup nếu request đã
+   kết thúc; hash slot đang chạy giữ tới callback thật, không phát response lần hai.
 6. Terminal auth response: chỉ whitelist login/resume/logout và match ticket
    đang chờ; binding control đi trước output quyền mới. Không bỏ ACK logout chỉ
    vì epoch vừa revoke; không cho domain response dùng ngoại lệ terminal.

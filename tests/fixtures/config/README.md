@@ -37,11 +37,14 @@ Lệnh này **không chạy validator** và không kiểm rejection/runtime. Nó
 hiện thiếu fixture, expected bị lệch mẫu/default/path hoặc trường config thiếu
 trong bảng. Các kết luận runtime vẫn NOT_RUN dù lệnh đạt STATIC PASS.
 
-44 ca hiện tại: 11 accepted, 33 rejected. Gồm full/minimal/default, port 1/65535,
+46 ca hiện tại: 11 accepted, 35 rejected. Gồm full/minimal/default, port 1/65535,
 startup/shutdown 1000/60000, integer theo giá trị, absolute/relative path và
 khoảng trắng trong path; vector `server-path-dot-segments` đối chiếu lexical
 normalize `.`/`..` cho cả absolute/relative path và executable absolute; thiếu/unknown/case-sensitive/duplicate key, null/type,
 bound cố định, quan hệ queue/heartbeat/unauth và JSON lỗi/trailing/NUL.
+
+Hai ca `client-hostname`/`client-ipv6` phải bị từ chối theo phạm vi IPv4 client
+v1; không mở rộng DNS/IPv6 trong loader để nhận chúng.
 
 Các ca relation có thể bị từ chối sớm vì fixed bound: kết quả đó **không chứng
 minh nhánh relation runtime đã được chạy**. T47 cần unit test helper relation nếu

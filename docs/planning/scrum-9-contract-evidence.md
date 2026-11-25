@@ -28,7 +28,7 @@ estimate, phân công hoặc ticket description.
   Node DB/clock/activity/generator/finalizer/receipt; ownership/transaction.
 - [V03](../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9): đủ 20 server
   + 6 client fields, required/default/bound/quan hệ/owner. Giữ default mẫu.
-- [Config fixtures](../../tests/fixtures/config/README.md): 44 input nguyên văn,
+- [Config fixtures](../../tests/fixtures/config/README.md): 46 input nguyên văn,
   11 expected effective configs, manifest và checker inventory/default/path.
 - Link từ các mục liên quan 02/03/05 và tests/README, không viết lại năm tài liệu.
 - Sau review: `tx_enqueue` nhận TX_NORMAL/TX_CONTROL từ caller đã validate;
@@ -50,7 +50,7 @@ git diff --check
 
 | Kiểm tra | Kết quả / giới hạn |
 | --- | --- |
-| Inventory/bảng config/default/path fixture | STATIC PASS: bảng đủ 26 trường khớp mẫu; 44 input có manifest, không orphan; 11 expected khớp defaults mẫu + override + lexical resolve path. Checker không chạy validator/rejection hay cwd runtime. |
+| Inventory/bảng config/default/path fixture | STATIC PASS: bảng đủ 26 trường khớp mẫu; 46 input có manifest, không orphan; 11 expected khớp defaults mẫu + override + lexical resolve path. Checker không chạy validator/rejection hay cwd runtime. |
 | Backlog offline | PASS_LOCAL_VALIDATION: 4 Epic, 65 ticket, 86 coverage refs, 101 dependency edges, không cycle; Jira mutations=0. |
 | Whitespace diff | PASS `git diff --check`; kiểm file mới bằng static/link checker riêng trước bàn giao. |
 | Canonical vector gốc | Kiểm Python hashlib: 107 byte, SHA-256 khớp 03 §13.5; không thay vector hoặc chạy production canonical codec. |
@@ -137,3 +137,29 @@ Các ghi chú DRAFT trước đó ở mục có ngày cũ là lịch sử trư�
 Fixture checker vẫn chỉ STATIC PASS: 26 trường/44 input/11 expected. Kiểm
 backlog offline và link/whitespace thực hiện lại trước commit. Runtime NOT_RUN;
 gate review/merge PR và nghiệm thu các module vẫn riêng với duyệt thiết kế V03.
+
+
+## Làm rõ chuyên môn theo review ngày 26/11/2026
+
+Người dùng giao sửa bốn điểm, giữ nguyên kiến trúc và không thay lịch/estimate.
+
+- H-client trong V03 thống nhất IPv4 dotted decimal theo local.connect; H-server
+  giữ phạm vi bind riêng. Thêm hai input hostname/IPv6 client bị từ chối; tổng
+  46 input (11 accepted, 35 rejected), không đổi 11 expected config cũ.
+- Node phải phát một response cuối cho mỗi request đã nhận khi BP còn hoạt động,
+  kể cả auth hủy/hết hạn/target dead. Dùng response/error hiện có; C match/drop
+  rồi trả reservation. Hash callback muộn không áp kết quả hoặc phát lần hai;
+  hash slot đang chạy khác BP reservation và giữ tới callback thật.
+- 03 §3/3.1 thống nhất NET/IPC depth<=16, BP<=18; payload NET bên trong vẫn <=16.
+- Sửa ví dụ/ checkpoint EXAM-T57 về đáp án B, không phải tên Hoàng Quân;
+  bổ sung ca kết thúc auth request trong EXAM-T51. Chưa đồng bộ description Jira.
+
+Kiểm lại fixture inventory/default/path, backlog offline, công cụ Jira và
+whitespace/link theo kết quả bàn giao. Đây là cập nhật contract/fixtures;
+validator IPv4/depth và auth/BP runtime vẫn NOT_RUN, không thêm ACK hoặc parser.
+
+Kiểm công cụ Jira ban đầu bị chặn vì fingerprint T51/T57 đã đổi; phát hiện test
+cũ cấm mọi chữ A/B trong body, gồm cả phương án thi B. Đã giữ kiểm tên đầy đủ ở
+Assignee/Reviewer, cho phép A/B kỹ thuật trong body. Metadata update chỉ chuyển
+hai ticket T51/T57 từ fingerprint mô tả trước sửa sang sau sửa; vẫn từ chối nội
+dung Jira ngoài hai bản đã biết. Không gọi Jira API hoặc tự ghi đè mô tả thật.

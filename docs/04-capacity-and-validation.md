@@ -293,8 +293,10 @@ Auth response cũng dùng response reservation thường; binding/lifecycle cont
 dùng reserve, không giữ thêm 69636 byte/auth vào riêng control pool. Chi tiết
 và mốc trả credit theo protocol §18.4, không dựa vào tên queue để tính hai lần.
 
-Slot dùng cho auth pending phải còn được bảo lưu tới lúc hash hoàn tất/hủy, không
-trả sớm rồi đòi thêm slot không còn chỗ. Khi chuyển completion sang TX thất bại
+Phân biệt hash slot với BP reservation: hash đang chạy giữ workspace/slot tới
+callback thật, không mở job thứ hai chỉ vì timeout/hủy. Auth hủy/hết hạn phát
+một response lỗi BP theo 03 §18.3; C chỉ trả BP reservation khi nhận/route/drop
+response hoặc cleanup toàn BP, không tự trả chỉ vì TCP đã đóng. Khi chuyển completion sang TX thất bại
 vì peer chậm, đóng peer, dọn buffer và trả credit; commit bền không bị hoàn tác.
 Timer/internal job có đường điều khiển dự phòng, không enqueue sau vô hạn lệnh user.
 Đây là hợp đồng thiết kế queue, phải có test saturation, không chỉ kiểm tra ping.

@@ -89,10 +89,11 @@ class UpdateTests(unittest.TestCase):
         for row in tickets:
             from ticket_adf import adf
             text = row['description_markdown']
-            self.assertNotRegex(text, r'\b[AB]\b')
+            # A/B là phương án hợp lệ; chỉ metadata người phụ trách phải dùng tên.
             self.assertNotRegex(text, r'\d+ (?:Minh Quân|Hoàng Quân)\b')
             self.assertIn('**Cách review:**', text)
             self.assertIn('**Assignee:** ' + update.PEOPLE[row['assignee_alias']], text)
+            self.assertIn('**Reviewer:** ' + update.PEOPLE[row['reviewer_alias']], text)
             self.assertEqual(update.digest(adf(text)), migration[row['source_id']]['new_description_sha256'])
         self.assertEqual(sum('Buổi review/demo chung' in row['description_markdown'] for row in tickets), 4)
 

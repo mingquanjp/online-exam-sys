@@ -200,8 +200,8 @@
   "EXAM-T51": {
     "old_summary": "[Auth] Băm mật khẩu scrypt bất đồng bộ và giới hạn hàng đợi",
     "new_summary": "[Auth] Băm mật khẩu scrypt bất đồng bộ và giới hạn hàng đợi",
-    "old_description_sha256": "7e65b781bd0a983d392d562e4d993f6619c820d300bb9cff59486a8bc82fdef5",
-    "new_description_sha256": "67b701fc23a09451c52ec3784b8322b190c07087e0c4ad6a9112d41a999b1de7"
+    "old_description_sha256": "67b701fc23a09451c52ec3784b8322b190c07087e0c4ad6a9112d41a999b1de7",
+    "new_description_sha256": "8c5f7d287311ca56339c6930dc7de400e2af20c376346d4ee3902e667fffcdff"
   },
   "EXAM-T52": {
     "old_summary": "[Room UI] Hiển thị cấu hình, phòng chờ, roster và điều khiển thi",
@@ -236,8 +236,8 @@
   "EXAM-T57": {
     "old_summary": "[Exam UI] Hiển thị câu hỏi, thay đổi đáp án và trạng thái lưu",
     "new_summary": "[Exam UI] Hiển thị câu hỏi, thay đổi đáp án và trạng thái lưu",
-    "old_description_sha256": "9bd68f265df18418cc60eff4b1b30c245c9465fa08fdad445a96f77190c0f142",
-    "new_description_sha256": "854c2ee7b8b42307f7dd66e773d4e49ad348087c23b5025ad9f73092a35e830f"
+    "old_description_sha256": "854c2ee7b8b42307f7dd66e773d4e49ad348087c23b5025ad9f73092a35e830f",
+    "new_description_sha256": "9939ef02867602bc64cf9063a99e25b563fc5a3325357d63c44181caf6d761cd"
   },
   "EXAM-T58": {
     "old_summary": "[Exam UI] Xác nhận nộp bài, đợi lưu và xử lý kết quả chưa rõ",

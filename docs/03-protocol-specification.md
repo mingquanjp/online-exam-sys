@@ -121,7 +121,8 @@ Mọi JSON number nhận vào vẫn phải kiểm tra hữu hạn/nguyên/khoả
 Version đạt trần trả RESOURCE_LIMIT, không wrap về 0.
 
 Parser yêu cầu đúng một JSON object, không trailing JSON, không BOM, không key
-trùng ở mọi cấp; nesting tối đa 16. Không chấp nhận escape tạo NUL hoặc surrogate
+trùng ở mọi cấp; nesting NET/IPC tối đa 16, BP tối đa 18 theo §18.1.
+Payload NET bên trong BP vẫn kiểm riêng với root payload=1, tối đa 16. Không chấp nhận escape tạo NUL hoặc surrogate
 không hợp lệ. Các trường không có trong schema bị từ chối INVALID_ARGUMENT;
 trường nullable bắt buộc hiện diện nhưng được mang null, trường optional được
 ghi rõ bằng ? bên dưới. Thiếu và null là hai trường hợp khác nhau.
@@ -140,7 +141,8 @@ cJSON với length/end-pointer → depth/key trùng → envelope → transport s
 Pipeline Node: strict UTF-8 decode/token/escape/depth/key trùng trước JSON.parse
 → kiểm tra BP/envelope → schema nghiệp vụ → DTO có kiểu. JSON.parse và TypeScript
 type annotation cần bổ sung kiểm tra runtime để thực thi C09. Depth tính root object là mức 1, object/array con
-thêm 1, tối đa 16; kiểm tra trước parse để không dựa vào mặc định sâu của thư viện.
+thêm 1; NET/IPC tối đa 16, BP tối đa 18 và payload NET bên trong vẫn tối đa
+16 theo §18.1. Kiểm bound theo kênh trước parse, không dựa vào mặc định thư viện.
 Chỉ JSON whitespace hợp lệ được phép sau object, không có BOM/trailing JSON/raw NUL.
 Không nhận escape \u0000, surrogate lẻ, UTF-8 lỗi hoặc cú pháp số không đúng JSON.
 Khóa được so sau decode: `type` và `\u0074ype` là trùng; phân biệt hoa thường.
@@ -360,6 +362,8 @@ job; không dùng heartbeat giữ kết nối chưa xác thực vô hạn.
 Đăng ký hoàn tất vẫn ở UNAUTHENTICATED, sau đó người dùng login; chỉ login/resume
 thành công mới chuyển AUTHENTICATED. Node dispatcher kiểm tra hạn job/ticket trước áp dụng
 kết quả hash, không cấp phiên hoặc tạo tài khoản từ job đã hết hạn/hủy.
+Nếu BP còn hoạt động, đường hủy/hết hạn vẫn phải kết thúc request BP bằng một
+response lỗi theo §18.3; không bỏ im lặng rồi làm kẹt reservation của C.
 
 ### 6.2. Lệnh xác thực
 
@@ -1188,6 +1192,19 @@ C giữ FIFO opened → requests → closed của cùng generation. Node xử l�
 và domain qua một dispatcher tuần tự. Một request đã được Node nhận hợp lệ trước
 closed có thể commit, receipt được sync khi user quay lại. Request thuộc context
 đã đóng/revoked bị từ chối trước mutation. Hash completion xét ticket/context lại.
+Mỗi request hợp lệ Node đã nhận phải phát đúng một response cuối khi BP còn
+hoạt động, kể cả auth bị hủy/hết hạn hoặc target đã closed/revoked. Dùng kind
+`response` hiện có, giữ request_id/type/operation_id và target gốc. Lỗi auth
+hủy/hết hạn trước áp dụng dùng INTERNAL_ERROR/effect NONE; trường hợp phiên bị
+thay/hết hạn dùng mã SESSION_* tương ứng theo §11. Không cấp user/session mới.
+C match ticket rồi loại response của target dead/authority cũ và trả reservation
+đúng một lần. Việc bỏ dữ liệu khỏi NET không được bỏ qua bước kết thúc ticket BP.
+Job đã phát response lỗi thì hash callback muộn chỉ cleanup, không phát response
+thứ hai hoặc áp dụng kết quả. Slot/hash workspace của job đang chạy vẫn giữ tới
+callback thật; trả BP reservation không cho phép chạy thêm hash đồng thời.
+Nếu BP lỗi thì áp fail-stop/cleanup §18.4, không cam kết phát được response.
+Không thêm kind ACK/cancel hoặc mở ngoại lệ terminal_auth cho lỗi auth.
+
 C xử lý sys.hello/sys.ping bằng C, sys.hello chỉ sau Node ready. Auth và mọi API
 mục 7 được chuyển Node. C và Node cùng hạn mức in-flight theo §12.
 

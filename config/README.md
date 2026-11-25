@@ -112,7 +112,7 @@ terminate/kill/reap có giới hạn tại 02 §11. Chi tiết cleanup thuộc T
 
 | Trường | Kiểu / đơn vị | R/D và default | Bound / quan hệ | Owner |
 | --- | --- | --- | --- | --- |
-| server_host | string UTF-8 | R | H; endpoint thật, không địa chỉ unspecified 0.0.0.0/:: | C client |
+| server_host | string IPv4 | R | H-client: IPv4 dotted decimal; không 0.0.0.0, hostname, IPv6 hoặc URL | C client |
 | server_port | integer port | R | 1..65535 | C client |
 | connect_timeout_ms | integer ms | D: 5000 | =5000, riêng giai đoạn TCP connect | C client |
 | request_timeout_ms | integer ms | D: 5000 | =5000, budget request thường; auth dùng 65000 ms nội bộ theo 03 §12 | C client |
@@ -133,6 +133,11 @@ Các quy tắc dưới đây đã được duyệt cùng bảng V03 ngày 26/11/
   unspecified addresses đó. IPv6 có `:` không bị nhầm với `host:port`; IPv4/hostname
   kèm `:port` bị từ chối, port chỉ ở trường riêng. Đây không là cam kết mọi địa
   chỉ resolve được hay máy có interface tương ứng.
+  Riêng H-client (`server_host`): bản đầu chỉ nhận IPv4 dotted decimal theo
+  `local.connect` tại 03 §9.1, kiểm bằng API IPv4 hệ thống; không nhận hostname,
+  IPv6, URL, host:port hoặc 0.0.0.0. Không thêm DNS vào vòng I/O. H-server cho
+  `bind_host` giữ quy tắc phía server ở trên; không suy ra client hỗ trợ IPv6
+  từ khả năng bind phía server. Làm rõ phạm vi client ngày 26/11 theo nhóm.
 - P (path): 1..4096 byte UTF-8, không NUL/control, không chỉ whitespace; cho phép
   khoảng trắng bên trong. Không expand `~`, `$VAR`, glob hoặc shell. Chuỗi không được diễn giải như shell. Tương đối ghép với thư mục config; absolute
   không ghép thêm config dir. Sau đó cả hai đều lexical normalize các thành phần

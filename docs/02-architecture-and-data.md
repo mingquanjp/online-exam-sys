@@ -136,6 +136,10 @@ Hash dùng node:crypto.scrypt bất đồng bộ, mỗi lúc một job. Callback
 completion, dispatcher kiểm tra ticket/account version/authority rồi mới cấp
 phiên. Transaction DB luôn kết thúc trước khi chờ hash hoặc write/drain pipe.
 Mỗi job có deadline, kết quả hoàn tất muộn phải được xét ticket còn hiệu lực.
+Job hủy/hết hạn vẫn kết thúc request bằng một response lỗi qua BP khi kênh còn
+hoạt động; C match/drop theo target rồi trả reservation. Callback muộn không áp
+kết quả hoặc trả response lần hai; hash workspace/slot đang chạy chỉ được giải
+phóng khi callback thật hoàn tất. Không thêm ACK/cancel riêng, xem 03 §18.3.
 
 ### 5.2. Queue, timer và credit
 

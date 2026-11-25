@@ -2316,7 +2316,7 @@ Thành viên: Nguyễn Minh Quân và Đặng Hoàng Quân. Reviewer là ngườ
 | Tình huống cần chạy | Kết quả mong đợi |
 | --- | --- |
 | Password đúng/sai và Unicode hợp lệ | verify đúng; không trim/normalize hoặc log plain text. |
-| Queue đầy/job hết hạn/hủy | kết quả không tự cấp user/session; không mở 50 workspace hash cùng lúc. |
+| Queue đầy/job hết hạn/hủy | Không cấp user/session từ kết quả đã hủy/hết hạn; khi BP còn sống, request đã nhận có một response lỗi để C kết thúc ticket. Callback muộn không response lần hai; hash slot đang chạy giữ tới callback thật. |
 | Ca 3 — Tính toàn vẹn và bàn giao | Linux benchmark ghi elapsed/peak RSS và runtime; không suy 50 login≤60 s chỉ từ số slot. |
 
 **Tiêu chí nghiệm thu:**
@@ -2729,7 +2729,7 @@ Thành viên: Nguyễn Minh Quân và Đặng Hoàng Quân. Reviewer là ngườ
 
 | Tình huống cần chạy | Kết quả mong đợi |
 | --- | --- |
-| Chọn Hoàng Quân rồi C khi ACK Hoàng Quân chậm | không đánh C đã lưu nhờ ACK Hoàng Quân, op cũ giữ nguyên body. |
+| Chọn phương án B rồi C khi ACK của B chậm | không đánh C đã lưu nhờ ACK của B; op cũ giữ nguyên body. |
 | Save ACK đúng revision | chỉ lựa chọn tương ứng hiện Đã lưu; timeout/offline hiển thị chưa xác nhận. |
 | Đề nhiều trang/UI reload cơ bản | không lấy key hoặc tự spawn C; full recovery T28, không hứa offline draft bền. |
 
@@ -2750,7 +2750,7 @@ Thành viên: Nguyễn Minh Quân và Đặng Hoàng Quân. Reviewer là ngườ
 
 **Bàn giao/ngoài phạm vi:** Exam view/auto save primitives Hoàng Quân cho T58/T28/T30; không tự mở sửa dựa đồng hồ client.
 
-**Checkpoint bảo vệ:** ACK lựa chọn Hoàng Quân về chậm khi UI đang chọn C thì hiển thị thế nào? Vì sao mỗi câu chỉ một save chưa rõ kết quả?
+**Checkpoint bảo vệ:** ACK lựa chọn B về chậm khi UI đang chọn C thì hiển thị thế nào? Vì sao mỗi câu chỉ một save chưa rõ kết quả?
 
 **Truy vết nhập Jira:** `EXAM-T57`; nguồn `docs/planning/sprint-1-tickets.md`; key SCRUM thật xem Jira/journal import; trạng thái nghiệm thu theo bằng chứng của task, không suy từ việc đã nhập Jira.
 
