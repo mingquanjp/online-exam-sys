@@ -13,7 +13,9 @@ hoặc lệnh tạo admin khi CLI tương ứng chưa được triển khai.
 - Đường dẫn DB/log tương đối được resolve từ **thư mục chứa file cấu hình**,
   không từ cwd hoặc một repo root suy đoán. Với file trong `config/`,
   `../var/data/exam.sqlite3` trỏ tới `var/data/exam.sqlite3` của repo. Đường dẫn
-  tuyệt đối được giữ nguyên; không tự nội suy shell, biến môi trường hoặc `~`.
+  tuyệt đối không ghép thêm thư mục config; cả relative/absolute normalize
+  lexical `.`/`..` theo V03 đã duyệt bên dưới. Không tự nội suy shell, biến môi
+  trường hoặc `~`; lexical normalization không thay kiểm alias/lock ở startup.
 
 ## Hợp đồng nạp cấu hình
 
@@ -55,19 +57,23 @@ Giới hạn tài nguyên vẫn cần kiểm chứng tải; hợp đồng loader
 
 ## V03 — Bảng cấu hình đề xuất SCRUM-9
 
-Ngày 22/11/2026. **DRAFT — chờ Nguyễn Minh Quân và Đặng Hoàng Quân xác nhận.**
-Tự kiểm không thay review chéo; chưa cho consumer dùng bound mới như quyết định
-đã duyệt. Quy tắc C10/M01 đã duyệt ở trên vẫn là nguồn hiện hành.
+Soạn ngày 22/11/2026. **APPROVED — đã duyệt ngày 26/11/2026.**
+Nguyễn Minh Quân xác nhận và thông báo Đặng Hoàng Quân cũng đồng ý trong trao đổi
+của nhóm ngày 26/11. Phạm vi duyệt: toàn bộ bảng 20 server/6 client fields,
+default/required/bound/quan hệ, quy tắc H/P/E và bộ vectors hiện tại.
+V03 cụ thể hóa C10/M01; consumer T47/T09 được dùng contract này để triển khai.
+Duyệt thiết kế không là nghiệm thu loader/runtime, tải 50 người hoặc approval
+merge PR; các bước review/kiểm thử tương ứng vẫn áp dụng.
 
-Đề xuất V03 giữ **một resource profile v1 cố định** cho các cap và timeout
+V03 đã duyệt giữ **một resource profile v1 cố định** cho các cap và timeout
 transport trong bảng. Các giá trị mặc định lấy nguyên từ hai config mẫu;
 không tăng giới hạn/timeout để che nghẽn. Endpoint/port/path và hai timeout
 startup/shutdown có thể cấu hình như dưới. Nếu cần profile khác sau đo tải,
 nhóm review lại config và budget 03/04 trước khi dùng.
 
 Ký hiệu: R = bắt buộc, không có default; D = thiếu thì lấy default; `=N` là chỉ
-nhận đúng giá trị N nếu cung cấp. Bound cố định là **đề xuất khóa profile**,
-không có nghĩa mọi trường này đã được tài liệu cũ bắt buộc cố định.
+nhận đúng giá trị N nếu cung cấp. Bound cố định là **quyết định khóa profile v1 của nhóm trong V03**;
+không phải yêu cầu mọi trường cố định do thầy đặt ra.
 Integer xét theo giá trị JSON theo C09; `5550.0`/`5.55e3` bằng 5550 hợp lệ,
 chuỗi `"5550"`, boolean, null, số lẻ hoặc vô hạn không hợp lệ.
 
@@ -97,7 +103,7 @@ chuỗi `"5550"`, boolean, null, số lẻ hoặc vô hạn không hợp lệ.
 | bridge_max_payload_bytes | integer byte payload | D: 69632 | =69632, BP frame tối đa 69636 gồm header | C/Node BP |
 
 Launcher dùng startup/shutdown timeout đã validate; 10000 ms là mặc định,
-không phải hằng số ghi đè config. Bound V03 vẫn chờ nhóm duyệt.
+không phải hằng số ghi đè config. Bound V03 đã được hai thành viên duyệt ngày 26/11/2026.
 Startup timeout không là cam kết migration luôn hoàn tất trong khoảng chờ; nếu timeout
 thì cleanup/fail, không listen sớm. Shutdown graceful timeout không bỏ bước
 terminate/kill/reap có giới hạn tại 02 §11. Chi tiết cleanup thuộc T09.
@@ -118,7 +124,7 @@ Không dùng request_timeout_ms để rút budget auth về 5s hoặc kéo mọi
 
 ### Chuỗi, đường dẫn và quan hệ
 
-Các quy tắc bổ sung dưới đây thuộc **đề xuất V03**, cần cùng duyệt với bảng.
+Các quy tắc dưới đây đã được duyệt cùng bảng V03 ngày 26/11/2026.
 
 - H (host): 1..255 byte UTF-8, không whitespace/control/NUL, không chứa scheme
   `://` hoặc slash; IPv4, IPv6 literal không bọc `[]`, hoặc hostname thuần.
@@ -163,10 +169,10 @@ ghi accepted/rejected cùng expected effective config. Các rejection categories
 không thêm mã NET. Startup report tên field + lý do đã lọc, exit khác 0;
 config sai không mở cổng. Chưa cố định câu chữ stderr hay thứ tự lỗi đầu tiên.
 
-Trạng thái: tác giả đã soạn; **Hoàng Quân chưa review; nhóm chưa duyệt V03**.
-Sau review, ghi người/ngày/bound được chấp nhận hoặc sửa, đồng bộ fixtures và
-đánh dấu gate cho T47. Consumer có thể chuẩn bị phần độc lập nhưng chưa nhận
-runtime default/bound mới là quyết định được duyệt.
+Trạng thái: **V03 APPROVED ngày 26/11/2026**, hai thành viên đồng ý theo xác nhận
+trên. Gate quyết định V03 cho T47 đã được đáp ứng; không đồng nghĩa provider hoặc
+consumer đã Done. Nếu đổi profile/bound/quy tắc, nhóm review lại và đồng bộ
+contract + fixtures. C/TS loader và kiểm startup/runtime vẫn NOT_RUN.
 
 ## Khởi tạo admin offline
 

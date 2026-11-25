@@ -1131,7 +1131,8 @@ cùng config, kiểm tra DB/migrate/K07 rồi ready. Trong foundation, --version
 in stderr. Chế độ serve được triển khai M1/M2 và chỉ dùng khi launcher đã cấp
 pipe/lock hợp lệ. C chỉ listen sau ready; timeout startup lấy `business_startup_timeout_ms` đã
 validate, mặc định 10000 ms. Graceful shutdown dùng `business_shutdown_timeout_ms`
-đã validate, mặc định 10000 ms; bound V03 theo config/README, còn chờ nhóm duyệt.
+đã validate, mặc định 10000 ms; bound V03 theo config/README đã được nhóm duyệt
+ngày 26/11/2026, chưa phải runtime đã kiểm chứng.
 
 ### 18.2. Envelope và bảng message
 

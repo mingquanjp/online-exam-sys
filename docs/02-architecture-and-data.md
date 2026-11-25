@@ -657,7 +657,8 @@ và giới hạn theo tài liệu 04. Lỗi logging không cho phép ACK trướ
 ## 11. Khởi động, tắt và lỗi máy chủ
 
 Bảng bound/default V03 cho loader ở [config/README](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9),
-trạng thái **DRAFT/chờ nhóm xác nhận**; C10/M01 hiện hành không bị tự ghi đè.
+trạng thái **APPROVED ngày 26/11/2026** bởi hai thành viên theo xác nhận của
+Minh Quân; V03 cụ thể hóa C10/M01, runtime vẫn cần kiểm chứng.
 
 1. C đọc config, validate đường dẫn Node executable/entry, lấy khóa độc quyền bộ
    dữ liệu bằng flock(LOCK_EX | LOCK_NB) trên file cố định cạnh DB local. C giữ khóa xuyên

@@ -1,7 +1,7 @@
-# Config vectors — SCRUM-9 / V03 DRAFT
+# Config vectors — SCRUM-9 / V03 APPROVED
 
 Nguồn: [bảng config](../../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
-**Chờ review/nhóm xác nhận V03; C/TS loader runtime NOT_RUN.**
+**V03 đã được hai thành viên duyệt ngày 26/11/2026; C/TS loader runtime NOT_RUN.**
 
 `manifest.json` liệt kê input nguyên văn, loại server/client, absolute config path
 giả định và expected accept/reject. `expected/*.json` là effective config đầy đủ

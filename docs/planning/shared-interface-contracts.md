@@ -3,7 +3,8 @@
 Ngày soạn: 22/11/2026. EXAM-T01 / SCRUM-9, W01.
 Cập nhật 23/11/2026 theo hai hướng nhóm đồng ý: TX class nội bộ và control
 counter cục bộ; không thêm wire ACK, không tăng cap từng đầu hoặc đổi FIFO.
-Tác giả: Nguyễn Minh Quân. Reviewer dự kiến: Đặng Hoàng Quân — **chưa review**.
+Tác giả: Nguyễn Minh Quân. Reviewer: Đặng Hoàng Quân — đã góp ý trên PR #2 ngày 25/11; V03 được
+nhóm xác nhận ngày 26/11. Không đồng nghĩa toàn PR đã approve/merge.
 
 Mục tiêu: đủ input/output/error/ownership để hai người triển khai song song.
 Nguồn baseline tại commit `ce5755d`: 02 v2.0 §5/7–9/11, 03 v0.8
@@ -224,7 +225,8 @@ trước mutation → chỉ nhận `now<deadline` → revision → ghi + receipt
 ## 6. Bàn giao và trạng thái
 
 - [Bảng V03](../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9):
-  **DRAFT / chờ nhóm xác nhận**, không được tự coi đã duyệt.
+  **APPROVED ngày 26/11/2026**: Minh Quân xác nhận cả hai thành viên đồng ý
+  toàn bảng/quy tắc/vectors. Gate V03 cho loader đã đáp ứng; runtime NOT_RUN.
 - [Fixtures config](../../tests/fixtures/config/README.md): input nguyên văn,
   expected effective config/rejection cho T47; chưa có loader chạy.
 - T03/T05/T44/T04/T45 nhận RX/TX/schema/canonical; T09 nhận startup/path/lock;

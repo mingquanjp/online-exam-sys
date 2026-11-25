@@ -1,5 +1,16 @@
 # Quyết định sau review thiết kế
 
+## V03 — Duyệt cấu hình ngày 26/11/2026
+
+Nguyễn Minh Quân xác nhận đồng ý và thông báo Đặng Hoàng Quân cũng đồng ý
+[bảng V03](../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
+Nhóm duyệt đủ 20 trường server/6 trường client, required/default/bound/quan hệ,
+profile v1 cố định, quy tắc host/path/executable và bộ 44 input/11 expected.
+Gate quyết định V03 trước loader đã đáp ứng; C10/M01, wire, phân công và phạm vi
+50 người giữ nguyên. Loader/startup/runtime/tải vẫn phải triển khai và kiểm thử;
+không dùng xác nhận này làm bằng chứng PR đã approve/merge hoặc ticket Done.
+Các đoạn nghiên cứu có ngày trước đó giữ trạng thái lịch sử tại thời điểm soạn.
+
 ## Review bổ sung ngày 17/11/2026
 
 [Review trước triển khai](pre-implementation-review.md) đối chiếu lại barem gốc,

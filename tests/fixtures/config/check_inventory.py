@@ -10,7 +10,7 @@ def main():
     fixture_dir = Path(__file__).resolve().parent
     root = fixture_dir.parents[2]
     manifest = json.loads((fixture_dir / "manifest.json").read_text())
-    assert manifest["contract"] == "SCRUM-9/V03-DRAFT"
+    assert manifest["contract"] == "SCRUM-9/V03-APPROVED"
     assert manifest["runtime_status"] == "NOT_RUN"
     samples = {
         kind: json.loads((root / f"config/{kind}.example.json").read_text())

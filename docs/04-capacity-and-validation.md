@@ -14,8 +14,9 @@ là mục tiêu kiểm chứng của nhóm, không phải chỉ tiêu thầy đ�
 
 ## 1. Câu hỏi phải trả lời khi bảo vệ
 
-Review 17/11/2026: V01 đã chốt không thêm CRC32 bản đầu; V03 bound config còn
-mở tại [review trước triển khai](research/pre-implementation-review.md). Ngân
+Review 17/11/2026: V01 đã chốt không thêm CRC32 bản đầu; V03 bound config đã được nhóm duyệt ngày 26/11/2026 tại
+[bảng cấu hình](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
+[Review trước triển khai](research/pre-implementation-review.md) giữ baseline lịch sử. Ngân
 sách frame giữ header 4 byte, NET payload tối đa 65536 byte, frame 65540 byte;
 không thêm overhead CRC hoặc tự đổi payload cap.
 

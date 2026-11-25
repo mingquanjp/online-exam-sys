@@ -76,8 +76,8 @@ không gọi đây là thực thi `tx_enqueue` hay test pipe/Writable.
 
 | Ref / đầu ra | Trạng thái hiện tại | Còn cần |
 | --- | --- | --- |
-| Interface/schema/ownership | Soạn và tự đối chiếu xong; chưa human review | Hoàng Quân review DB/credit/canonical và interface phía TX/B |
-| F08 / V03 | DRAFT — chưa nhóm duyệt | Hai thành viên xác nhận bound/quan hệ/string rules; cập nhật nếu có góp ý |
+| Interface/schema/ownership | Đã nhận góp ý Hoàng Quân trên PR #2 ngày 25/11, sửa ba điểm ngày 26/11 | Review lại bản sửa và approve/merge theo workflow; không suy toàn PR được duyệt từ V03 |
+| F08 / V03 | APPROVED 26/11/2026 — Minh Quân xác nhận cả hai đồng ý toàn bảng/quy tắc/vectors | Gate quyết định đã đáp ứng; loader/runtime vẫn nghiệm thu riêng |
 | F09 BP | Bảng counter/diễn tiến đã soạn, không tăng cap/thêm wire ACK | Review; implementation/counter runtime PT-27/28 ở ticket liên quan |
 | AC-28 config | Bảng + expected fixtures đã chuẩn bị | C/TS loader thật T47; startup/no-listen/cwd/path/file/lock T09/T47 |
 | AC-30 / PT-24 | Quy tắc schema/error/default đã dẫn; không tuyên bố toàn ref PASS | Validator thật T04/T44 và các ca body/envelope/pagination đúng phạm vi sau |
@@ -92,10 +92,10 @@ merge và cập nhật trạng thái Jira vẫn chưa được thực hiện tro
 ## Bàn giao và gate tiếp theo
 
 1. Hoàng Quân review contract, đặc biệt TX ownership, DB và BP/canonical.
-2. Nhóm xác nhận V03 bằng bảng cụ thể ở config/README; không dùng sự đồng ý triển
-   khai SCRUM-9 làm bằng chứng duyệt các bound mới.
-3. Consumer nhận đúng phiên bản contract/fixtures. T47 chỉ dùng bound mới sau
-   gate xác nhận; T09 giữ startup trước listen/lock/cleanup theo nguồn hiện hành.
+2. V03 đã được hai thành viên xác nhận ngày 26/11 theo thông báo của Minh Quân,
+   xem config/README; không đồng nhất duyệt V03 với approve/merge toàn PR.
+3. Consumer nhận contract/fixtures V03-APPROVED; gate quyết định đã đáp ứng cho
+   T47. T09 giữ startup trước listen/lock/cleanup theo nguồn hiện hành.
 4. Khi chuẩn bị PR, xác minh foundation đã merge và chọn base phù hợp trước,
    tránh đưa toàn bộ scaffold vào diff SCRUM-9. Done theo AC/human review/merge,
    không từ trạng thái tự kiểm tài liệu.
@@ -123,3 +123,17 @@ Tự kiểm 26/11: fixture inventory/default/path STATIC PASS (26 trường, 44 
 11 expected); backlog offline PASS (4 Epic/65 task/101 edges, không cycle,
 Jira mutations=0); diff whitespace và liên kết local PASS. Các ca TCP close/
 partial BP/late response và depth là đối chiếu contract, runtime vẫn NOT_RUN.
+
+
+## Xác nhận V03 ngày 26/11/2026
+
+Minh Quân đã đồng ý bảng V03 và thông báo Hoàng Quân cũng đồng ý; đây là nguồn
+xác nhận của cả nhóm trong trao đổi, không suy ra từ việc agent tự kiểm.
+Đã đồng bộ config/README, README, 02/03/04/05, sổ quyết định và manifest/checker/
+README fixtures thành APPROVED; sửa câu absolute path cũ thành không ghép config
+dir, vẫn normalize lexical theo P. Không đổi default/bound hoặc expected data.
+Các ghi chú DRAFT trước đó ở mục có ngày cũ là lịch sử trước xác nhận này.
+
+Fixture checker vẫn chỉ STATIC PASS: 26 trường/44 input/11 expected. Kiểm
+backlog offline và link/whitespace thực hiện lại trước commit. Runtime NOT_RUN;
+gate review/merge PR và nghiệm thu các module vẫn riêng với duyệt thiết kế V03.
