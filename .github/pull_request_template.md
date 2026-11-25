@@ -1,5 +1,6 @@
 <!-- Title tiếng Anh: type(scope): imperative subject [SCRUM-key]. Dùng key Jira thật; chưa có ticket phù hợp thì bỏ key. Description tiếng Việt. Quy tắc: docs/development/git-workflow.md. Xóa How/Limits nếu không cần. -->
 <!-- Agent review: đọc AGENTS.md và git-workflow.md §1.2. Review theo ticket/AC/nguồn hiện hành; findings có bằng chứng, gợi ý tùy chọn không chặn merge. Không tự sửa code hoặc mở rộng scope trong lượt review. -->
+<!-- Viết cho người review chưa đọc chat: nêu vấn đề và kết quả cuối, giữ chi tiết cần để đánh giá. Sửa lại nội dung khi PR đổi; không nối nhật ký cập nhật/ngày/AI hoặc lặp thông tin. Dẫn tài liệu cho chi tiết dài. -->
 
 ## What — Thay đổi gì?
 

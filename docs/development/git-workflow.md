@@ -145,6 +145,13 @@ EXAM-T05 → SCRUM-13. Đối chiếu ticket trên Jira trước khi dùng cho c
 Dùng [template](../../.github/pull_request_template.md), viết tiếng Việt để cả
 hai đọc và dùng chuẩn bị bảo vệ. Giữ ngắn theo độ lớn thay đổi:
 
+Viết cho người review chưa đọc cuộc trò chuyện: mở đầu bằng vấn đề và kết quả
+của PR. Dùng câu rõ nghĩa, chỉ giữ chi tiết giúp đánh giá thay đổi; số liệu/counter
+chi tiết dẫn sang tài liệu khi cần. Khi sửa sau review, viết lại phần liên quan
+theo trạng thái cuối, không nối thêm nhật ký “cập nhật ngày…”, lịch sử AI làm gì
+hoặc lặp lại cùng thông tin ở nhiều mục. Giữ bằng chứng và giới hạn kiểm chứng
+cần thiết; bỏ mục tùy chọn không có nội dung hữu ích.
+
 - **What:** hành vi/đầu ra cuối và link Jira thật; thay đổi giải quyết vấn đề gì.
 - **Why:** lý do và tác động; không chép lại lịch sử trao đổi hoặc toàn bộ ticket.
 - **How:** chỉ giữ nếu lựa chọn kỹ thuật/ranh giới module cần được review.
