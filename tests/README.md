@@ -24,3 +24,16 @@ PT-26..28 cần triển khai ở M1/M2 để kiểm chứng C–Node BP, authori
 
 [Config fixtures SCRUM-9](fixtures/config/README.md) chuẩn bị input/expected dùng
 chung C/TS cho T47; V03 còn chờ nhóm xác nhận và loader runtime NOT_RUN.
+
+## Validation TypeScript/main — SCRUM-12
+
+```sh
+npm run test:validation --workspace @exam/business
+npm run test:validation --workspace @exam/desktop
+npm run check
+```
+
+[Vector validation](fixtures/validation/README.md) giữ input raw và expected cho
+TS hiện tại/C ở T44. Guard main được kiểm bằng fixture sender/frame trong Node,
+chưa phải IPC Electron/pipe thật. Hướng dẫn boundary/ownership lỗi và consumer tại
+[validation README](../apps/business/src/validation/README.md).

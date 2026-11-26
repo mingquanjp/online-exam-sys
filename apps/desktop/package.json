@@ -9,7 +9,8 @@
     "build": "npm run typecheck && electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "start": "electron-vite preview",
-    "setup:runtime": "install-electron"
+    "setup:runtime": "install-electron",
+    "test:validation": "tsc -p tsconfig.test.json && node --test tests/validation.test.mjs"
   },
   "dependencies": {
     "react": "19.3.1",
