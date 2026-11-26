@@ -153,8 +153,8 @@ thực hiện khi người dùng giao; backlog không tự cấp quyền thực 
 
 Đã nhận link SCRUM / board 1 và dự kiến 4–5 giờ/người/ngày; còn xác minh
 metadata/quyền qua API, hai tài khoản thành viên, ngày bắt đầu/ngày nghỉ và
-khối lượng theo estimate ticket. Còn V03 bound config là
-phần đầu vào cần chốt ở task nền,
+khối lượng theo estimate ticket. V03 bound config đã được hai thành viên duyệt
+ngày 26/11/2026 tại [bảng cấu hình](../../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9);
 không thêm CRC32 hoặc thay đổi nghiệp vụ khi chia ticket.
 
 Tài liệu này mô tả flow; [backlog](backlog.md) chứa description/coverage/estimate

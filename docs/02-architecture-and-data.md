@@ -136,17 +136,30 @@ Hash dùng node:crypto.scrypt bất đồng bộ, mỗi lúc một job. Callback
 completion, dispatcher kiểm tra ticket/account version/authority rồi mới cấp
 phiên. Transaction DB luôn kết thúc trước khi chờ hash hoặc write/drain pipe.
 Mỗi job có deadline, kết quả hoàn tất muộn phải được xét ticket còn hiệu lực.
+Job hủy/hết hạn vẫn kết thúc request bằng một response lỗi qua BP khi kênh còn
+hoạt động; C match/drop theo target rồi trả reservation. Callback muộn không áp
+kết quả hoặc trả response lần hai; hash workspace/slot đang chạy chỉ được giải
+phóng khi callback thật hoàn tất. Không thêm ACK/cancel riêng, xem 03 §18.3.
 
 ### 5.2. Queue, timer và credit
 
-Command/completion logic mỗi chiều tối đa 1024 phần tử/8 MiB, tính các bản sao
-đang giữ trong bridge theo nơi sở hữu. Mỗi chiều có 64 slots/512 KiB dự phòng
-cho control/auth lifecycle. Mỗi connection tối đa 8 request thường đang chờ.
+SCRUM-9 cụ thể hóa interface/counter tại
+[hợp đồng nền](planning/shared-interface-contracts.md#4-bp--ticket-counter-và-thời-điểm-chuyển-ownership).
+Đây là bàn giao thiết kế chờ review, không phải BP runtime đã kiểm chứng.
+
+Command/completion mỗi chiều có trần hạch toán tại mỗi đầu 1024 phần tử/8 MiB:
+960 slots/7.5 MiB thường và 64 slots/512 KiB control cục bộ trong tổng.
+Credit thường end-to-end khác counter buffer control độc lập tại sender/receiver;
+hai đầu có thể cùng giữ control, dự toán riêng ở 04 §5.2. Không thêm ACK control.
+Mỗi connection tối đa 8 request thường đang chờ.
 BP framing/credit/ownership được chốt tại tài liệu 03 §18. C giữ credit cho phản
 hồi trước khi chuyển request vào pipe. Node encode một kết quả đã commit vào
 completion queue được giữ chỗ, chuyển ownership output cho C khi C đọc frame hoàn chỉnh.
 Request ticket/credit chỉ được giải phóng khi output đã chuyển vào TCP TX hoặc
-bị loại đúng generation theo 03 §18.4; đọc pipe xong chưa tự chứng minh credit đã được trả.
+response nhận về bị loại đúng generation theo 03 §18.4. TCP close đánh target
+dead nhưng giữ credit của request đã gửi BP tới response/drop hoặc cleanup toàn
+BP; chỉ request chưa ghi byte đầu và gỡ được khỏi queue mới hủy/trả ngay.
+Đọc pipe xong chưa tự chứng minh credit đã được trả.
 
 Node dùng process.hrtime.bigint() cho deadline monotonic và Date.now() cho UTC.
 Trước mỗi command, dispatcher chạy các timer đã tới hạn. Khi rảnh, setTimeout
@@ -647,6 +660,10 @@ và giới hạn theo tài liệu 04. Lỗi logging không cho phép ACK trướ
 
 ## 11. Khởi động, tắt và lỗi máy chủ
 
+Bảng bound/default V03 cho loader ở [config/README](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9),
+trạng thái **APPROVED ngày 26/11/2026** bởi hai thành viên theo xác nhận của
+Minh Quân; V03 cụ thể hóa C10/M01, runtime vẫn cần kiểm chứng.
+
 1. C đọc config, validate đường dẫn Node executable/entry, lấy khóa độc quyền bộ
    dữ liệu bằng flock(LOCK_EX | LOCK_NB) trên file cố định cạnh DB local. C giữ khóa xuyên
    suốt vòng đời child và truyền descriptor lock qua fd 3. Node giữ descriptor
@@ -656,11 +673,13 @@ và giới hạn theo tài liệu 04. Lỗi logging không cho phép ACK trướ
    thu/giới hạn. Node đọc cùng absolute config path và nhận bridge.init.
 3. Node validate config nghiệp vụ, mở DB/migrate/check K07, tạo instance ID và
    gửi bridge.ready. C kiểm tra version/giới hạn, rồi mới bind/listen. Startup
-   timeout 10s, lỗi thì dọn child/pipe và exit khác 0.
+   timeout dùng `business_startup_timeout_ms` đã validate (mặc định 10000 ms),
+   lỗi thì dọn child/pipe và exit khác 0.
 4. Shutdown lúc vận hành bình thường dùng khi room RUNNING/practice OPEN đã kết
    thúc. C dừng accept/request mới, chuyển shutdown sau command đã nhận. Node
    drain transaction, đóng DB rồi bridge.stopped. C flush bounded TX, wait child,
-   đóng descriptors và nhả lock. Graceful timeout 10s, sau đó terminate child và
+   đóng descriptors và nhả lock. Graceful timeout dùng
+   `business_shutdown_timeout_ms` đã validate (mặc định 10000 ms), sau đó terminate child và
    đánh dấu abnormal shutdown, giữ DB để kiểm tra.
 
 Khóa theo flock/open-file-description, không thay bằng fcntl record lock truyền

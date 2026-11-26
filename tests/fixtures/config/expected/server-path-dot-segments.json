@@ -1,0 +1,22 @@
+{
+  "bind_host": "0.0.0.0",
+  "port": 5550,
+  "database_path": "/srv/exam/exam.sqlite3",
+  "log_directory": "/workspace/online-exam-sys/logs",
+  "max_active_users": 50,
+  "max_connections": 128,
+  "max_unauthenticated_connections": 64,
+  "max_payload_bytes": 65536,
+  "rx_frame_timeout_ms": 10000,
+  "heartbeat_interval_ms": 10000,
+  "peer_idle_timeout_ms": 35000,
+  "tx_queue_max_bytes": 131072,
+  "command_queue_max_bytes": 8388608,
+  "completion_queue_max_bytes": 8388608,
+  "waiting_room_timeout_seconds": 1800,
+  "node_executable": "/opt/node/bin/node",
+  "business_entry_path": "/workspace/online-exam-sys/apps/business/dist/main.js",
+  "business_startup_timeout_ms": 10000,
+  "business_shutdown_timeout_ms": 10000,
+  "bridge_max_payload_bytes": 69632
+}

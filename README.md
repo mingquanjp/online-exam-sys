@@ -107,8 +107,8 @@ M1/M2 sẽ thêm pipe server và migration. Sơ đồ/ownership theo tài liệu
 ## Nghiên cứu tính khả thi
 
 [Review trước triển khai ngày 17/11](docs/research/pre-implementation-review.md)
-đối chiếu barem gốc, góp ý và bài giảng. V01 đã chốt giữ length + JSON, không thêm CRC32 bản đầu; còn V03 giới hạn
-config trước loader. Các kết quả runtime vẫn chờ triển khai và kiểm chứng.
+đối chiếu barem gốc, góp ý và bài giảng. V01 đã chốt giữ length + JSON, không thêm CRC32 bản đầu. V03 giới hạn
+config đã được hai thành viên duyệt ngày 26/11/2026 tại [bảng cấu hình](config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9). Các kết quả runtime vẫn chờ triển khai và kiểm chứng.
 
 [Đối chiếu góp ý sau kickoff](docs/research/post-kickoff-review.md) tổng hợp từng
 góp ý của thầy, vị trí đã cập nhật, người phụ trách và bằng chứng còn phải chạy.

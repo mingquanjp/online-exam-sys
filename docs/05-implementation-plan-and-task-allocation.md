@@ -20,7 +20,7 @@ M1/M2 đã đạt chỉ vì build thành công.
 ## 1. Nguyên tắc làm việc
 
 Review 17/11/2026 ở [review trước triển khai](research/pre-implementation-review.md):
-V01 đã chốt không thêm CRC32 bản đầu; còn V03 bound config trước loader.
+V01 đã chốt không thêm CRC32 bản đầu; V03 bound config đã được nhóm duyệt ngày 26/11/2026 trước loader.
 Review chi tiết tiếp theo tại [báo cáo 5 tài liệu](research/five-document-consistency-review.md)
 ghi đánh giá con số, các chỉnh lý và đầu ra cần khóa trước module tương ứng.
 A RX/framing, B encode/TX, cùng vectors/test theo wire format hiện hành; giữ
@@ -148,6 +148,12 @@ Business --version cho biết Node/SQLite runtime. M1 sẽ thêm startup BP, C T
 Electron spawn. Entry scaffold báo usage nếu gọi serve trước bước triển khai.
 
 ## 4. Hợp đồng giữa các module
+
+SCRUM-9 bổ sung [signature/error/ownership nền](planning/shared-interface-contracts.md)
+và [V03 config đã duyệt 26/11/2026](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
+Gate xác nhận V03 đã đáp ứng theo thông báo cả hai đồng ý của Minh Quân;
+review contract còn lại và nghiệm thu consumer vẫn theo ticket. Không coi hợp
+đồng thiết kế là API/header hoặc loader runtime đã triển khai.
 
 Tên hàm dưới đây mô tả trách nhiệm, chưa là ABI C buộc phải dùng y nguyên. Trước
 code, chốt header/types/error/ownership một lần và cả hai dùng chung.

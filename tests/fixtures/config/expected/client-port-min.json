@@ -1,0 +1,8 @@
+{
+  "server_host": "127.0.0.1",
+  "server_port": 1,
+  "connect_timeout_ms": 5000,
+  "request_timeout_ms": 5000,
+  "max_payload_bytes": 65536,
+  "ipc_tx_max_bytes": 262144
+}

@@ -1,0 +1,6 @@
+{
+  "bind_host": "",
+  "port": 5550,
+  "database_path": "../var/data/exam.sqlite3",
+  "log_directory": "../var/log/server"
+}

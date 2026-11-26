@@ -121,7 +121,8 @@ Mọi JSON number nhận vào vẫn phải kiểm tra hữu hạn/nguyên/khoả
 Version đạt trần trả RESOURCE_LIMIT, không wrap về 0.
 
 Parser yêu cầu đúng một JSON object, không trailing JSON, không BOM, không key
-trùng ở mọi cấp; nesting tối đa 16. Không chấp nhận escape tạo NUL hoặc surrogate
+trùng ở mọi cấp; nesting NET/IPC tối đa 16, BP tối đa 18 theo §18.1.
+Payload NET bên trong BP vẫn kiểm riêng với root payload=1, tối đa 16. Không chấp nhận escape tạo NUL hoặc surrogate
 không hợp lệ. Các trường không có trong schema bị từ chối INVALID_ARGUMENT;
 trường nullable bắt buộc hiện diện nhưng được mang null, trường optional được
 ghi rõ bằng ? bên dưới. Thiếu và null là hai trường hợp khác nhau.
@@ -140,7 +141,8 @@ cJSON với length/end-pointer → depth/key trùng → envelope → transport s
 Pipeline Node: strict UTF-8 decode/token/escape/depth/key trùng trước JSON.parse
 → kiểm tra BP/envelope → schema nghiệp vụ → DTO có kiểu. JSON.parse và TypeScript
 type annotation cần bổ sung kiểm tra runtime để thực thi C09. Depth tính root object là mức 1, object/array con
-thêm 1, tối đa 16; kiểm tra trước parse để không dựa vào mặc định sâu của thư viện.
+thêm 1; NET/IPC tối đa 16, BP tối đa 18 và payload NET bên trong vẫn tối đa
+16 theo §18.1. Kiểm bound theo kênh trước parse, không dựa vào mặc định thư viện.
 Chỉ JSON whitespace hợp lệ được phép sau object, không có BOM/trailing JSON/raw NUL.
 Không nhận escape \u0000, surrogate lẻ, UTF-8 lỗi hoặc cú pháp số không đúng JSON.
 Khóa được so sau decode: `type` và `\u0074ype` là trùng; phân biệt hoa thường.
@@ -360,6 +362,8 @@ job; không dùng heartbeat giữ kết nối chưa xác thực vô hạn.
 Đăng ký hoàn tất vẫn ở UNAUTHENTICATED, sau đó người dùng login; chỉ login/resume
 thành công mới chuyển AUTHENTICATED. Node dispatcher kiểm tra hạn job/ticket trước áp dụng
 kết quả hash, không cấp phiên hoặc tạo tài khoản từ job đã hết hạn/hủy.
+Nếu BP còn hoạt động, đường hủy/hết hạn vẫn phải kết thúc request BP bằng một
+response lỗi theo §18.3; không bỏ im lặng rồi làm kẹt reservation của C.
 
 ### 6.2. Lệnh xác thực
 
@@ -831,7 +835,7 @@ sync tìm thấy commit. UI nhận kết quả phục hồi qua truy vấn mới
 | R/W đang chờ mỗi kết nối | 8 command, tối đa 128 KiB payload command chưa xử lý; auth chỉ 1. |
 | RX mỗi kết nối | Một frame dở tối đa 65.540 byte; xử lý phần dư theo chunk, không append cả recv vô hạn. |
 | TX mỗi kết nối | 128 KiB tính cả frame header, trong đó dự phòng 8 KiB cho control/error; max 64 frame. |
-| Queue command / completion BP | Mỗi chiều 1024 phần tử/8 MiB logical credit, gồm metadata BP. Tính bản sao/object parsed thêm vào RSS theo tài liệu 04, quy tắc credit ở §18. |
+| Queue command / completion BP | Mỗi đầu/chiều 1024 phần tử/8 MiB gồm 960 slots/7.5 MiB credit thường và 64 slots/512 KiB control cục bộ; tính metadata BP. Tổng buffer hai đầu/RSS theo tài liệu 04 và §18.4. |
 | Queue băm Node | 64 job chờ + 1 scrypt async đang chạy, 1 job/kết nối; rate limit và timeout theo tài khoản/IP. |
 | IPC main/C | TX mỗi chiều 256 KiB, tối đa 32 frame; main pending tối đa 32 request, NET active tối đa 8. |
 | Mỗi lượt poll/kết nối | Tối đa 64 KiB đọc và 64 KiB ghi, tối đa 16 frame chuyển command rồi nhường lượt. |
@@ -842,10 +846,10 @@ thread stack, hash memory và kernel socket buffers tính riêng ở tài liệu
 cap actual allocation để payload nhỏ không tạo số node JSON/malloc vô hạn.
 
 C poll xử lý pipe nonblocking, Node transaction kết thúc trước chờ stdout drain. Admission
-phải giữ trước slot completion cho request nhận vào; riêng auth completion/control
-có dự phòng. Có thể dùng completion descriptor nhỏ tham chiếu dữ liệu theo credit
+phải giữ trước slot completion cho request nhận vào; auth response cũng dùng
+reservation thường, lifecycle control có vùng riêng. Có thể dùng completion descriptor nhỏ tham chiếu dữ liệu theo credit
 thay vì giữ cả bản serialize. Không cho request vừa nhận hết credit xong vẫn đòi
-enqueue response không giới hạn. Theo tài liệu 4, trong mỗi queue dành 64 slots/512 KiB control/auth completion;
+enqueue response không giới hạn. Theo tài liệu 4, mỗi đầu/chiều dành 64 slots/512 KiB control cục bộ;
 phần thường tối đa 960 slots/7,5 MiB. Giữ byte credit worst-case response và trả
 khi reactor tiêu thụ/dọn; triển khai phải kiểm chứng saturation, không chỉ set cap.
 
@@ -1129,7 +1133,10 @@ Phần metadata bao NET tối đa 4096 byte, có cap chuỗi và kiểm tra tổ
 C validate config và lấy lock dữ liệu trước spawn. C gửi init, Node validate
 cùng config, kiểm tra DB/migrate/K07 rồi ready. Trong foundation, --version chỉ
 in stderr. Chế độ serve được triển khai M1/M2 và chỉ dùng khi launcher đã cấp
-pipe/lock hợp lệ. C chỉ listen sau ready, timeout startup 10s.
+pipe/lock hợp lệ. C chỉ listen sau ready; timeout startup lấy `business_startup_timeout_ms` đã
+validate, mặc định 10000 ms. Graceful shutdown dùng `business_shutdown_timeout_ms`
+đã validate, mặc định 10000 ms; bound V03 theo config/README đã được nhóm duyệt
+ngày 26/11/2026, chưa phải runtime đã kiểm chứng.
 
 ### 18.2. Envelope và bảng message
 
@@ -1185,6 +1192,19 @@ C giữ FIFO opened → requests → closed của cùng generation. Node xử l�
 và domain qua một dispatcher tuần tự. Một request đã được Node nhận hợp lệ trước
 closed có thể commit, receipt được sync khi user quay lại. Request thuộc context
 đã đóng/revoked bị từ chối trước mutation. Hash completion xét ticket/context lại.
+Mỗi request hợp lệ Node đã nhận phải phát đúng một response cuối khi BP còn
+hoạt động, kể cả auth bị hủy/hết hạn hoặc target đã closed/revoked. Dùng kind
+`response` hiện có, giữ request_id/type/operation_id và target gốc. Lỗi auth
+hủy/hết hạn trước áp dụng dùng INTERNAL_ERROR/effect NONE; trường hợp phiên bị
+thay/hết hạn dùng mã SESSION_* tương ứng theo §11. Không cấp user/session mới.
+C match ticket rồi loại response của target dead/authority cũ và trả reservation
+đúng một lần. Việc bỏ dữ liệu khỏi NET không được bỏ qua bước kết thúc ticket BP.
+Job đã phát response lỗi thì hash callback muộn chỉ cleanup, không phát response
+thứ hai hoặc áp dụng kết quả. Slot/hash workspace của job đang chạy vẫn giữ tới
+callback thật; trả BP reservation không cho phép chạy thêm hash đồng thời.
+Nếu BP lỗi thì áp fail-stop/cleanup §18.4, không cam kết phát được response.
+Không thêm kind ACK/cancel hoặc mở ngoại lệ terminal_auth cho lỗi auth.
+
 C xử lý sys.hello/sys.ping bằng C, sys.hello chỉ sau Node ready. Auth và mọi API
 mục 7 được chuyển Node. C và Node cùng hạn mức in-flight theo §12.
 
@@ -1202,13 +1222,20 @@ handle. Socket/POSIX I/O, partial send, heartbeat và timeout giữ ở C.
 
 ### 18.4. Backpressure và lỗi giữa hai tiến trình
 
-Command và completion mỗi chiều có logical cap 1024 frames/8 MiB, gồm bytes đang
-chờ enqueue/write và frame parse chưa xử lý tại đầu nhận. Headroom mỗi chiều 64
-frames/512 KiB cho opened/closed/binding/auth completion/shutdown. Kernel pipe và
-các bản sao cJSON/V8 được đo thêm trong RSS. C kiểm tra credit response trước
+Bảng counter/ownership đề xuất trong SCRUM-9 ở
+[hợp đồng nền §4](planning/shared-interface-contracts.md#4-bp--ticket-counter-và-thời-điểm-chuyển-ownership).
+Giữ nguyên wire/caps dưới đây; review và PT-27/28 runtime vẫn cần thực hiện.
+
+Command và completion mỗi chiều có trần hạch toán tại mỗi đầu 1024 frames/8 MiB:
+phần thường 960 frames/7.5 MiB dùng logical credit end-to-end; control có counter
+cục bộ 64 frames/512 KiB trong tổng ở từng đầu gửi/nhận. Control gồm
+opened/closed/binding/init/ready/event_credit/close/shutdown/stopped, không gồm
+auth response. Kernel pipe và các bản sao cJSON/V8 được đo thêm trong RSS.
+C kiểm tra credit response trước
 chuyển request. Credit worst-case BP frame là 69636 byte, chỉ cấp tối đa
 floor(7.5 MiB / 69636)=112 ordinary completions cùng lúc. C giữ request ticket tới
-khi output được đưa vào TCP TX hoặc hủy đúng generation. Mỗi request chuyển sang
+khi output được đưa vào TCP TX hoặc response nhận về bị loại đúng generation.
+TCP close chỉ đánh target dead, không tự trả credit của request đã ghi sang BP. Mỗi request chuyển sang
 Node mang một response reservation 69636 byte ngầm định, Node trả tối đa một
 response cuối tương ứng. C cấp tối đa 16 frame event_credit outstanding từ cùng pool, tổng response
 reservations + outstanding event credits nằm trong 960 slots/7.5 MiB. Node chỉ
@@ -1216,6 +1243,14 @@ enqueue event khi có đủ frames/bytes, trừ byte encoded thực tế. Sau kh
 output vào TX hoặc loại target cũ, C trả event_credit theo số frame/byte đã tiêu
 thụ. Event nhỏ có thể gộp theo target/type để client sync, tránh queue vô hạn.
 Control bytes thuộc vùng dự phòng và có hard cap số/byte tương ứng ở mỗi đầu.
+Sender charge trước enqueue và giữ tới write hết frame (C) hoặc write callback
+xong (Node), kể cả buffer nằm trong Writable; partial/EAGAIN/write(false)/drain
+không tự trả charge. Receiver charge frame hoàn chỉnh tới xử lý xong/hết giữ
+buffer, không trả ngay khi parse. Cleanup terminal trả các khoản còn giữ đúng
+một lần. Hai counter này độc lập, không cần ACK mới và không là credit end-to-end.
+TX+RX control có thể cùng chiếm tối đa 128 frames/1 MiB mỗi chiều; hai chiều
+tối đa 2 MiB, đã được tách trong dự toán 04 §5.2. Frame dở vẫn tính vào RX staging.
+Control hết capacity thì fail-stop, không bỏ cap để bảo đảm enqueue bằng mọi giá.
 Auth request chuyển Node cũng giữ response reservation thường 69636 byte như
 mọi request; binding/close và lifecycle control dùng vùng dự phòng. Auth response
 không giữ thêm một reservation 69636 byte thứ hai trong 512 KiB control. Cụm
@@ -1223,7 +1258,12 @@ không giữ thêm một reservation 69636 byte thứ hai trong 512 KiB control.
 trước khi output được đưa vào TCP TX/loại đúng target. Bảng counter/ownership
 trong implementation phải thể hiện các khoản này riêng, kiểm 50 login ở PT-27/28.
 Command slot được C giữ tới response cuối để giới hạn cả input chưa xử lý trong
-Node. FIFO và ticket đảm bảo giải phóng đúng một lần trên success/close/EOF.
+Node. Request chưa ghi byte BP đầu tiên và gỡ được khỏi queue C có thể hủy,
+trả command/response reservation ngay. Request đã ghi sang BP giữ ticket và cả
+hai khoản tới khi C nhận/loại response tương ứng hoặc cleanup toàn BP. Frame
+đã gửi dở phải hoàn tất, không cắt frame vì TCP close; giữ FIFO request→closed.
+FIFO và ticket đảm bảo giải phóng đúng một lần, không tái dùng credit trong khi
+request/response cũ còn tồn tại chỉ vì socket thí sinh đã đóng.
 
 Pipe write EAGAIN/partial ở C giữ offset và poll POLLOUT. Node stdout.write(false)
 dừng dequeue output tới drain, có hard cap riêng trước write. Node chỉ dispatch
@@ -1231,7 +1271,7 @@ request khi response credit đã cấp, transaction kết thúc trước chờ d
 Khi một client chậm, C giới hạn TX và đóng riêng theo timeout. Khi cả BP ngừng
 đọc/tiến triển 15s với bytes pending, C dừng instance để tránh treo mọi ca.
 
-EOF, Node exit, malformed BP hoặc control hết credit khiến C dừng accept/dispatch,
+EOF, Node exit, malformed BP hoặc control hết capacity khiến C dừng accept/dispatch,
 đóng TCP, giữ các W chưa có response là UNKNOWN ở phía client và dọn child/pipe.
 C chờ Node exit và thu hồi lock. Node stdin EOF phải dừng nhận, hoàn thành transaction
 đang chạy nếu có thể, đóng DB rồi thoát. Khởi động lại tạo server_instance_id mới,

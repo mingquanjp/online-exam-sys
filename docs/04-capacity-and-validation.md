@@ -14,8 +14,9 @@ là mục tiêu kiểm chứng của nhóm, không phải chỉ tiêu thầy đ�
 
 ## 1. Câu hỏi phải trả lời khi bảo vệ
 
-Review 17/11/2026: V01 đã chốt không thêm CRC32 bản đầu; V03 bound config còn
-mở tại [review trước triển khai](research/pre-implementation-review.md). Ngân
+Review 17/11/2026: V01 đã chốt không thêm CRC32 bản đầu; V03 bound config đã được nhóm duyệt ngày 26/11/2026 tại
+[bảng cấu hình](../config/README.md#v03--bảng-cấu-hình-đề-xuất-scrum-9).
+[Review trước triển khai](research/pre-implementation-review.md) giữ baseline lịch sử. Ngân
 sách frame giữ header 4 byte, NET payload tối đa 65536 byte, frame 65540 byte;
 không thêm overhead CRC hoặc tự đổi payload cap.
 
@@ -198,7 +199,7 @@ không chỉ .db cuối ca. [Nguồn: SQLite WAL](https://www.sqlite.org/wal.htm
 | Phòng WAITING/RUNNING | Tối đa 50, nằm trong 50 reservations; phòng trống không tồn tại vì chủ là member. ENDED/CANCELLED chỉ lưu DB/truy vấn phân trang, không giữ reservation. |
 | Kết nối mở | 128, tối đa 64 chưa xác thực; auth users online không nhất thiết đang chiếm reservation. |
 | RX/TX | Một frame RX ≤65.540 B và TX ≤128 KiB/kết nối, lazy allocation. |
-| Command/completion | Mỗi queue 1.024 phần tử/8 MiB, giới hạn đầu tiên chạm có hiệu lực. |
+| Command/completion | Mỗi đầu/chiều 1.024 phần tử/8 MiB, gồm pool thường và control cục bộ; chi tiết §5.4. |
 | Auth | 64 job chờ + 1 scrypt async đang chạy trong Node. Không một thread/hash buffer cho mỗi user. |
 | Main IPC | Pending 32 request, NET 8 + 1 ping control; TX 256 KiB/chiều. |
 
@@ -213,12 +214,13 @@ transaction tạo/giải phóng activity thay counter, không tin biến đếm 
 | --- | --- | --- |
 | C RX TCP tối đa | Khoảng 3.125 MiB | Khoảng 8.001 MiB |
 | C TX TCP tối đa | 6.25 MiB | 16 MiB |
-| BP command/completion credit logic | 16 MiB tổng hai chiều | 16 MiB |
+| BP credit thường (command/completion) | 15 MiB tổng hai chiều | 15 MiB |
+| BP control TX/RX cục bộ | 2 MiB: 4 vùng × 512 KiB, cùng có thể đang giữ | 2 MiB |
 | Bản sao C/Node trên hai đầu pipe | Dự toán thêm tới 16 MiB, đo thực khi bridge đầy | 16 MiB |
 | BP RX staging hai chiều | Khoảng 0.133 MiB | Khoảng 0.133 MiB |
 | SQLite cache mục tiêu trong Node | 8 MiB | 8 MiB |
 | scrypt workspace một job | Khoảng 64 MiB tại N=65536,r=8,p=1, maxmem=96 MiB | Cùng tham số |
-| Subtotal các mục trên | Khoảng 113.5 MiB | Khoảng 128.1 MiB |
+| Subtotal các mục trên | Khoảng 114.5 MiB | Khoảng 129.1 MiB |
 
 V8 heap/runtime, cJSON/object metadata, native crypto/libuv threads, Node/C code,
 statement cache và log được đo thêm. Kernel socket/pipe buffers và filesystem
@@ -227,7 +229,7 @@ Cần cap số command/object cùng byte và nhường event loop giữa các ha
 Subtotal này chưa cộng các object ứng viên/snapshot trong lúc sinh đề. Với M,
 50 × 100 × 8.192 B đã là 39,0625 MiB nội dung thô nếu giữ cả bộ trong RAM; JSON,
 object và các bản sao có thể lớn hơn. Generator phải ghi/giải phóng có giới hạn,
-không cache toàn bộ lịch sử hoặc coi ngân sách 128,1 MiB là RSS tối đa của server.
+không cache toàn bộ lịch sử hoặc coi ngân sách 129,1 MiB là RSS tối đa của server.
 Ngưỡng RSS ở §7 tính **tổng C + Node child** và ghi riêng từng process, hash/DB
 nằm trong RSS Node. Electron chạy trên máy thí sinh có số đo riêng.
 
@@ -275,8 +277,12 @@ thô, lựa chọn/đáp án đúng, mật khẩu hoặc token; load-test trace 
 
 ### 5.4. Credit để queue không deadlock
 
-Trong tổng mỗi queue 1.024 slots/8 MiB, dành 64 slots/512 KiB cho control/auth
-completion; phần thường tối đa 960 slots/7,5 MiB. TX mỗi socket dành 8 KiB control
+Trong tổng mỗi đầu/chiều 1.024 slots/8 MiB, dành 64 slots/512 KiB cho control
+cục bộ; phần thường tối đa 960 slots/7,5 MiB. Control sender giữ tới write hết
+(C) hoặc write callback (Node); receiver giữ tới xử lý xong/hết giữ buffer.
+Không có ACK trả control credit; mỗi chiều TX+RX có thể cùng giữ 1 MiB, hai chiều
+là 2 MiB như §5.2, không coi 512 KiB là tổng end-to-end. Phần thường giữ credit
+end-to-end theo các mốc dưới đây. TX mỗi socket dành 8 KiB control
 trong cap 128 KiB. Reactor từ chối nhận thêm lệnh nếu không giữ được slot và byte
 credit completion theo worst-case response hợp lệ (tối đa một frame/command).
 Credit giữ từ admission tới khi reactor đưa output vào TCP TX hoặc loại đúng
@@ -287,8 +293,10 @@ Auth response cũng dùng response reservation thường; binding/lifecycle cont
 dùng reserve, không giữ thêm 69636 byte/auth vào riêng control pool. Chi tiết
 và mốc trả credit theo protocol §18.4, không dựa vào tên queue để tính hai lần.
 
-Slot dùng cho auth pending phải còn được bảo lưu tới lúc hash hoàn tất/hủy, không
-trả sớm rồi đòi thêm slot không còn chỗ. Khi chuyển completion sang TX thất bại
+Phân biệt hash slot với BP reservation: hash đang chạy giữ workspace/slot tới
+callback thật, không mở job thứ hai chỉ vì timeout/hủy. Auth hủy/hết hạn phát
+một response lỗi BP theo 03 §18.3; C chỉ trả BP reservation khi nhận/route/drop
+response hoặc cleanup toàn BP, không tự trả chỉ vì TCP đã đóng. Khi chuyển completion sang TX thất bại
 vì peer chậm, đóng peer, dọn buffer và trả credit; commit bền không bị hoàn tác.
 Timer/internal job có đường điều khiển dự phòng, không enqueue sau vô hạn lệnh user.
 Đây là hợp đồng thiết kế queue, phải có test saturation, không chỉ kiểm tra ping.
