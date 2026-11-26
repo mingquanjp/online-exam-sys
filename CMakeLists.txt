@@ -17,7 +17,7 @@ target_compile_definitions(exam_build_options INTERFACE _POSIX_C_SOURCE=200809L)
 target_compile_options(exam_build_options INTERFACE
     $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-Wall;-Wextra;-Wpedantic;-Werror>)
 
-add_library(exam_common STATIC src/common/build_info.c)
+add_library(exam_common STATIC src/common/build_info.c src/common/tx.c)
 target_include_directories(exam_common PUBLIC src/common/include)
 target_link_libraries(exam_common PUBLIC exam_build_options PRIVATE exam_cjson)
 target_compile_definitions(exam_common PRIVATE EXAM_VERSION="${PROJECT_VERSION}")
@@ -32,4 +32,14 @@ include(CTest)
 if(BUILD_TESTING)
     add_test(NAME foundation.client-version COMMAND exam-client --version)
     add_test(NAME foundation.server-version COMMAND exam-server --version)
+
+    add_executable(exam-tx-test tests/tx_test.c)
+    target_link_libraries(exam-tx-test PRIVATE exam_common)
+    # Chỉ bộ test Linux thay kết quả write để tạo EINTR có thể tái lập.
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        target_compile_definitions(exam-tx-test PRIVATE EXAM_TEST_WRAP_WRITE=1)
+        target_link_options(exam-tx-test PRIVATE "LINKER:--wrap=write")
+    endif()
+    add_test(NAME transport.tx COMMAND exam-tx-test)
+    set_tests_properties(transport.tx PROPERTIES TIMEOUT 10)
 endif()

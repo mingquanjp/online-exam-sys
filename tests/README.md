@@ -1,7 +1,20 @@
 # Kiểm chứng
 
-Hiện CTest chỉ có smoke `--version` để kiểm tra binary và dependency link/runtime.
-Không kiểm chứng socket, deadline, quyền hoặc khả năng 50 người.
+CTest có hai smoke `--version` và `transport.tx` cho SCRUM-13. Ca TX kiểm tra
+header và giới hạn frame, FIFO và quyền sở hữu buffer, ghi dở trên socket
+nonblocking, chờ `POLLOUT` sau `EAGAIN`, bỏ theo dõi khi queue rỗng và `EPIPE`
+khi đầu đọc đóng. Trên Linux và WSL, ca `EINTR` dùng `--wrap=write` của linker
+để giả lập ngắt tại đúng descriptor cần kiểm tra, sau đó gửi các byte thật qua pipe.
+
+Trong Linux hoặc WSL, sau khi cấu hình bằng `cmake --preset dev`, chạy:
+
+```sh
+make -C build/dev -j2
+make -C build/dev test
+```
+
+Các ca này kiểm tra module TX độc lập. Kiểm chứng luồng TCP qua reactor, deadline,
+quyền và tải 50 người thuộc các mốc tích hợp.
 
 Khi triển khai, bổ sung kiểm chứng có ý nghĩa theo AC/PT/LT ở tài liệu 01/03/04,
 nhất là split/coalesced frame, partial I/O, retry và transaction lỗi.
