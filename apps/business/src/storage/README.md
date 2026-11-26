@@ -1,19 +1,20 @@
 # storage
 
-Hoàng Quân chủ trì node:sqlite open/migration/transaction wrapper (T06).
-Minh Quân cung cấp SQL và repository users/rooms/members/activity (SCRUM-10).
-Một DatabaseSync thuộc dispatcher; repository mượn kết nối, không mở/đóng DB.
+SCRUM-14 cung cấp runner migration và transaction qua `node:sqlite`. Các
+repository users/rooms/members/activity của SCRUM-10 dùng cùng kết nối. Dispatcher
+sở hữu `DatabaseSync`, còn repository mượn kết nối trong phạm vi thao tác.
 
 ## API bàn giao
 
 | Module | Đầu ra |
 | --- | --- |
+| `database.ts` | `openDatabase(databasePath)` trả kết nối sau khi kiểm WAL/FULL/FK, migration và K07. `withTransaction(db, work)` chạy callback đồng bộ trên cùng kết nối và chỉ trả thành công sau commit. |
 | `users-repository.ts` | `create(NewUser) → DbId`, `findById` / `findByUsername → UserRow hoặc null`. Row chứa hash/auth_version chỉ dùng nội bộ auth, không là public User DTO. |
 | `rooms-repository.ts` | `create → DbId`, `findById → RoomRow hoặc null`, `list(afterId,limit,state?) → {items,has_more}`. Phòng sort ID giảm dần; limit 1..20; domain dựng cursor từ hàng thực trả, áp byte budget của frame. |
 | `rooms-repository.ts` | `configure(id,expectedVersion,name,config)`, `start(id,expectedVersion,startedAt,deadlineAt)`, `cancel(id,cancelledAt,reason)`, `end(id,endedAt) → boolean`. false = không có hàng đúng state/version, domain phải đọc/phân loại theo giao thức. |
 | `room-members-repository.ts` | `add`, `find → MemberRow hoặc null`, `list`, `count`, `remove → boolean` theo đúng cặp room/user. Không có callback tự xóa khi TCP disconnect. |
 | `user-activity-repository.ts` | `find → ActivityRef hoặc null`, `count`, `add`, `release → boolean`. Add không UPSERT/ghi đè; release theo user + kind + resource, không có thì false. |
-| `storage-types.ts` | `DbId=string`, `DbReadContext/Tx=DatabaseSync`, `ActivityRef`, kiểu config/state và `bindId`. Tx là tiền điều kiện runtime, không phải kết nối khác hoặc transaction runner thứ hai. |
+| `storage-types.ts` | `DbId=string`, `DbReadContext/Tx=DatabaseSync`, `ActivityRef`, kiểu config/state và `bindId`. `Tx` mượn cùng kết nối khi transaction còn mở. |
 
 Tất cả mutation yêu cầu `db.isTransaction=true`, thiếu thì ném lỗi lập trình trước
 khi ghi. Caller/T06 sở hữu BEGIN/COMMIT/ROLLBACK; chỉ trả thành công cho client
@@ -33,7 +34,28 @@ xạ DATABASE_ERROR, USERNAME_TAKEN, ACTIVE_ACTIVITY, version/state... theo ng�
 cảnh; không đưa exception/SQL thô vào response. Lớp repository này chưa phải
 helper `Result<...,DomainError>` trong hợp đồng nghiệp vụ SCRUM-9.
 
-## Transaction cần nối ở consumer
+## Mở DB, xử lý lỗi và nối vào consumer
+
+Launcher của SCRUM-17 giữ khóa file dữ liệu trước khi gọi `openDatabase` với
+đường dẫn đã resolve. Runner dùng `prepare` để phát hiện bảng/cột thiếu trước
+khi bàn giao kết nối. Runner kiểm quyền ghi của file đã tồn tại trước khi mở
+SQLite để tránh tạo WAL/SHM chỉ đọc. Với DB đã đúng version, runner thử ghi rồi
+rollback để kiểm đường ghi qua SQLite. DB mới được kiểm trong transaction
+migration trước commit. Nếu còn phòng RUNNING hoặc bài OPEN,
+K07 dừng startup để operator kiểm tra dữ liệu. Phòng WAITING được giữ theo C02.
+
+Chính sách F10 tại SCRUM-14 đặt `busy_timeout = 0 ms`. `BEGIN IMMEDIATE` lấy
+quyền ghi trước khi gọi nghiệp vụ. Khi SQLite trả `SQLITE_BUSY` và chưa có thay
+đổi, wrapper trả `BUSY`, `effect=NONE`, với `retry_after_ms=100` dành cho phản
+hồi. Dispatcher không sleep hoặc retry SQLite trong transaction.
+
+Nếu callback trả lỗi, rollback xong mới trả lỗi nghiệp vụ. Lỗi SQLite với
+rollback đã xác nhận trả `DATABASE_ERROR/NONE` hoặc `BUSY/NONE`. Nếu không thể
+xác nhận kết quả, wrapper trả `OUTCOME_UNKNOWN/UNKNOWN`, chặn tiếp tục ghi và
+thử đóng kết nối. Consumer dừng dùng kết nối đó và đối chiếu receipt sau khi
+mở lại theo quy trình vận hành. `diagnostics` nằm ngoài `error` và chỉ chứa bước
+xảy ra lỗi cùng mã SQLite nếu có. Dispatcher dùng phần này cho log nội bộ và chỉ
+đưa `error` vào phản hồi client.
 
 - Tạo phòng: kiểm authority/availability/cap → `rooms.create` → `members.add`
   cho chủ → helper reserve activity → receipt → commit. Hàm `rooms.create`
@@ -47,5 +69,6 @@ helper `Result<...,DomainError>` trong hợp đồng nghiệp vụ SCRUM-9.
   kiểm đúng user/state, cùng ref thì no-op, khác ref thì ACTIVE_ACTIVITY, và cap
   50. PK/XOR không tự kiểm được những điều kiện nhiều bảng này.
 
-Kiểm thử trong `apps/business/tests/storage.test.mjs` dùng node:test + SQLite
-thật trong bộ nhớ. Chưa có runner T06, auth/room handler, UI, LAN hoặc tải 50 người.
+`npm run test:storage --workspace @exam/business` chạy cả test repository
+SCRUM-10 và test SCRUM-14 trên file SQLite tạm. Việc phát BP ready, nạp config,
+khóa launcher, auth và admin CLI nằm ở các ticket consumer.

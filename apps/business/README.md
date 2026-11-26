@@ -12,7 +12,8 @@ npm run check:business
 
 Entry point hiện có --version, in thông tin vào stderr và giữ stdout cho BP ở
 bước tích hợp. Các thư mục domain/bridge/auth/storage/config/admin có phân công.
-Socket LAN, pipe runtime, migration, admin và handler sẽ được triển khai ở M1–M5.
+SCRUM-14 cung cấp migration và lớp transaction tại [storage](src/storage/README.md).
+BP dispatcher sẽ gọi phần này khi khởi động ở mốc tích hợp.
 node:sqlite trong Node 24.15.0 có trạng thái release candidate. Runtime hiện tại
 báo SQLite 3.51.3. Cần ghi phiên bản thực trên Linux khi kiểm chứng.
 

@@ -2,7 +2,7 @@ import type { DatabaseSync, StatementSync } from 'node:sqlite';
 
 export type DbId = string;
 export type DbReadContext = DatabaseSync;
-// T06 cung cấp with_transaction; repository chỉ mượn kết nối đang trong transaction.
+// withTransaction mở giao dịch trên cùng kết nối mà repository đang mượn.
 export type Tx = DatabaseSync;
 export type ActivityRef = { kind: 'ROOM' | 'PRACTICE'; id: DbId };
 export type RoomState = 'WAITING' | 'RUNNING' | 'ENDED' | 'CANCELLED';
