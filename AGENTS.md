@@ -27,6 +27,19 @@
   vừa đủ cho quy mô thực tế. Mỗi cơ chế thêm phải nêu vấn đề cụ thể và cân nhắc
   cách đơn giản hơn giữ cùng tính đúng đắn. Ưu tiên API/thư viện sẵn có trong
   stack và tái sử dụng code; không tự thêm dependency, tối ưu sớm hoặc viết lại.
+- Trước khi tự viết tiện ích/thuật toán, kiểm helper trong repo, rồi API chuẩn
+  và thư viện đã có trong stack. Nếu có API phù hợp cùng contract, dùng trực
+  tiếp; không tự cài lại chỉ vì cách thủ công cũng đúng. Đối chiếu semantics,
+  phiên bản hỗ trợ, ownership và lỗi; tra tài liệu chính thức khi chưa chắc.
+  Chỉ tự viết phần còn thiếu để đáp ứng yêu cầu cụ thể; giải thích ngắn lý do
+  khi bàn giao, không bắt mỗi hàm có tài liệu hoặc wrapper riêng.
+- “Tối ưu” ưu tiên đúng, ít cơ chế và dễ đọc/giải thích; không đua số dòng hoặc
+  hiệu năng chưa đo. Không cấm helper nghiệp vụ, state framing hay guard cần
+  thiết. Dùng memcpy + ntohl thay dịch bit đọc length; không thay guard key JSON
+  trùng bằng JSON.parse khi API đó làm mất thông tin cần kiểm.
+- Trước bàn giao code, rà riêng phần tự viết trong diff: có API/helper tương
+  đương chưa dùng, nhánh/state/wrapper dư hoặc xử lý ngoài AC không? Nêu ngắn
+  lựa chọn đáng chú ý và lý do giữ phần tự viết; test PASS không thay bước này.
 - Đặt tên hàm/biến/hằng số có nghĩa, theo quy tắc hiện có. Viết các bước tường minh;
   tách hàm theo nhiệm vụ hoặc nhu cầu dùng lại, tránh chuỗi wrapper quá nhỏ.
   Gom hằng số ở nơi dễ tìm, không rải magic numbers hoặc tạo tầng config mới.
@@ -84,6 +97,11 @@ trước khi review; không cần người dùng nhắc lại toàn bộ quy t�
   kiện dùng gây hiểu sai contract cần nêu cụ thể; góp ý câu chữ, chia hàm hoặc
   cách đánh số đơn thuần không tự thành lỗi chặn merge. Không bắt sửa hàng loạt
   code ngoài diff để áp quy tắc mới, hoặc yêu cầu chạy Doxygen/sinh tài liệu.
+
+- Review luôn kiểm việc tái sử dụng API/helper và độ đơn giản trong diff, không
+  chỉ kiểm bug. Khi đề xuất thay, chỉ rõ API và vì sao giữ cùng semantics;
+  không ép thêm dependency hoặc bỏ ràng buộc để code ngắn hơn. Phân biệt cải
+  thiện dễ đọc với lỗi correctness; không tự nâng mọi góp ý thành blocker.
 
 ## Kiểm tra và dữ liệu
 
