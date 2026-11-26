@@ -17,7 +17,7 @@ target_compile_definitions(exam_build_options INTERFACE _POSIX_C_SOURCE=200809L)
 target_compile_options(exam_build_options INTERFACE
     $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-Wall;-Wextra;-Wpedantic;-Werror>)
 
-add_library(exam_common STATIC src/common/build_info.c src/common/tx.c)
+add_library(exam_common STATIC src/common/build_info.c src/common/tx.c src/common/rx.c)
 target_include_directories(exam_common PUBLIC src/common/include)
 target_link_libraries(exam_common PUBLIC exam_build_options PRIVATE exam_cjson)
 target_compile_definitions(exam_common PRIVATE EXAM_VERSION="${PROJECT_VERSION}")
@@ -42,4 +42,9 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME transport.tx COMMAND exam-tx-test)
     set_tests_properties(transport.tx PROPERTIES TIMEOUT 10)
+
+    add_executable(exam-rx-test tests/rx_test.c)
+    target_link_libraries(exam-rx-test PRIVATE exam_common)
+    add_test(NAME transport.rx COMMAND exam-rx-test)
+    set_tests_properties(transport.rx PROPERTIES TIMEOUT 10)
 endif()

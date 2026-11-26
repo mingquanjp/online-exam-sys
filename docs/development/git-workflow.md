@@ -84,6 +84,13 @@ việc đó rõ ràng thì làm đúng phạm vi được giao. Sửa góp ý l�
    refactor và tối ưu giả định không là blocker. Nếu có gợi ý hữu ích, tách phần
    tùy chọn và nêu rõ không chặn merge; không tạo danh sách góp ý cho đủ mục.
 
+Trước kết luận review, rà phần tự viết trong diff với helper repo/API chuẩn/
+thư viện hiện có. Không bỏ bước này vì code đúng hoặc test PASS. Nếu đề nghị
+thay, nêu API cụ thể và đối chiếu semantics/ownership/lỗi; nếu cần tự viết,
+giải thích ngắn yêu cầu API sẵn có chưa đáp ứng. Ưu tiên code trực tiếp, dễ bảo
+vệ; không thêm abstraction/dependency hoặc bỏ tính đúng để giảm dòng. Góp ý
+đơn giản hóa không mặc nhiên là lỗi chặn merge.
+
 Ví dụ: TX bỏ phần byte chưa gửi sau partial send là lỗi đúng phạm vi; đòi thêm
 WebSocket hoặc chuyển framework để “dễ scale” không phải điều kiện nghiệm thu.
 Sửa framing cần ca split/gộp và cap theo AC, không mặc nhiên cần chạy toàn bộ
