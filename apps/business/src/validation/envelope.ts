@@ -85,8 +85,8 @@ export function errorDto(value: unknown): JsonObject {
     details: object(row.details, 'details') };
 }
 
-/** @brief Kiểm khung response; schema body/details theo type do owner bổ sung trước khi đưa tới UI. */
-export function responseEnvelope(value: unknown): JsonObject {
+/** @brief Kiểm response theo kênh; consumer vẫn kiểm correlation và schema body/details. */
+export function responseEnvelope(value: unknown, channel: 'NET' | 'IPC' = 'NET'): JsonObject {
   return boundary(() => {
     const row = exactKeys(value, ['v', 'kind', 'request_id', 'type', 'operation_id', 'ok', 'effect', 'replayed', 'body', 'error']);
     integer(row.v, 1, 1, 'v');
@@ -97,13 +97,21 @@ export function responseEnvelope(value: unknown): JsonObject {
     boolean(row.ok, 'ok');
     enumeration(row.effect, ['NONE', 'APPLIED', 'UNKNOWN'], 'effect');
     boolean(row.replayed, 'replayed');
+    let errorCode: unknown = null;
     if (row.ok) {
       object(row.body);
       if (row.error !== null) throw new ValidationError('boundary', 'RESPONSE_SHAPE');
     } else {
       if (row.body !== null) throw new ValidationError('boundary', 'RESPONSE_SHAPE');
-      errorDto(row.error);
+      errorCode = errorDto(row.error).code;
+      // Lỗi local do client tạo, không được giả thành phản hồi từ server.
+      if (channel === 'NET' && typeof errorCode === 'string' && errorCode.startsWith('LOCAL_')) {
+        throw new ValidationError('boundary', 'LOCAL_ERROR_CODE');
+      }
     }
+    // Type chưa hỗ trợ vẫn cần nhận được lỗi tương quan, không mở whitelist IPC.
+    const unsupportedTypeError = channel === 'NET' && !row.ok && errorCode === 'INVALID_ARGUMENT';
+    if (!unsupportedTypeError) enumeration(row.type, channel === 'IPC' ? IPC_TYPES : NET_TYPES, 'type');
     return row;
   });
 }
@@ -181,7 +189,7 @@ export function bpEnvelope(value: unknown): JsonObject {
       case 'response':
         netPayload(row.payload);
         boolean(row.terminal_auth, 'terminal_auth');
-        responseEnvelope(row.payload);
+        responseEnvelope(row.payload, 'NET');
         break;
       case 'binding':
         nullableId(row.user_id, 'user_id');
@@ -219,11 +227,7 @@ export function decodeEnvelope(bytes: Uint8Array, channel: WireChannel): JsonObj
   if (channel === 'BP') return bpEnvelope(value);
   if (value.kind === 'request') return requestEnvelope(value, channel);
   if (value.kind === 'response') {
-    const response = responseEnvelope(value);
-    return boundary(() => {
-      enumeration(response.type, channel === 'IPC' ? IPC_TYPES : NET_TYPES, 'type');
-      return response;
-    });
+    return responseEnvelope(value, channel);
   }
   if (value.kind === 'event') return eventEnvelope(value, channel);
   throw new ValidationError('boundary', 'KIND');

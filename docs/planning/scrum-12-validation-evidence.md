@@ -17,7 +17,7 @@ Môi trường: macOS arm64, Node 24.15.0; TypeScript hiện có của repo.
 
 | Kiểm tra | Kết quả |
 | --- | --- |
-| `npm run test:validation --workspace @exam/business` | PASS 47/47 |
+| `npm run test:validation --workspace @exam/business` | PASS 49/49 |
 | `npm run test:validation --workspace @exam/desktop` | PASS 6/6 |
 | `npm run test:storage --workspace @exam/business` | PASS 12/12 regression storage |
 | `npm run check` | PASS typecheck và desktop/business build |
@@ -36,6 +36,10 @@ Môi trường: macOS arm64, Node 24.15.0; TypeScript hiện có của repo.
   schema. Envelope tin cậy nhưng body/type sai giữ layer body/INVALID_ARGUMENT.
 - BP lifecycle/control base, metadata cap, request/response/event base. Type NET
   không hỗ trợ không biến thành lỗi BP terminal; sys.hello/ping không gửi Node.
+- Regression response: NET/BP nhận INVALID_ARGUMENT cho type chưa hỗ trợ,
+  vẫn chặn response thành công hoặc mã lỗi khác cho type này; IPC giữ whitelist.
+  LOCAL_TIMEOUT/LOCAL_CONNECTION_LOST/LOCAL_BRIDGE_CLOSED chỉ nhận trên IPC,
+  bị chặn trên NET và response NET bọc BP. Correlation vẫn thuộc consumer.
 - Source guard đúng WebContents + mainFrame + URL ứng dụng; sai frame/origin/
   file path/query bị chặn, hash route được phép; source được xét trước schema.
 - Renderer object có cycle/BigInt/surrogate/encoded quá cap bị từ chối, không

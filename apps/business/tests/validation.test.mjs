@@ -133,6 +133,41 @@ test('response/error base không nhận body lỗi hoặc error null trái trạ
   fails(() => errorDto({ ...error, stack: 'secret' }), 'body');
 });
 
+test('type NET chưa hỗ trợ nhận INVALID_ARGUMENT tương quan, IPC vẫn giữ whitelist', () => {
+  const input = request('unknown.type');
+  const response = { ...input, kind: 'response', ok: false, effect: 'NONE', replayed: false, body: null,
+    error: { code: 'INVALID_ARGUMENT', message: 'Lệnh không được hỗ trợ.', retry_after_ms: null, details: {} } };
+  const decode = (value, channel) => decodeEnvelope(Buffer.from(JSON.stringify(value)), channel);
+  const bp = (payload) => ({ bridge_v: 1, kind: 'response', connection_id: '1', generation: 1,
+    authority_epoch: null, terminal_auth: false, payload });
+  assert.deepEqual(decode(input, 'NET'), input);
+  assert.deepEqual(decode(response, 'NET'), response);
+  assert.deepEqual(decode(bp(response), 'BP').payload, response);
+  fails(() => decode(input, 'IPC'), 'body');
+  fails(() => decode(response, 'IPC'), 'boundary');
+  const success = { ...response, ok: true, body: {}, error: null };
+  const otherError = { ...response, error: { ...response.error, code: 'INTERNAL_ERROR' } };
+  for (const bad of [success, otherError]) {
+    fails(() => decode(bad, 'NET'), 'boundary');
+    fails(() => decode(bp(bad), 'BP'), 'boundary');
+  }
+});
+
+test('LOCAL_* chỉ nhận trên IPC, không nhận trên NET hoặc response bọc BP', () => {
+  const decode = (value, channel) => decodeEnvelope(Buffer.from(JSON.stringify(value)), channel);
+  for (const code of ['LOCAL_TIMEOUT', 'LOCAL_CONNECTION_LOST', 'LOCAL_BRIDGE_CLOSED']) {
+    const response = { ...request(), kind: 'response', ok: false, effect: 'UNKNOWN', replayed: false, body: null,
+      error: { code, message: 'Không nhận được phản hồi.', retry_after_ms: null, details: {} } };
+    assert.deepEqual(decode(response, 'IPC'), response);
+    fails(() => decode(response, 'NET'), 'boundary', 'LOCAL_ERROR_CODE');
+    fails(() => decode({ bridge_v: 1, kind: 'response', connection_id: '1', generation: 1,
+      authority_epoch: null, terminal_auth: false, payload: response }, 'BP'), 'boundary', 'LOCAL_ERROR_CODE');
+  }
+  const serverError = { ...request(), kind: 'response', ok: false, effect: 'NONE', replayed: false, body: null,
+    error: { code: 'INVALID_ARGUMENT', message: 'Dữ liệu không hợp lệ.', retry_after_ms: null, details: {} } };
+  assert.deepEqual(decode(serverError, 'NET'), serverError);
+});
+
 test('event whitelist theo kênh; không relay event NET tùy ý sang renderer', () => {
   const event = { v: 1, kind: 'event', type: 'local.ready', event_seq: '1', body: { client_version: '0.1.0', protocol_version: 1 } };
   assert.equal(decodeEnvelope(Buffer.from(JSON.stringify(event)), 'IPC').kind, 'event');

@@ -17,6 +17,9 @@ cho renderer/preload import các module Node này.
   `requestEnvelope` trả body unknown, không có nghĩa body đã được chấp nhận.
   `responseEnvelope`/`eventEnvelope` cũng chỉ kiểm base; owner phải kiểm body,
   details, correlation và lọc public DTO trước khi chuyển tới UI.
+  `responseEnvelope(value, channel)` mặc định NET; caller xử lý IPC phải truyền
+  `'IPC'`. Response NET (kể cả bọc BP) không nhận mã `LOCAL_*`; type chưa hỗ trợ
+  chỉ được nhận ở response lỗi `INVALID_ARGUMENT`, không phải response thành công.
 
 Consumer T10/T11/T12/T50 gắn các hàm này vào reader/dispatcher/IPC thật khi có
 provider. Foundation hiện không đăng ký invoke handler hay spawn client C/Node.
