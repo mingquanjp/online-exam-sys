@@ -1,0 +1,14 @@
+[
+  {"name":"page-default","schema":"page","raw":"{\"after_id\":null}","expected":{"after_id":null,"limit":20}},
+  {"name":"page-null-limit","schema":"page","raw":"{\"after_id\":null,\"limit\":null}","error_field":"limit"},
+  {"name":"page-missing-required","schema":"page","raw":"{}","error_field":"after_id"},
+  {"name":"page-unknown-key","schema":"page","raw":"{\"after_id\":null,\"extra\":1}","error_field":"body"},
+  {"name":"page-wrong-case","schema":"page","raw":"{\"after_id\":null,\"Limit\":1}","error_field":"body"},
+  {"name":"page-decimal-integer","schema":"page","raw":"{\"after_id\":null,\"limit\":1.0}","expected":{"after_id":null,"limit":1}},
+  {"name":"page-exponent-integer","schema":"page","raw":"{\"after_id\":null,\"limit\":1e0}","expected":{"after_id":null,"limit":1}},
+  {"name":"page-fraction","schema":"page","raw":"{\"after_id\":null,\"limit\":1.5}","error_field":"limit"},
+  {"name":"page-string-number","schema":"page","raw":"{\"after_id\":null,\"limit\":\"1\"}","error_field":"limit"},
+  {"name":"page-id-above-2pow53","schema":"page","raw":"{\"after_id\":\"9007199254740993\"}","expected":{"after_id":"9007199254740993","limit":20}},
+  {"name":"page-id-overflow","schema":"page","raw":"{\"after_id\":\"9223372036854775808\"}","error_field":"after_id"},
+  {"name":"page-zero-limit","schema":"page","raw":"{\"after_id\":null,\"limit\":0}","error_field":"limit"}
+]

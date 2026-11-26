@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
     "check:runtime": "node dist/main.js --version",
-    "test:storage": "npm run build && node --test tests/storage.test.mjs"
+    "test:storage": "npm run build && node --test tests/storage.test.mjs",
+    "test:validation": "npm run build && node --test tests/validation.test.mjs"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

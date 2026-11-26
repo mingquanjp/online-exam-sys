@@ -48,3 +48,6 @@ apps/business/dist/
 # Python tooling caches
 __pycache__/
 *.py[cod]
+
+# Compiled fixtures for desktop validation tests
+.test-output/

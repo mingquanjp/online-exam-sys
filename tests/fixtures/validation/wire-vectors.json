@@ -1,0 +1,212 @@
+[
+  {
+    "name": "minimal-object",
+    "channel": "NET",
+    "raw": "{}",
+    "expected_reason": null
+  },
+  {
+    "name": "valid-unicode",
+    "channel": "NET",
+    "raw": "{\"text\":\"Ti\u1ebfng Vi\u1ec7t\"}",
+    "expected_reason": null
+  },
+  {
+    "name": "valid-surrogate-pair",
+    "channel": "NET",
+    "raw": "{\"text\":\"\\ud83d\\ude00\"}",
+    "expected_reason": null
+  },
+  {
+    "name": "duplicate-key",
+    "channel": "NET",
+    "raw": "{\"type\":1,\"type\":2}",
+    "expected_reason": "DUPLICATE_KEY"
+  },
+  {
+    "name": "duplicate-decoded-key",
+    "channel": "NET",
+    "raw": "{\"type\":1,\"\\u0074ype\":2}",
+    "expected_reason": "DUPLICATE_KEY"
+  },
+  {
+    "name": "nested-duplicate",
+    "channel": "NET",
+    "raw": "{\"body\":[{\"x\":1,\"\\u0078\":2}]}",
+    "expected_reason": "DUPLICATE_KEY"
+  },
+  {
+    "name": "case-sensitive",
+    "channel": "NET",
+    "raw": "{\"type\":1,\"Type\":2}",
+    "expected_reason": null
+  },
+  {
+    "name": "escaped-quote",
+    "channel": "NET",
+    "raw": "{\"a\\\"b\":1,\"a\":2}",
+    "expected_reason": null
+  },
+  {
+    "name": "escaped-slash",
+    "channel": "NET",
+    "raw": "{\"a\\\\\":1}",
+    "expected_reason": null
+  },
+  {
+    "name": "escaped-nul",
+    "channel": "NET",
+    "raw": "{\"text\":\"\\u0000\"}",
+    "expected_reason": "STRING_ESCAPE"
+  },
+  {
+    "name": "surrogate-high",
+    "channel": "NET",
+    "raw": "{\"text\":\"\\ud800\"}",
+    "expected_reason": "STRING_ESCAPE"
+  },
+  {
+    "name": "surrogate-low",
+    "channel": "NET",
+    "raw": "{\"text\":\"\\udc00\"}",
+    "expected_reason": "STRING_ESCAPE"
+  },
+  {
+    "name": "raw-nul",
+    "channel": "NET",
+    "raw": "{\"text\":\"\u0000\"}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "trailing-object",
+    "channel": "NET",
+    "raw": "{}{}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "trailing-whitespace",
+    "channel": "NET",
+    "raw": "{} \r\n\t",
+    "expected_reason": null
+  },
+  {
+    "name": "bom",
+    "channel": "NET",
+    "raw": "\ufeff{}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "array-root",
+    "channel": "NET",
+    "raw": "[]",
+    "expected_reason": "ROOT"
+  },
+  {
+    "name": "null-root",
+    "channel": "NET",
+    "raw": "null",
+    "expected_reason": "ROOT"
+  },
+  {
+    "name": "trailing-comma",
+    "channel": "NET",
+    "raw": "{\"a\":1,}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "array-trailing-comma",
+    "channel": "NET",
+    "raw": "{\"a\":[1,]}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "missing-value",
+    "channel": "NET",
+    "raw": "{\"a\":}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "bad-number",
+    "channel": "NET",
+    "raw": "{\"a\":01}",
+    "expected_reason": "JSON"
+  },
+  {
+    "name": "fraction-value",
+    "channel": "NET",
+    "raw": "{\"a\":1.5}",
+    "expected_reason": null
+  },
+  {
+    "name": "integer-decimal",
+    "channel": "NET",
+    "raw": "{\"a\":1.0}",
+    "expected_reason": null
+  },
+  {
+    "name": "integer-exponent",
+    "channel": "NET",
+    "raw": "{\"a\":1e0}",
+    "expected_reason": null
+  },
+  {
+    "name": "unsafe-id-as-string",
+    "channel": "NET",
+    "raw": "{\"id\":\"9007199254740993\"}",
+    "expected_reason": null
+  },
+  {
+    "name": "prototype-key",
+    "channel": "NET",
+    "raw": "{\"__proto__\":{\"polluted\":true}}",
+    "expected_reason": null
+  },
+  {
+    "name": "NET-depth-16",
+    "channel": "NET",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}",
+    "expected_reason": null
+  },
+  {
+    "name": "NET-depth-17",
+    "channel": "NET",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}}",
+    "expected_reason": "DEPTH"
+  },
+  {
+    "name": "IPC-depth-16",
+    "channel": "IPC",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}",
+    "expected_reason": null
+  },
+  {
+    "name": "IPC-depth-17",
+    "channel": "IPC",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}}",
+    "expected_reason": "DEPTH"
+  },
+  {
+    "name": "BP-depth-18",
+    "channel": "BP",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}}}",
+    "expected_reason": null
+  },
+  {
+    "name": "BP-depth-19",
+    "channel": "BP",
+    "raw": "{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{\"a\":{}}}}}}}}}}}}}}}}}}}",
+    "expected_reason": "DEPTH"
+  },
+  {
+    "name": "invalid-utf8",
+    "channel": "NET",
+    "hex": "7b2261223a22c328227d",
+    "expected_reason": "UTF8"
+  },
+  {
+    "name": "overlong-utf8",
+    "channel": "NET",
+    "hex": "7b2261223a22c080227d",
+    "expected_reason": "UTF8"
+  }
+]
