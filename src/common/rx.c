@@ -4,6 +4,7 @@
  */
 #include "exam/rx.h"
 
+#include <arpa/inet.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -56,11 +57,10 @@ RxResult rx_feed(RxState *state, const void *data, size_t len,
                 break;
             }
 
-            /* Đọc theo byte để không phụ thuộc alignment hoặc byte order của máy. */
-            uint32_t length = ((uint32_t)state->header[0] << 24) |
-                              ((uint32_t)state->header[1] << 16) |
-                              ((uint32_t)state->header[2] << 8) |
-                              (uint32_t)state->header[3];
+            /* Sao chép header để không phụ thuộc căn chỉnh của buffer. */
+            uint32_t network_length;
+            memcpy(&network_length, state->header, sizeof network_length);
+            uint32_t length = ntohl(network_length);
             if (length < 2 || length > state->max_payload) {
                 state->error = RX_LENGTH_ERROR;
                 result.status = state->error;
