@@ -54,7 +54,7 @@ export class RoomsRepository {
       cancelled_at, cancel_reason, started_at, deadline_at, ended_at`;
     this.byId = db.prepare(`SELECT ${columns} FROM rooms WHERE id = ?`);
     this.listPage = db.prepare(`SELECT ${columns} FROM rooms
-      WHERE (? IS NULL OR id < ?) AND (? IS NULL OR state = ?) ORDER BY id DESC LIMIT ?`);
+      WHERE (? IS NULL OR id < ?) AND (? IS NULL OR state = ?) ORDER BY rooms.id DESC LIMIT ?`);
     this.configureWaiting = prepareWrite(db, `UPDATE rooms SET name = ?, topic_id = ?,
       easy_count = ?, medium_count = ?, hard_count = ?, duration_seconds = ?, config_version = config_version + 1
       WHERE id = ? AND state = 'WAITING' AND config_version = ?`);

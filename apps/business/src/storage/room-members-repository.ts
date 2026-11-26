@@ -21,7 +21,7 @@ export class RoomMembersRepository {
     this.insert = prepareWrite(db, 'INSERT INTO room_members (room_id, user_id, joined_at) VALUES (?, ?, ?)');
     const columns = 'CAST(room_id AS TEXT) AS room_id, CAST(user_id AS TEXT) AS user_id, joined_at';
     this.byPair = db.prepare(`SELECT ${columns} FROM room_members WHERE room_id = ? AND user_id = ?`);
-    this.byRoom = db.prepare(`SELECT ${columns} FROM room_members WHERE room_id = ? ORDER BY user_id`);
+    this.byRoom = db.prepare(`SELECT ${columns} FROM room_members WHERE room_id = ? ORDER BY room_members.user_id`);
     this.countMembers = db.prepare('SELECT count(*) AS total FROM room_members WHERE room_id = ?');
     this.removePair = prepareWrite(db, 'DELETE FROM room_members WHERE room_id = ? AND user_id = ?');
   }

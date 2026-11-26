@@ -210,6 +210,34 @@ test('Configure/start dùng version, transition sai không ghi; phân trang có 
   });
 });
 
+test('Phân trang phòng và roster sắp theo số khi ID khác số chữ số', (t) => {
+  const f = fixture(t);
+  transaction(f.db, () => {
+    const insertUser = f.db.prepare(`INSERT INTO users
+      (id, username_key, display_name, password_hash, created_at)
+      VALUES (?, ?, 'Fixture', 'fixture-only-hash', ?)`);
+    const insertRoom = f.db.prepare(`INSERT INTO rooms
+      (id, owner_id, name, easy_count, medium_count, hard_count, duration_seconds, created_at, waiting_expires_at)
+      VALUES (?, 9, 'Fixture', 1, 0, 0, 60, ?, ?)`);
+    for (const id of ['9', '99', '100']) {
+      insertUser.run(bindId(id), `user_${id}`, now);
+      insertRoom.run(bindId(id), now, now + 1800000);
+      f.members.add('9', id, now);
+    }
+  });
+  // ID xuất ra là chuỗi, nhưng thứ tự/cursor phải theo cột INTEGER gốc.
+  assert.deepEqual(f.rooms.list(null, 20).items.map(room => room.id), ['100', '99', '9']);
+  let cursor = null;
+  for (const [index, expectedId] of ['100', '99', '9'].entries()) {
+    const page = f.rooms.list(cursor, 1);
+    assert.deepEqual(page.items.map(room => room.id), [expectedId]);
+    assert.equal(page.has_more, index < 2);
+    cursor = page.items[0].id;
+  }
+  assert.deepEqual(f.rooms.list(cursor, 1), { items: [], has_more: false });
+  assert.deepEqual(f.members.list('9').map(member => member.user_id), ['9', '99', '100']);
+});
+
 test('UTC lùi không chặn start/cancel/end; timestamp vẫn phải trong miền an toàn', (t) => {
   const f = fixture(t);
   const { cancelledRoom, runningRoom } = transaction(f.db, () => {

@@ -15,7 +15,7 @@ cho T06 và các consumer auth/phòng/activity. Nguồn: 02 §8.2–8.3/9.1, 03 
 Kiểm thử `:memory:` không chạm DB thật. Môi trường tự kiểm: macOS arm64,
 Node 24.15.0, SQLite 3.51.3 từ node:sqlite. Tự kiểm ngày 26/11/2026:
 
-- `npm run test:storage --workspace @exam/business`: PASS, 11/11 test.
+- `npm run test:storage --workspace @exam/business`: PASS, 12/12 test.
 - `npm run typecheck:business`: PASS.
 - `npm run check:business`: PASS build và --version; không chứng minh startup DB.
 - `git diff --check`: PASS cho diff tracked; file mới được kiểm whitespace riêng.
@@ -25,12 +25,13 @@ Node 24.15.0, SQLite 3.51.3 từ node:sqlite. Tự kiểm ngày 26/11/2026:
 | DDL/constraints | SQLite thực thi SQL; default/auth_version, NOT NULL/STRICT, duplicate username/member/activity, FK sai, XOR, count/version/time/state và giữ lịch sử bằng RESTRICT. |
 | Transaction tạo phòng | Repository thật tạo room + member chủ + activity, commit đồng thời; duplicate activity làm rollback room/member vừa thêm. |
 | Hủy/rời | Cancel + release cùng transaction; fault sau release rollback cả state/activity. Hủy giữ roster; rời xóa đúng pair. Release sai user/kind/id không xóa ref khác. |
-| Query/boundary | ID lớn hơn 2^53 qua create/read/update/list/member/activity, signed int64 boundary; SQL injection là dữ liệu bind; pagination giảm dần/state filter/has_more, version cũ/state sai không ghi. |
+| Query/boundary | ID lớn hơn 2^53 qua create/read/update/list/member/activity, signed int64 boundary; SQL injection là dữ liệu bind; pagination giảm dần/state filter/has_more, version cũ/state sai không ghi. ID 9/99/100 kiểm thứ tự số của phòng/roster và duyệt từng trang không bỏ sót phòng. |
 | Ownership | Mutation ngoài transaction bị từ chối; repository không tự BEGIN/COMMIT/close. |
 | UTC bị chỉnh lùi | Start/cancel ghi được UTC nhỏ hơn created_at; end ghi được UTC nhỏ hơn started_at. Giá trị âm/vượt MAX_SAFE_INTEGER vẫn bị CHECK chặn; ràng buộc state/NULL và deadline cấu hình vẫn giữ. |
 
 Regression UTC được chạy trước khi sửa DDL và FAIL tại CHECK cancelled_at >=
-created_at, sau sửa PASS trong bộ 11 test. DDL chỉ kiểm miền UTC, không yêu cầu
+created_at, sau sửa PASS. Regression ID khác số chữ số cũng FAIL trước khi sửa
+ORDER BY sang cột INTEGER gốc và PASS sau sửa. DDL chỉ kiểm miền UTC, không yêu cầu
 UTC tăng theo trình tự; theo 02 §7.2, domain dùng monotonic cho xét hạn. Test
 truyền mốc UTC giả lập trên SQLite bộ nhớ, không chỉnh đồng hồ máy và không
 nghiệm thu clock/timer/finalizer của consumer.
